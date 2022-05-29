@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/05/28 16:25:09 by anajmi           ###   ########.fr       */
+/*   Created: 2021/11/12 22:07:37 by anajmi            #+#    #+#             */
+/*   Updated: 2021/11/20 19:25:27 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include "Libft/libft.h"
-
-typedef struct	s_vars
+void	ft_putstr_fd(char *s, int fd)
 {
-	char	*buff;
-	char	*bin;
-	size_t	i;
-	size_t	j;
-	char	**tmp;
-	char	**env;
-	char	**newenv;
-	char	***tmplist;
-	char	**piplist;
-	char	**cmdlist;
-	char	**argslist;
-	char	**slist;
-}	t_vars;
+	int	i;
 
+	i = 0;
+	if (s && fd >= 0)
+	{
+		while (s[i])
+		{
+			ft_putchar_fd(s[i], fd);
+			i++;
+		}
+	}
+}
 
-size_t	ft_lstlen(char **list);
+/*
+#include <fcntl.h>
+int	main(void)
+{
+	int	fd;
 
-#endif
+	fd = open("file", O_CREAT | O_RDWR);
+	ft_putstr_fd("hello == > achraf\n", fd);
+	return (0);
+}
+*/

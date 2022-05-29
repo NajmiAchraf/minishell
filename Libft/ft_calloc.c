@@ -1,41 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/05/28 16:25:09 by anajmi           ###   ########.fr       */
+/*   Created: 2021/11/06 12:00:32 by anajmi            #+#    #+#             */
+/*   Updated: 2021/11/21 14:08:22 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include "Libft/libft.h"
-
-typedef struct	s_vars
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	*buff;
-	char	*bin;
-	size_t	i;
-	size_t	j;
-	char	**tmp;
-	char	**env;
-	char	**newenv;
-	char	***tmplist;
-	char	**piplist;
-	char	**cmdlist;
-	char	**argslist;
-	char	**slist;
-}	t_vars;
+	void	*str;
 
+	str = malloc(count * size);
+	if (!str)
+		return (NULL);
+	ft_bzero(str, count * size);
+	return (str);
+}
 
-size_t	ft_lstlen(char **list);
-
-#endif
+/*
+int	main(void)
+{
+	ft_calloc(0, 0);
+	return (0);
+}
+*/

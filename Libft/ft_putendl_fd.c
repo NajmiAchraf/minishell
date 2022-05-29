@@ -1,41 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/05/28 16:25:09 by anajmi           ###   ########.fr       */
+/*   Created: 2021/11/12 22:51:43 by anajmi            #+#    #+#             */
+/*   Updated: 2021/11/18 13:37:17 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include "Libft/libft.h"
-
-typedef struct	s_vars
+void	ft_putendl_fd(char *s, int fd)
 {
-	char	*buff;
-	char	*bin;
-	size_t	i;
-	size_t	j;
-	char	**tmp;
-	char	**env;
-	char	**newenv;
-	char	***tmplist;
-	char	**piplist;
-	char	**cmdlist;
-	char	**argslist;
-	char	**slist;
-}	t_vars;
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
+}
 
+/*
+#include <fcntl.h>
+int	main(void)
+{
+	int	fd;
 
-size_t	ft_lstlen(char **list);
-
-#endif
+	fd = open("file", O_CREAT | O_RDWR);
+	ft_putstr_fd("hello == > heho", fd);
+	return (0);
+}
+*/
