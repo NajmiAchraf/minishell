@@ -1,41 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/05/28 16:25:09 by anajmi           ###   ########.fr       */
+/*   Created: 2021/11/17 13:19:27 by anajmi            #+#    #+#             */
+/*   Updated: 2021/11/20 21:39:46 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include "Libft/libft.h"
-
-typedef struct	s_vars
+void	ft_lstadd_front(t_list **alst, t_list *new)
 {
-	char	*buff;
-	char	*bin;
-	size_t	i;
-	size_t	j;
-	char	**tmp;
-	char	**env;
-	char	**newenv;
-	char	***tmplist;
-	char	**piplist;
-	char	**cmdlist;
-	char	**argslist;
-	char	**slist;
-}	t_vars;
+	new->next = *alst;
+	*alst = new;
+}
 
+/*
+int	main(void)
+{
+	t_list	*alst;
 
-size_t	ft_lstlen(char **list);
-
-#endif
+	alst = ft_lstnew("78");
+	ft_lstadd_front(&alst, ft_lstnew("56"));
+	ft_lstadd_front(&alst, ft_lstnew("34"));
+	while (alst->next)
+	{
+		printf("%s\n", alst->content);
+		alst = alst->next;
+	}
+	printf("%s\n", alst->content);
+}
+*/

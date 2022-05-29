@@ -1,41 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/05/28 16:25:09 by anajmi           ###   ########.fr       */
+/*   Created: 2021/11/12 17:18:34 by anajmi            #+#    #+#             */
+/*   Updated: 2021/11/21 15:07:30 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include "Libft/libft.h"
-
-typedef struct	s_vars
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	char	*buff;
-	char	*bin;
+	size_t	len;
 	size_t	i;
-	size_t	j;
-	char	**tmp;
-	char	**env;
-	char	**newenv;
-	char	***tmplist;
-	char	**piplist;
-	char	**cmdlist;
-	char	**argslist;
-	char	**slist;
-}	t_vars;
 
+	if (s == 0)
+		return ;
+	len = ft_strlen(s);
+	i = 0;
+	while (i < len)
+	{
+		f(i, &s[i]);
+		i++;
+	}
+	s[i] = '\0';
+}
 
-size_t	ft_lstlen(char **list);
+/*
+void	f(unsigned int i, char *s)
+{
+	*s -= 32;
+}
 
-#endif
+#include <stdio.h>
+
+int	main(void)
+{
+	char	str[] = "abcd";
+
+	ft_striteri(str, f);
+	printf("%s\n", str);
+}
+*/

@@ -1,41 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/05/28 16:25:09 by anajmi           ###   ########.fr       */
+/*   Created: 2021/11/02 10:45:32 by anajmi            #+#    #+#             */
+/*   Updated: 2021/11/18 13:26:39 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include "Libft/libft.h"
-
-typedef struct	s_vars
+int	ft_isascii(int c)
 {
-	char	*buff;
-	char	*bin;
-	size_t	i;
-	size_t	j;
-	char	**tmp;
-	char	**env;
-	char	**newenv;
-	char	***tmplist;
-	char	**piplist;
-	char	**cmdlist;
-	char	**argslist;
-	char	**slist;
-}	t_vars;
+	if (!(0 <= c && c <= 127))
+	{
+		return (0);
+	}
+	return (1);
+}
 
+/*
+int	main(void)
+{
+	int	a;
 
-size_t	ft_lstlen(char **list);
-
-#endif
+	a = 0;
+	while (a <= 255)
+	{
+		printf("(%d) (%c)	ft_isascii => %d	", a, a, ft_isascii(a));
+		printf("isascii => %d\n", isascii(a));
+		a++;
+	}
+	return (0);
+}
+*/
