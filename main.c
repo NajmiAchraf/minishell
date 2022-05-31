@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/05/29 13:10:15 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/05/31 16:13:04 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ ls
 >
 a
 >>>>
-a
+a 
 ..a
 
 ls
@@ -151,7 +151,7 @@ void	if_equiquot(t_vars *var, int index, char c)
 		{
 			while (var->i <= index)
 			{
-				var->bin[var->i] = '0';
+				var->bin[var->i] = TK_AZ09;
 				var->i++;
 			}
 			var->i--;
@@ -166,24 +166,24 @@ void	tekoniz(t_vars *var)
 {
 	var->i = 0;
 	var->j = 0;
-	// if (var->bin)
-	// 	free(var->bin);
+	if (!var->bin)
+		free(var->bin);
 	var->bin = malloc(sizeof(char) * ft_strlen(var->buff));
 	while (var->buff[var->i])
 	{
 		if (var->buff[var->i] == 34 || var->buff[var->i] == 39) /* " */ /* ' */
 			if_equiquot(var, var->i + 1, var->buff[var->i]);
 		if (var->buff[var->i] == ' ')
-			var->bin[var->i] = '1';
+			var->bin[var->i] = TK_SPACE;
 		else if (ft_isalpha(var->buff[var->i]) || var->buff[var->i] == '-'
 				|| var->buff[var->i] == 34 || var->buff[var->i] == 39)
-			var->bin[var->i] = '0';
+			var->bin[var->i] = TK_AZ09;
 		else if (var->buff[var->i] == '|')
-			var->bin[var->i] = '2';
+			var->bin[var->i] = TK_PIP;
 		else if (var->buff[var->i] == '>')
-			var->bin[var->i] = '3';
+			var->bin[var->i] = TK_RDRT;
 		else if (var->buff[var->i] == '<')
-			var->bin[var->i] = '4';
+			var->bin[var->i] = TK_LDRT;
 		var->i++;
 	}
 	printf("buff = %s\nbin  = %s\n", var->buff, var->bin);
@@ -195,9 +195,12 @@ int	main(int ac, char *av[], char **env)
 	char	cwd[1024];
 
 	var = malloc(sizeof(t_vars));
+	var->buff = NULL;
+	var->bin = NULL;
 	var->env = env;
 	var->newenv = NULL;
 	var->piplist = NULL;
+	TK_AZ09;
 	while (1)
 	{
 		getcwd(cwd, sizeof(cwd));
@@ -207,6 +210,8 @@ int	main(int ac, char *av[], char **env)
 		printf("%s\n", var->buff);
 		// lex(var);
 		tekoniz(var);
+		// system("leaks minishell");
+		free(var->buff);
 	}
 	return (0);
 }
