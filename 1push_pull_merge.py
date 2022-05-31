@@ -16,6 +16,7 @@ def main():
 	terminal(f'git commit -m "anajmi branch -> {current_date}"')
 	terminal(f'git push origin anajmi')
 	terminal(f'git checkout master')
+	terminal(f'git pull origin master')
 	terminal(f'git merge anajmi')
 
 
