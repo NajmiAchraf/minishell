@@ -12,6 +12,8 @@ def main(user):
 
 	# terminal('@ECHO OFF')
 
+	terminal(f'git checkout master')
+	terminal(f'git pull master')
 	terminal(f'git checkout {user}')
 	terminal(f'git merge master')
 
