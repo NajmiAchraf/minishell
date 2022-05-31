@@ -14,12 +14,12 @@ def main():
 
 	print("Choose user :")
 	print("1) -> anajmi")
-	print("2) -> oaisson")
+	print("2) -> oaissoun")
 	user = eval(input("> "))
 	if user == 1:
 		user = 'anajmi'
 	elif user == 2:
-		user = 'oaisson'
+		user = 'oaissoun'
 
 	print("To manage the git session choose :")
 	print("0) -> to merge master in you branch")
