@@ -16,13 +16,6 @@
 /* BUILTIN FUNCTIONS */
 /*********************/
 
-int	echo(char *str, int nl)
-{
-	if (nl)
-		return (printf("%s", str));
-	return (printf("%s\n", str));
-}
-
 void	pwd()
 {
 	char	cwd[FILENAME_MAX];
