@@ -99,7 +99,7 @@ void	lex(t_vars *var)
 		while (var->i < var->j)
 		{
 			var->tmplist[var->i] = ft_split(var->piplist[var->i], ' ');
-			printf("\n--------------------------------------------------------------------------\n");
+			printf("\n---------------------------------------------------------------\n");
 			while (t <= ft_lstlen(var->tmplist[var->i]))
 			{
 				printf("\n%s	i = %zu	j = %zu\n", var->tmplist[var->i][t], var->i, var->j);
