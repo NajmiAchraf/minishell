@@ -28,7 +28,7 @@ def main():
 		return
 
 	print("To manage the git session choose :")
-	print("0) -> to merge master in you branch")
+	print("0) -> to merge master in your branch")
 	print("1) -> to commit & push in your branch, merge in master")
 	print("2) -> to push in master")
 	try:
