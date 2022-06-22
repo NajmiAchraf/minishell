@@ -1,39 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/02 10:11:05 by anajmi            #+#    #+#             */
-/*   Updated: 2021/11/18 13:25:50 by anajmi           ###   ########.fr       */
+/*   Created: 2021/11/05 15:31:14 by anajmi            #+#    #+#             */
+/*   Updated: 2022/06/22 14:07:43 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libftplus.h"
 
-int	ft_isalnum(int c)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	if (!('0' <= c && c <= '9')
-		&& !('A' <= c && c <= 'Z')
-		&& !('a' <= c && c <= 'z'))
-	{
-		return (0);
-	}
-	return (1);
-}
-/*
-int	main(void)
-{
-	int	a;
+	unsigned char	*str1;
+	unsigned char	*str2;
+	size_t			i;
 
-	a = 0;
-	while (a <= 127)
+	i = 0;
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	while (str1[i] || str2[i])
 	{
-		printf("(%d) (%c)	ft_isalnum => %d	", a, a, ft_isalnum(a));
-		printf("isalnum => %d\n", isalnum(a));
-		a++;
+		if (str1[i] != str2[i])
+			return (str1[i] - str2[i]);
+		i++;
 	}
-	return (0);
+	return (str1[i] - str2[i]);
 }
-*/

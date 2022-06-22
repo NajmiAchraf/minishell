@@ -6,18 +6,19 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 10:52:01 by anajmi            #+#    #+#             */
-/*   Updated: 2021/11/18 13:21:59 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/03/14 15:04:23 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	check_sign(int sign)
+int	check_nbr(long nbr, int sign)
 {
-	if (sign == -1)
-		return (0);
-	else
+	if (sign * nbr > INT32_MAX)
 		return (-1);
+	else if (sign * nbr < INT32_MIN)
+		return (0);
+	return (1);
 }
 
 int	ft_atoi(const char *str)
@@ -40,9 +41,9 @@ int	ft_atoi(const char *str)
 	while ('0' <= str[a] && str[a] <= '9')
 	{
 		nbr *= 10;
-		if (nbr > 4294967295)
-			return (check_sign(sign));
 		nbr += str[a] - '0';
+		if (check_nbr(nbr, sign) <= 0)
+			return (check_nbr(nbr, sign));
 		a++;
 	}
 	return (nbr * sign);

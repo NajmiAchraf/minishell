@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/06/01 10:34:18 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/06/15 00:52:59 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ size_t	ft_lstlen(char **list)
 	size_t	len;
 
 	len = 0;
-	while (list[len] != '\0')
+	while (list[len])
 		len++;
 	return (len);
 }

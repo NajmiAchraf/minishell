@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 11:58:11 by anajmi            #+#    #+#             */
-/*   Updated: 2021/11/19 21:34:47 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/06/22 13:11:53 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define LIBFT_H
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdint.h>
+# include <stddef.h>
 
 int		ft_atoi(const char *str);
 
@@ -40,6 +42,9 @@ size_t	ft_strlcpy(char *dst, const char *src,	size_t dstsize);
 char	*ft_strrchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+
+int	ft_strcmp(const char *s1, const char *s2);
+
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);

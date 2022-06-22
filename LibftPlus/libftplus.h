@@ -1,39 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   libftplus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/02 10:11:05 by anajmi            #+#    #+#             */
-/*   Updated: 2021/11/18 13:25:50 by anajmi           ###   ########.fr       */
+/*   Created: 2021/11/03 11:58:11 by anajmi            #+#    #+#             */
+/*   Updated: 2022/06/22 13:29:57 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef LIBFTPLUS_H
+# define LIBFTPLUS_H
+# include <stddef.h>
+ 
+int	ft_strcmp(const char *s1, const char *s2);
+size_t	ft_lstlen(char **list);
+size_t	ft_lstslen(char ***list);
+void	ft_swap(char ***n1, char ***n2);
 
-int	ft_isalnum(int c)
-{
-	if (!('0' <= c && c <= '9')
-		&& !('A' <= c && c <= 'Z')
-		&& !('a' <= c && c <= 'z'))
-	{
-		return (0);
-	}
-	return (1);
-}
-/*
-int	main(void)
-{
-	int	a;
-
-	a = 0;
-	while (a <= 127)
-	{
-		printf("(%d) (%c)	ft_isalnum => %d	", a, a, ft_isalnum(a));
-		printf("isalnum => %d\n", isalnum(a));
-		a++;
-	}
-	return (0);
-}
-*/
+#endif

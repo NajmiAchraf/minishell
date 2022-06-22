@@ -4,3 +4,6 @@
 **/*.out
 minishell
 Libft/libft.a
+XV6
+minihouda
+sh.c

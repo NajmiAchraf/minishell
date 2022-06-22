@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/05/31 16:11:30 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/06/22 16:58:44 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include "Libft/libft.h"
+# include "LibftPlus/libftplus.h"
 
 # define TK_SPACE '0'
 # define TK_AZ09 '1'
@@ -27,20 +29,31 @@
 
 typedef struct	s_vars
 {
-	char	*buff;
-	char	*bin;
 	size_t	i;
 	size_t	j;
-	char	**tmp;
+	// environment
+	size_t	sizeofexp;
+	size_t	sizeofenv;
 	char	**env;
 	char	**newenv;
-	char	***tmplist;
+	char	***newexp;
+
+	char	*buff;
+	char	*bin;
 	char	**piplist;
 	char	**cmdlist;
 	char	**argslist;
 	char	**slist;
 }	t_vars;
 
-size_t	ft_lstlen(char **list);
+void	sort_export(t_vars *var);
+void	init_environment(t_vars *var);
+void	init_export(t_vars *var);
+void	ft_export(t_vars *var, char *to_add);
+void	ft_unset(t_vars *var, char *to_del);
+void	show_env(t_vars *var);
+void	show_exp(t_vars *var);
+
+
 
 #endif
