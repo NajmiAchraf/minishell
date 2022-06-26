@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftplus.h                                        :+:      :+:    :+:   */
+/*   ft_swaps.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/03 11:58:11 by anajmi            #+#    #+#             */
-/*   Updated: 2022/06/23 20:35:35 by anajmi           ###   ########.fr       */
+/*   Created: 2022/06/22 13:26:07 by anajmi            #+#    #+#             */
+/*   Updated: 2022/06/23 20:34:28 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPLUS_H
-# define LIBFTPLUS_H
-# include <stddef.h>
- 
-int	ft_strcmp(const char *s1, const char *s2);
-size_t	ft_lstlen(char **list);
-size_t	ft_lstslen(char ***list);
-void	ft_swap_dp(char **n1, char **n2);
-void	ft_swap_tp(char ***n1, char ***n2);
+#include "libftplus.h"
 
-#endif
+void	ft_swap_tp(char ***n1, char ***n2)
+{
+	char	**save;
+
+	save = *n1;
+	*n1 = *n2;
+	*n2 = save;
+}

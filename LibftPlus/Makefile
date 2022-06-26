@@ -6,7 +6,7 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/05 20:14:52 by anajmi            #+#    #+#              #
-#    Updated: 2022/06/22 13:41:04 by anajmi           ###   ########.fr        #
+#    Updated: 2022/06/23 20:35:57 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SRC =	\
 	./ft_strcmp.c	\
 	./ft_lstlen.c	\
 	./ft_lstslen.c	\
-	./ft_swap.c
+	./ft_swap_dp.c	\
+	./ft_swap_tp.c
 
 OBJS = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/06/22 16:45:21 by anajmi           ###   ########.fr        #
+#    Updated: 2022/06/24 23:46:24 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,9 @@ NAME = minishell
 CFLAGS = #-Wall -Werror -Wextra
 
 SOURCE = \
-		./minishell.c	\
+		./sh.c	\
 		./environment.c	\
+		# ./minishell.c	\
 
 OBJ = $(SOURCE:.c=.o)
 
@@ -60,9 +61,11 @@ C_RES = \033[0m
 %.o: %.c
 	@gcc $(CFLAGS) -c $^ -o $@
 
-.PHONY : all clean fclean re
-
 all : $(NAME)
+	@echo "$(C_L_BLUE)[EXECUTE MINISHELL ...]$(C_RES)"
+#	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
+#	@cat valgrind-out.txt 
+	./minishell
 
 $(NAME) : $(OBJ)
 	$(ALLIBFT)
@@ -83,3 +86,4 @@ fclean : clean
 	@echo "$(C_RED)[LIBFT ARCHIVE & MINISHELL EXECUTABLES DELETED!]$(C_RES)"
 
 re : fclean all
+

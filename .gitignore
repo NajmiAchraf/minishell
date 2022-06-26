@@ -4,6 +4,8 @@
 **/*.out
 minishell
 Libft/libft.a
+LibftPlus/libftplus.a
 XV6
 minihouda
 sh.c
+valgrind-out.txt
