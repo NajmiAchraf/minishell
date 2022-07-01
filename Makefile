@@ -6,7 +6,7 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/06/24 23:46:24 by anajmi           ###   ########.fr        #
+#    Updated: 2022/06/27 15:52:16 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,9 @@ NAME = minishell
 CFLAGS = #-Wall -Werror -Wextra
 
 SOURCE = \
-		./sh.c	\
+		./minishell.c	\
 		./environment.c	\
-		# ./minishell.c	\
+		# ./sh.c	\
 
 OBJ = $(SOURCE:.c=.o)
 

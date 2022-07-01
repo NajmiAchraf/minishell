@@ -6,7 +6,7 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/05 20:14:52 by anajmi            #+#    #+#              #
-#    Updated: 2022/06/23 20:35:57 by anajmi           ###   ########.fr        #
+#    Updated: 2022/06/28 20:12:14 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ NAME = libftplus.a
 CFLAGS = -Wall -Werror -Wextra
 
 SRC =	\
+	./ft_isupper.c	\
+	./ft_islower.c	\
 	./ft_strcmp.c	\
 	./ft_lstlen.c	\
 	./ft_lstslen.c	\
