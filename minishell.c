@@ -29,7 +29,8 @@ void	fill_in_test(t_vars *var)
 
 	ft_strlcpy(var->cmd->exe->name, "export", 7);
 
-	var->cmd->exe->args[0] = ft_strdup("$USER=123$USER");
+	var->cmd->exe->args[0] = ft_strdup("$USER$USER$USER=trynottry1$USER");
+	// var->cmd->exe->args[0] = ft_strdup("ZLL=1$ZLL23$USER");
 	var->cmd->exe->args[1] = NULL;
 	// ft_strlcpy(var->cmd->pip->left->exe->args[0], "-la", 4);
 	// ft_bzero(var->cmd->pip->left->exe->args[1], 1);
@@ -184,19 +185,21 @@ char	*dir()
 
 int	echo(t_vars *var, t_execcmd *ecmd)
 {
-	var->i = 0;
-	while (ecmd->args[var->i])
+	t_allways aws;
+
+	aws.i = 0;
+	while (ecmd->args[aws.i])
 	{
-		if (ecmd->args[var->i][0] == '$')
+		if (ecmd->args[aws.i][0] == '$')
 		{
-			++ecmd->args[var->i];
-			// if (ft_strcmp(get_env_var(var, ecmd->args[var->i]), ""))
-				printf("%s ", get_env_var(var, ecmd->args[var->i]));
-			--ecmd->args[var->i];
+			++ecmd->args[aws.i];
+			// if (ft_strcmp(get_env_var(var, ecmd->args[aws.i]), ""))
+				printf("%s ", get_env_var(var, ecmd->args[aws.i]));
+			--ecmd->args[aws.i];
 		}
 		else
-			printf("%s ", ecmd->args[var->i]);
-		var->i++;
+			printf("%s ", ecmd->args[aws.i]);
+		aws.i++;
 	}
 	printf("\n");
 	return (1);
@@ -229,6 +232,8 @@ int	pwd()
 
 int	export(t_vars *var, t_execcmd *ecmd)
 {
+	t_allways aws;
+
 	/* 
 	export
 	export a=1 b c=0
@@ -237,31 +242,33 @@ int	export(t_vars *var, t_execcmd *ecmd)
 		show_exp(var);
 	else
 	{
-		var->i = 0;
-		while (ecmd->args[var->i])
+		aws.i = 0;
+		while (ecmd->args[aws.i])
 		{
-			if (ft_isalpha(ecmd->args[var->i][0]) || ecmd->args[var->i][0] == '_' || ecmd->args[var->i][0] == '$')
-				ft_export(var, ecmd->args[var->i], 0);
+			if (ft_isalpha(ecmd->args[aws.i][0]) || ecmd->args[aws.i][0] == '_' || ecmd->args[aws.i][0] == '$')
+				ft_export(var, ecmd->args[aws.i], 0);
 			else
-				printf("bash: export: `%s': not a valid identifier\n", ecmd->args[var->i]);
-			var->i++;
+				printf("bash: export: `%s': not a valid identifier\n", ecmd->args[aws.i]);
+			aws.i++;
 		}
 	}
-	show_exp(var);
+	show_env(var);
 	return (1);
 }
 
 int	unset(t_vars *var, t_execcmd *ecmd)
 {
+	t_allways aws;
+
 	/* 
 	unset
 	unset a b c
 	 */
-	var->i = 0;
-	while (ecmd->args[var->i])
+	aws.i = 0;
+	while (ecmd->args[aws.i])
 	{
-		ft_unset(var, ecmd->args[var->i]);
-		var->i++;
+		ft_unset(var, ecmd->args[aws.i]);
+		aws.i++;
 	}
 	show_exp(var);
 	return (1);

@@ -92,11 +92,15 @@ typedef struct s_env
 	char	***newexp;
 }	t_env;
 
-typedef struct	s_vars
+typedef struct	s_allways
 {
 	size_t	i;
 	size_t	j;
 	size_t	k;
+}	t_allways;
+
+typedef struct	s_vars
+{
 	int		exit_code;
 
 	// environment
@@ -122,5 +126,6 @@ void	ft_unset(t_vars *var, char *to_del);
 void	show_env(t_vars *var);
 void	show_exp(t_vars *var);
 char	*get_env_var(t_vars *var, char *to_get);
+int		check_env_var(t_vars *var, char *to_check);
 
 #endif
