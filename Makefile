@@ -44,6 +44,17 @@ FCLEANLIBPL = rm -f $(ARPLS)
 RELIBPL = make re -C $(LIBPL)
 
 #*******************************#
+#			GNL					#
+#*******************************#
+
+GNL = ./get_next_line
+ARGNL = $(GNL)/get_next_line.a
+ALLGNL = make -C $(GNL)
+CLEANGNL = make clean -C $(GNL)
+FCLEANGNL = rm -f $(ARGNL)
+REGNL = make re -C $(GNL)
+
+#*******************************#
 #			COLORS				#
 #*******************************#
 
@@ -70,18 +81,21 @@ all : $(NAME)
 $(NAME) : $(OBJ)
 	$(ALLIBFT)
 	$(ALLIBPL)
-	gcc $(OBJ) $(ARLIB) $(ARPLS) -lreadline -o $(NAME)
+	$(ALLGNL)
+	gcc $(OBJ) $(ARLIB) $(ARPLS) $(ARGNL) -lreadline -o $(NAME)
 	@echo "$(C_GREEN)[MINISHELL MANDATORY CREATED!]$(C_RES)"
 
 clean :
 	$(CLEANLIBFT)
 	$(CLEANLIBPL)
+	$(CLEANGNL)
 	rm -f $(OBJ)
 	@echo "$(C_RED)[MINISHELL OBJECTS DELETED!]$(C_RES)"
 
 fclean : clean
 	$(FCLEANLIBFT)
 	$(FCLEANLIBPL)
+	$(FCLEANGNL)
 	rm -f $(NAME)
 	@echo "$(C_RED)[LIBFT ARCHIVE & MINISHELL EXECUTABLES DELETED!]$(C_RES)"
 

@@ -21,58 +21,73 @@ int	replace_variable(t_vars *var, char *to_check, char *value)
 	{
 		if (!ft_strcmp(var->env.newexp[aws.i][0], to_check))
 		{
-		printf("==============================>%s =?= %s=%s\n", to_check, var->env.newexp[aws.i][0], var->env.newexp[aws.i][1]);
+		// printf("==============================>%s =?= %s=%s\n", to_check, var->env.newexp[aws.i][0], var->env.newexp[aws.i][1]);
 			ft_unset(var, to_check);
 			// ft_unset(var, var->env.newexp[aws.i][0]);
 			// show_exp(var);
-		printf("==============================>%s =?= %s\n", to_check, value);
+		// printf("==============================>%s =?= %s\n", to_check, value);
 			ft_export(var, value, 1);
-		printf("==============================>%s =?= %s=%s\n", to_check, var->env.newexp[aws.i][0], var->env.newexp[aws.i][1]);
+		// printf("==============================>%s =?= %s=%s\n", to_check, var->env.newexp[aws.i][0], var->env.newexp[aws.i][1]);
 			return (1);
 		}
 	}
 	return (0);
 }
 
-int	var_into_var(t_vars *var, char *variable, char *to_check, t_allways aws)
+int	var_into_var(t_vars *var, char **to_check, t_allways aws)
 {
-	free(var->tmp1);
-	var->tmp1 = ft_substr(to_check, 0, aws.i);
-	free(var->tmp);
-	var->tmp = ft_substr(to_check, aws.i + 1, aws.k - aws.i - 1);
-	free(var->tmp2);
-	var->tmp2 = ft_substr(to_check, aws.k, ft_strlen(to_check));
-	
-	// printf("%s = %s %s %s\n", to_check, var->tmp1, var->tmp, var->tmp2);
-	// printf("here\n");
-	if (!get_env_var(var, var->tmp))
-		ft_export(var, ft_strjoin(ft_strjoin(ft_strjoin(variable, "="), var->tmp1), var->tmp2), 0);
-	else
-		ft_export(var, ft_strjoin(ft_strjoin(ft_strjoin(ft_strjoin(variable, "="), var->tmp1), get_env_var(var, var->tmp)), var->tmp2), 0);
-	return (1);
+	char	*variable;
+
+	aws.j = ft_lstlen(to_check);
+	if (aws.j == 2)
+	{
+		variable = to_check[0];
+		free(var->tmp1);
+		var->tmp1 = ft_substr(to_check[1], 0, aws.i);
+		free(var->tmp);
+		var->tmp = ft_substr(to_check[1], aws.i + 1, aws.k - aws.i - 1);
+		free(var->tmp2);
+		var->tmp2 = ft_substr(to_check[1], aws.k, ft_strlen(to_check[1]));
+		
+		// printf("%s = %s %s %s\n", to_check, var->tmp1, var->tmp, var->tmp2);
+		// printf("here\n");
+		if (!get_env_var(var, var->tmp))
+			ft_export(var, ft_strjoin(ft_strjoin(ft_strjoin(variable, "="), var->tmp1), var->tmp2), 0);
+		else
+			ft_export(var, ft_strjoin(ft_strjoin(ft_strjoin(ft_strjoin(variable, "="), var->tmp1), get_env_var(var, var->tmp)), var->tmp2), 0);
+		return (1);
+	}
+	return (0);
 }
 
-int	name_into_var(t_vars *var, char *to_check, char *variable, t_allways aws)
+int	name_into_var(t_vars *var, char **to_check, t_allways aws)
 {
-	free(var->tmp1);
-	var->tmp1 = ft_substr(to_check, 0, aws.i);
-	free(var->tmp);
-	var->tmp = ft_substr(to_check, aws.i + 1, aws.k - aws.i - 1);
-	free(var->tmp2);
-	var->tmp2 = ft_substr(to_check, aws.k, ft_strlen(to_check));
+	char	*variable;
 
-	printf("%s => %s %s %s\n", to_check, var->tmp1, var->tmp, var->tmp2);
+	aws.j = ft_lstlen(to_check);
+	if (aws.j == 1)
+		variable = "";
+	else if (aws.j == 2)
+		variable = to_check[1];
+	free(var->tmp1);
+	var->tmp1 = ft_substr(to_check[0], 0, aws.i);
+	free(var->tmp);
+	var->tmp = ft_substr(to_check[0], aws.i + 1, aws.k - aws.i - 1);
+	free(var->tmp2);
+	var->tmp2 = ft_substr(to_check[0], aws.k, ft_strlen(to_check[0]));
+
+	// printf("%s => %s %s %s\n", to_check, var->tmp1, var->tmp, var->tmp2);
 	// printf("here\n");
-	printf("%s %s %s %s %s\n", var->tmp1, get_env_var(var, var->tmp), var->tmp2, "=", variable);
-	printf("%s \n", 
-	ft_strjoin(
-		ft_strjoin(
-			ft_strjoin(
-				ft_strjoin(var->tmp1
-				, get_env_var(var, var->tmp))
-				, var->tmp2)
-				, "=")
-				, variable));
+	// printf("%s %s %s %s %s\n", var->tmp1, get_env_var(var, var->tmp), var->tmp2, "=", variable);
+	// printf("%s \n", 
+	// ft_strjoin(
+		// ft_strjoin(
+			// ft_strjoin(
+				// ft_strjoin(var->tmp1
+				// , get_env_var(var, var->tmp))
+				// , var->tmp2)
+				// , "=")
+				// , variable));
 
 	if (!get_env_var(var, var->tmp))
 		ft_export(var, ft_strjoin(ft_strjoin(ft_strjoin(var->tmp1, var->tmp2), "="), variable), 0);
@@ -100,7 +115,7 @@ int	outside_search_variable(t_vars *var, char *to_search, char *variable)
 			var->tmp = ft_substr(to_search, aws.i + 1, aws.k - aws.i - 1);
 			// printf("%s  |>  %s =?= %s  || k = %zu\n", to_search, var->tmp, variable, aws.k - aws.i - 1);
 			if (!ft_strcmp(var->tmp, variable) || to_search[aws.k] == '\0')
-				return (var_into_var(var, var->temp[0], var->temp[1], aws));
+				return (var_into_var(var, var->temp, aws));
 		}
 	}
 	return (0);
@@ -125,11 +140,29 @@ int	inside_search_variable(t_vars *var, char *to_search, int gen)
 					break ;
 			}
 			if (gen == 1)
-				return (name_into_var(var, var->temp[0], var->temp[1], aws));
+				return (name_into_var(var, var->temp, aws));
 			else if (gen == 2)
-				return (var_into_var(var, var->temp[0], var->temp[1], aws));
+				return (var_into_var(var, var->temp, aws));
 		}
 	}
+	return (0);
+}
+
+int	little_checker(t_vars *var)
+{
+	t_allways aws;
+
+	if (ft_isalpha(var->temp[0][0]) || var->temp[0][0] == '_')
+	{
+		aws.i = 0;
+		while (var->temp[0][++aws.i])
+		{
+			if (!isalnum(var->temp[0][aws.i]) && var->temp[0][aws.i] != '_')
+				return (1);
+		}
+	}
+	else
+		return (1);
 	return (0);
 }
 
@@ -140,35 +173,32 @@ int	validate_variable(t_vars *var, char *to_check)
 	printf("validate start |> %s\n\n", to_check);
 	free(var->temp);
 	var->temp = ft_split(to_check, '=');
+	aws.i = ft_lstlen(var->temp);
+	// printf("splited %d ==> %s\n\n", aws.i, var->temp[0]);
 	if (inside_search_variable(var, var->temp[0], 1))
 	{
 		return (0);
 		// return (name_into_var(var, var->temp[0], var->temp[1]));
 	}
-	if (ft_isalpha(var->temp[0][0]) || var->temp[0][0] == '_')
+	if (aws.i == 2)
 	{
-		aws.i = 0;
-		while (var->temp[0][++aws.i])
-		{
-			if (!isalnum(var->temp[0][aws.i]))
-				return (0);
-		}
+		// printf("var-> %s\n", var->temp[1]);
 		if (outside_search_variable(var, var->temp[1], var->temp[0]))
-		{
-			// printf("var-> %s\n", var->temp[1]);
 			return (0);
-			// return (var_into_var(var, var->temp[0], var->temp[1]));
-			// printf("|>ZLL = %s\n", get_env_var(var, "ZLL"));
-		}
-		if (replace_variable(var, var->temp[0], to_check))
-			return (0);
-		if (inside_search_variable(var, var->temp[1], 2))
-		{
-			return (0);
-			// return (var_into_var(var, var->temp[0], var->temp[1]));
-			// printf("<|ZLL = %s\n", get_env_var(var, "ZLL"));
-		}
+		// return (var_into_var(var, var->temp[0], var->temp[1]));
+		// printf("|>ZLL = %s\n", get_env_var(var, "ZLL"));
 	}
+	if (replace_variable(var, var->temp[0], to_check))
+		return (0);
+	if (aws.i == 2)
+	{
+		if (inside_search_variable(var, var->temp[1], 2))
+			return (0);
+		// return (var_into_var(var, var->temp[0], var->temp[1]));
+		// printf("<|ZLL = %s\n", get_env_var(var, "ZLL"));
+	}
+	if (little_checker(var))
+		return (2);
 	return (1);
 }
 
@@ -254,28 +284,33 @@ void	ft_export(t_vars *var, char *to_add, int pass)
 {
 	if (!pass)
 		pass = validate_variable(var, to_add);
-	if (pass)
+	if (pass == 1)
+		export_add(var, to_add);
+	else if (pass == 2)
+		printf("bash: export: `%s': not a valid identifier\n", to_add);
+}
+
+void	export_add(t_vars *var, char *to_add)
+{
+	var->env.newexp[var->env.sizeofexp] = malloc(sizeof(char *) * 3);
+	free(var->temp);
+	var->temp = ft_split(to_add, '=');
+	var->env.newexp[var->env.sizeofexp][0] = ft_strdup(var->temp[0]);
+	if (ft_strchr(to_add, '='))
 	{
-		var->env.newexp[var->env.sizeofexp] = malloc(sizeof(char *) * 3);
-		free(var->temp);
-		var->temp = ft_split(to_add, '=');
-		var->env.newexp[var->env.sizeofexp][0] = ft_strdup(var->temp[0]);
-		if (ft_strchr(to_add, '='))
-		{
-			var->env.newexp[var->env.sizeofexp][1] = ft_strdup(ft_strchr(to_add, '=') + 1);
-			var->env.newexp[var->env.sizeofexp][2] = NULL;
-			var->env.newenv[var->env.sizeofenv] = ft_strdup(to_add);
-		}
-		else
-			var->env.newexp[var->env.sizeofexp][1] = NULL;
-
-		var->env.newexp[var->env.sizeofexp + 1] = NULL;
-		var->env.sizeofexp = ft_lstslen(var->env.newexp);
-		sort_export(var);
-
-		var->env.newenv[var->env.sizeofenv + 1] = NULL;
-		var->env.sizeofenv = ft_lstlen(var->env.newenv);
+		var->env.newexp[var->env.sizeofexp][1] = ft_strdup(ft_strchr(to_add, '=') + 1);
+		var->env.newexp[var->env.sizeofexp][2] = NULL;
+		var->env.newenv[var->env.sizeofenv] = ft_strdup(to_add);
 	}
+	else
+		var->env.newexp[var->env.sizeofexp][1] = NULL;
+
+	var->env.newexp[var->env.sizeofexp + 1] = NULL;
+	var->env.sizeofexp = ft_lstslen(var->env.newexp);
+	sort_export(var);
+
+	var->env.newenv[var->env.sizeofenv + 1] = NULL;
+	var->env.sizeofenv = ft_lstlen(var->env.newenv);
 }
 
 void	ft_unset(t_vars *var, char *to_del)

@@ -10,18 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftplus.a
+NAME = get_next_line.a
 
 CFLAGS = -Wall -Werror -Wextra
 
 SRC =	\
-	./ft_isupper.c	\
-	./ft_islower.c	\
-	./ft_strcmp.c	\
-	./ft_lstlen.c	\
-	./ft_lstslen.c	\
-	./ft_swap_dp.c	\
-	./ft_swap_tp.c
+	./get_next_line.c	\
+	./get_next_line_utils.c
 
 OBJS = $(SRC:.c=.o)
 
@@ -39,14 +34,14 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	@ar -rc $(NAME) $(OBJS)
-	@echo "$(C_GREEN)[LIBFT PLUS CREATED!]$(C_RES)"
+	@echo "$(C_GREEN)[GET NEXT LINE CREATED!]$(C_RES)"
 
 clean :
 	@rm -f $(OBJS) $(OBBS)
-	@echo "$(C_RED)[LIBFT PLUS OBJECTS DELETED!]$(C_RES)"
+	@echo "$(C_RED)[GET NEXT LINE OBJECTS DELETED!]$(C_RES)"
 
 fclean : clean
 	@rm -f $(NAME)
-	@echo "$(C_RED)[LIBFT PLUS ARCHIVE DELETED!]$(C_RES)"
+	@echo "$(C_RED)[GET NEXT LINE ARCHIVE DELETED!]$(C_RES)"
 
 re : fclean all

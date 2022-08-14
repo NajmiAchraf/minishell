@@ -22,6 +22,7 @@
 # include <readline/readline.h>
 # include "Libft/libft.h"
 # include "LibftPlus/libftplus.h"
+# include "get_next_line/get_next_line.h"
 
 # define C_RES		"\033[0m"
 # define C_RED		"\033[1;31m"
@@ -73,7 +74,6 @@ typedef struct s_pipecmd
 // 	t_redircmd	*red;
 // }	t_cmd;
 
-
 struct s_cmd
 {
 	int type;
@@ -115,13 +115,15 @@ typedef struct	s_vars
 
 	char	*buff;
 
-	t_cmd	*cmd;
+	t_cmd	**cmd;
+	size_t	cod;
 }	t_vars;
 
 void	sort_export(t_vars *var);
 void	init_environment(t_vars *var);
 void	init_export(t_vars *var);
 void	ft_export(t_vars *var, char *to_add, int pass);
+void	export_add(t_vars *var, char *to_add);
 void	ft_unset(t_vars *var, char *to_del);
 void	show_env(t_vars *var);
 void	show_exp(t_vars *var);
