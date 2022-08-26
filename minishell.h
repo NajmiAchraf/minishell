@@ -34,7 +34,6 @@
 # define EXEC	1
 # define REDIR	2
 # define PIPE	3
-# define BACK	4
 
 # define MAXARG	10
 
@@ -65,19 +64,9 @@ typedef struct s_pipecmd
 	t_cmd *right;
 }	t_pipecmd;
 
-// typedef struct s_cmd
-// {
-// 	int type;
-// 	// void *cmd;
-// 	t_execcmd	*exe;
-// 	t_pipecmd	*pip;
-// 	t_redircmd	*red;
-// }	t_cmd;
-
 struct s_cmd
 {
 	int type;
-	// void *cmd;
 	t_execcmd	*exe;
 	t_pipecmd	*pip;
 	t_redircmd	*red;
@@ -108,6 +97,7 @@ typedef struct	s_vars
 	char	*tmp;
 	char	*tmp1;
 	char	*tmp2;
+	char	*tmp3;
 	char	**temp;
 	char	**temp1;
 	char	**temp2;
@@ -119,6 +109,51 @@ typedef struct	s_vars
 	size_t	cod;
 }	t_vars;
 
+/* ************************************************************************** */
+/*								MAIN FUNCTIONS								  */
+/* ************************************************************************** */
+
+void	panic(char *s);
+int		fork1(void);
+
+void	runcmd(t_cmd *cmd, t_vars *var);
+void	initialisation(t_vars *var, char **env);
+void	hostname(t_vars *var);
+
+/* ************************************************************************** */
+/*								BUILTIN FUNCTIONS							  */
+/* ************************************************************************** */
+
+int		builtin(t_vars *var, t_execcmd *ecmd);
+
+int		echo_check(char *args);
+int		echo(t_vars *var, t_execcmd *ecmd);
+int		cd(t_vars *var, t_execcmd *ecmd);
+int		pwd(t_vars *var);
+int		export(t_vars *var, t_execcmd *ecmd);
+int		unset(t_vars *var, t_execcmd *ecmd);
+int		environment(t_vars *var, t_execcmd *ecmd);
+
+int		builtin(t_vars *var, t_execcmd *ecmd);
+
+/* ******************** */
+/*		DIRECTORY		*/
+/* ******************** */
+
+char	*dir();
+
+/* ******************** */
+/*		ENVIRONMENT		*/
+/* ******************** */
+
+int		replace_variable(t_vars *var, char *to_check, char *value);
+int		var_into_var(t_vars *var, char **to_check, t_allways aws);
+int		name_into_var(t_vars *var, char **to_check, t_allways aws);
+int		outside_search_variable(t_vars *var, char *to_search, char *variable);
+int		inside_search_variable(t_vars *var, char *to_search, int gen);
+int		little_checker(t_vars *var);
+int		validate_variable(t_vars *var, char *to_check);
+
 void	sort_export(t_vars *var);
 void	init_environment(t_vars *var);
 void	init_export(t_vars *var);
@@ -129,5 +164,7 @@ void	show_env(t_vars *var);
 void	show_exp(t_vars *var);
 char	*get_env_var(t_vars *var, char *to_get);
 int		check_env_var(t_vars *var, char *to_check);
+
+
 
 #endif

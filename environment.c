@@ -174,7 +174,7 @@ int	validate_variable(t_vars *var, char *to_check)
 	free(var->temp);
 	var->temp = ft_split(to_check, '=');
 	aws.i = ft_lstlen(var->temp);
-	// printf("splited %d ==> %s\n\n", aws.i, var->temp[0]);
+	printf("splited %d ==> %s\n\n", aws.i, var->temp[0]);
 	if (inside_search_variable(var, var->temp[0], 1))
 	{
 		return (0);

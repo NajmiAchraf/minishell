@@ -28,9 +28,11 @@ void	fill_in_test0(t_vars *var)
 
 	// var->cmd[var->cod]->exe->args[0] = ft_strdup("$USERNAM E$USER=0$USER");
 	// var->cmd[var->cod]->exe->args[0] = ft_strdup("ZLL=1$ZLL23$USER");
-	var->cmd[var->cod]->exe->args[0] = ft_strdup("$PWD");
-	// var->cmd[var->cod]->exe->args[1] = ft_strdup("-a");
-	var->cmd[var->cod]->exe->args[1] = NULL;
+	var->cmd[var->cod]->exe->args[0] = ft_strdup("-p");
+	var->cmd[var->cod]->exe->args[1] = ft_strdup("-nnp");
+	var->cmd[var->cod]->exe->args[2] = ft_strdup("$PWD");
+	var->cmd[var->cod]->exe->args[3] = ft_strdup("-a");
+	var->cmd[var->cod]->exe->args[4] = NULL;
 	// ft_strlcpy(var->cmd[var->cod]->pip->left->exe->args[0], "-la", 4);
 	// ft_bzero(var->cmd[var->cod]->pip->left->exe->args[1], 1);
 }
@@ -72,7 +74,6 @@ void	fill_in_test2(t_vars *var)
 
 void	fill_in_test3(t_vars *var)
 {
-	/*ls -la | wc -l*/
 
 	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
 
@@ -82,15 +83,27 @@ void	fill_in_test3(t_vars *var)
 
 	var->cmd[var->cod]->exe->type = EXEC;
 
-	ft_strlcpy(var->cmd[var->cod]->exe->name, "echo", 5);
+	ft_strlcpy(var->cmd[var->cod]->exe->name, "cd", 5);
 
-	// var->cmd[var->cod]->exe->args[0] = ft_strdup("$USERNAM E$USER=0$USER");
-	// var->cmd[var->cod]->exe->args[0] = ft_strdup("ZLL=1$ZLL23$USER");
-	var->cmd[var->cod]->exe->args[0] = ft_strdup("$PWD");
-	// var->cmd[var->cod]->exe->args[1] = ft_strdup("-a");
+	var->cmd[var->cod]->exe->args[0] = ft_strdup("~");
 	var->cmd[var->cod]->exe->args[1] = NULL;
-	// ft_strlcpy(var->cmd[var->cod]->pip->left->exe->args[0], "-la", 4);
-	// ft_bzero(var->cmd[var->cod]->pip->left->exe->args[1], 1);
+}
+
+void	fill_in_test4(t_vars *var)
+{
+	/* pwd */
+
+	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
+
+	var->cmd[var->cod]->type = EXEC;
+
+	var->cmd[var->cod]->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
+
+	var->cmd[var->cod]->exe->type = EXEC;
+
+	ft_strlcpy(var->cmd[var->cod]->exe->name, "pwd", 4);
+
+	var->cmd[var->cod]->exe->args[0] = NULL;
 }
 
 void	one_pipe_fill_in_test0(t_vars *var)
@@ -247,6 +260,11 @@ void	two_pipes_fill_in_test0(t_vars *var)
 	// printf("%s\n", var->cmd[var->cod]->pip->right->pip->right->exe->args[0]);
 }
 
+
+/*********************/
+/* BUILTIN FUNCTIONS */
+/*********************/
+
 void	panic(char *s)
 {
 	printf("%s\n", s);
@@ -263,12 +281,6 @@ int	fork1(void)
 	return pid;
 }
 
-
-/*********************/
-/* BUILTIN FUNCTIONS */
-/*********************/
-int	pwd();
-
 char	*dir()
 {
 	// char	cwd[FILENAME_MAX];
@@ -279,53 +291,78 @@ char	*dir()
 	return (cwd);
 }
 
+int	echo_check(char *args)
+{
+	t_allways aws;
+
+	aws.j = 1;
+	while (args[aws.j])
+	{
+		if (args[aws.j] != 'n')
+			return (0);
+		aws.j++;
+	}
+	return (1);
+}
+
 int	echo(t_vars *var, t_execcmd *ecmd)
 {
 	t_allways aws;
 
 	aws.i = 0;
+	aws.k = 1;
+	if (ecmd->args[aws.i][0] == '-' && ecmd->args[aws.i][1])
+	{
+		while (ecmd->args[aws.i])
+		{
+			if (!echo_check(ecmd->args[aws.i]))
+				break;
+			aws.k = 0;
+			aws.i++;
+		}
+	}
 	while (ecmd->args[aws.i])
 	{
-		if (ecmd->args[aws.i][0] == '$')
-		{
-			++ecmd->args[aws.i];
-			// if (ft_strcmp(get_env_var(var, ecmd->args[aws.i]), ""))
-				printf("%s ", get_env_var(var, ecmd->args[aws.i]));
-			--ecmd->args[aws.i];
-		}
-		else if (ft_strcmp(ecmd->args[aws.i], "-n"))
-			printf("%s ", ecmd->args[aws.i]);
+		printf("%s ", ecmd->args[aws.i]);
 		aws.i++;
 	}
 	printf("\b");
-	if (ft_strcmp(ecmd->args[0], "-n"))
+	if (aws.k)
 		printf("\n");
 	return (1);
 }
 
 int	cd(t_vars *var, t_execcmd *ecmd)
 {
+	if (!ft_strcmp(ecmd->args[0], "~"))
+	{
+		free(ecmd->args[0]);
+		ecmd->args[0] = ft_strdup(get_env_var(var, "HOME"));
+	}
 	if (ft_lstlen(ecmd->args) > 1 && ecmd->args[0][0] != '-')
 		printf("minishell: cd: too many arguments\n");
 	else if (ecmd->args[0][0] == '-')
 		printf("minishell: cd: %s: invalid option\n", ecmd->args[0]);
 	else
 	{
+		free(var->tmp3);
+		var->tmp3 = ft_strdup(get_env_var(var, "OLDPWD"));
 		ft_export(var, ft_strjoin("OLDPWD=", dir()), 0);
 		if (chdir(ecmd->args[0]))
 		{
+			ft_export(var, ft_strjoin("OLDPWD=", var->tmp3), 0);
 			printf("minishell: cd: %s: No such file or directory\n", ecmd->args[0]);
 			return (0);
 		}
-		pwd();
+		pwd(var);
 		ft_export(var, ft_strjoin("PWD=", dir()), 0);
 	}
 	return (1);
 }
 
-int	pwd()
+int	pwd(t_vars *var)
 {
-	printf("%s\n", dir());
+	printf("%s\n", get_env_var(var, "PWD"));
 	return (1);
 }
 
@@ -401,7 +438,7 @@ int	builtin(t_vars *var, t_execcmd *ecmd)
 	else if (!ft_strcmp(ecmd->name , "cd"))
 		return (cd(var, ecmd));
 	else if (!ft_strcmp(ecmd->name , "pwd"))
-		return (pwd());
+		return (pwd(var));
 	else if (!ft_strcmp(ecmd->name , "export"))
 		return (export(var, ecmd));
 	else if (!ft_strcmp(ecmd->name , "unset"))
@@ -416,48 +453,44 @@ void	runcmd(t_cmd *cmd, t_vars *var)
 {
 	int p[2];
 	t_execcmd	*ecmd;
-	t_pipecmd	*pcmd;
 	t_redircmd	*rcmd;
+	t_pipecmd	*pcmd;
 
 	if(cmd == 0)
 		exit(0);
-	
-
-	switch(cmd->type){
-	default:
-		panic("runcmd");
-
-	case EXEC:
+	if (cmd->type == EXEC)
+	{
 		ecmd = cmd->exe;
 		size_t i = 0;
 		if(ecmd->name[0] == 0)
 			exit(0);
-		printf("%s ", ecmd->name);
-		i = 0;
-		while (ecmd->args[i]){
-			printf("%s ", ecmd->args[i]);
-			i++;
-		}
-		printf("\n");
+		// printf("%s ", ecmd->name);
+		// i = 0;
+		// while (ecmd->args[i]){
+		// 	printf("%s ", ecmd->args[i]);
+		// 	i++;
+		// }
+		// printf("\n");
 		if (builtin(var, ecmd))
-			break;
+			return;
 		execve(ft_strjoin("/usr/bin/", ecmd->name), ecmd->args, var->env.newenv);
 		// execv(ft_strjoin("/usr/bin/", ecmd->name), ecmd->args);
 
 		printf("exec %s failed\n", ecmd->name);
-		break;
+	}
+	else if (cmd->type == REDIR)
+	{
+		rcmd = cmd->red;
+		close(rcmd->fd);
+		if(open(rcmd->file, rcmd->mode) < 0){
+			printf("open %s failed\n", rcmd->file);
+			exit(0);
+		}
+		runcmd(rcmd->cmd, var);
+	}
 
-	// case REDIR:
-	// 	rcmd = cmd->red;
-	// 	close(rcmd->fd);
-	// 	if(open(rcmd->file, rcmd->mode) < 0){
-	// 		printf("open %s failed\n", rcmd->file);
-	// 		exit(0);
-	// 	}
-	// 	runcmd(rcmd->cmd);
-	// 	break;
-
-	case PIPE:
+	else if (cmd->type == PIPE)
+	{
 		pcmd = cmd->pip;
 		if(pipe(p) < 0)
 			panic("pipe");
@@ -479,8 +512,9 @@ void	runcmd(t_cmd *cmd, t_vars *var)
 		close(p[1]);
 		wait(0);
 		wait(0);
-		break;
 	}
+	else
+		panic("runcmd");
 	// exit(0);
 }
 
@@ -489,6 +523,7 @@ void	initialisation(t_vars *var, char **env)
 	var->tmp = malloc(sizeof(char));
 	var->tmp1 = malloc(sizeof(char));
 	var->tmp2 = malloc(sizeof(char));
+	var->tmp3 = malloc(sizeof(char));
 	var->temp = malloc(sizeof(char *));
 	var->temp1 = malloc(sizeof(char *));
 	var->temp2 = malloc(sizeof(char *));
@@ -542,15 +577,15 @@ int	main(int ac, char *av[], char **env)
 
 	// execv(ecmd->name, ecmd->args);
 	
-	fill_in_test0(var);
-	runcmd(var->cmd[var->cod], var);
-	++var->cod;
-	fill_in_test1(var);
-	runcmd(var->cmd[var->cod], var);
-	++var->cod;
-	fill_in_test2(var);
-	runcmd(var->cmd[var->cod], var);
-	++var->cod;
+	// fill_in_test0(var);
+	// runcmd(var->cmd[var->cod], var);
+	// ++var->cod;
+	// fill_in_test1(var);
+	// runcmd(var->cmd[var->cod], var);
+	// ++var->cod;
+	// fill_in_test2(var);
+	// runcmd(var->cmd[var->cod], var);
+	// ++var->cod;
 	// one_pipe_fill_in_test(var);
 	// runcmd(var->cmd[var->cod], var);
 	// ++var->cod;
@@ -572,19 +607,22 @@ int	main(int ac, char *av[], char **env)
 		free(var->buff);
 		var->buff = readline("→ ");
 		add_history(var->buff);
-		printf("%s\n", var->buff);
+		// printf("%s\n", var->buff);
 
 
+		// fill_in_test3(var);
+		fill_in_test4(var);
 		// fill_in_test1(var);
-		one_pipe_fill_in_test1(var);
+		// // one_pipe_fill_in_test1(var);
 		runcmd(var->cmd[var->cod], var);
 		++var->cod;
-		fill_in_test2(var);
-		runcmd(var->cmd[var->cod], var);
-		++var->cod;
+		// fill_in_test2(var);
+		// runcmd(var->cmd[var->cod], var);
+		// ++var->cod;
 	}
 	return (0);
 }
+
 
 /*
 |fgsfgdsf -la || >> asd| error
