@@ -106,6 +106,23 @@ void	fill_in_test4(t_vars *var)
 	var->cmd[var->cod]->exe->args[0] = NULL;
 }
 
+void	fill_in_test5(t_vars *var)
+{
+	/* pwd */
+
+	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
+
+	var->cmd[var->cod]->type = EXEC;
+
+	var->cmd[var->cod]->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
+
+	var->cmd[var->cod]->exe->type = EXEC;
+
+	ft_strlcpy(var->cmd[var->cod]->exe->name, "ls", 3);
+
+	var->cmd[var->cod]->exe->args[0] = NULL;
+}
+
 void	one_pipe_fill_in_test0(t_vars *var)
 {
 	/*ls -la | wc -l*/
@@ -334,7 +351,12 @@ int	echo(t_vars *var, t_execcmd *ecmd)
 
 int	cd(t_vars *var, t_execcmd *ecmd)
 {
-	if (!ft_strcmp(ecmd->args[0], "~"))
+	if (ft_lstlen(ecmd->args) == 0)
+	{
+		ecmd->args[0] = ft_strdup(get_env_var(var, "HOME"));
+		ecmd->args[1] = NULL;
+	}
+	else if (!ft_strcmp(ecmd->args[0], "~"))
 	{
 		free(ecmd->args[0]);
 		ecmd->args[0] = ft_strdup(get_env_var(var, "HOME"));
@@ -370,10 +392,6 @@ int	export(t_vars *var, t_execcmd *ecmd)
 {
 	t_allways aws;
 
-	/* 
-	export
-	export a=1 b c=0
-	 */
 	if (!ecmd->args[0])
 		show_exp(var);
 	else
@@ -388,7 +406,6 @@ int	export(t_vars *var, t_execcmd *ecmd)
 			aws.i++;
 		}
 	}
-	// show_exp(var);
 	return (1);
 }
 
@@ -396,10 +413,6 @@ int	unset(t_vars *var, t_execcmd *ecmd)
 {
 	t_allways aws;
 
-	/* 
-	unset
-	unset a b c
-	 */
 	aws.i = 0;
 	while (ecmd->args[aws.i])
 	{
@@ -412,10 +425,6 @@ int	unset(t_vars *var, t_execcmd *ecmd)
 
 int	environment(t_vars *var, t_execcmd *ecmd)
 {
-	/* 
-	env
-	env a b c
-	 */
 	if (!ecmd->args[0])
 		show_env(var);
 	else
@@ -424,15 +433,19 @@ int	environment(t_vars *var, t_execcmd *ecmd)
 }
 
 
+int	builtincheck(char *name)
+{
+	if (!ft_strcmp(name, "echo") || !ft_strcmp(name, "cd")
+		|| !ft_strcmp(name, "pwd") || !ft_strcmp(name, "export")
+		|| !ft_strcmp(name, "unset") || !ft_strcmp(name, "env")
+		|| !ft_strcmp(name, "exit"))
+		return (1);
+	return (0);
+}
+
 int	builtin(t_vars *var, t_execcmd *ecmd)
 {
-/* 	◦ echo with option -n
-	◦ cd with only a relative or absolute path
-	◦ pwd with no options
-	◦ export with no options
-	◦ unset with no options
-	◦ env with no options or arguments
-	◦ exit with no options */
+/*	◦ exit with no options */
 	if (!ft_strcmp(ecmd->name , "echo"))
 		return (echo(var, ecmd));
 	else if (!ft_strcmp(ecmd->name , "cd"))
@@ -446,7 +459,22 @@ int	builtin(t_vars *var, t_execcmd *ecmd)
 	else if (!ft_strcmp(ecmd->name , "env"))
 		return (environment(var, ecmd));
 	// else if (!ft_strcmp(ecmd->name , "exit"))
+	// 	return (exit(EXIT_SUCCESS));
 	return (0);
+}
+
+char	*exe_path_set(t_vars *var, char *exe)
+{
+	t_allways aws;
+
+	aws.i = 0;
+	while (var->exepath[aws.i])
+	{
+		if (!access(ft_strjoin(var->exepath[aws.i], exe), F_OK))
+			return (ft_strjoin(var->exepath[aws.i], exe));
+		aws.i++;
+	}
+	return (NULL);
 }
 
 void	runcmd(t_cmd *cmd, t_vars *var)
@@ -464,16 +492,9 @@ void	runcmd(t_cmd *cmd, t_vars *var)
 		size_t i = 0;
 		if(ecmd->name[0] == 0)
 			exit(0);
-		// printf("%s ", ecmd->name);
-		// i = 0;
-		// while (ecmd->args[i]){
-		// 	printf("%s ", ecmd->args[i]);
-		// 	i++;
-		// }
-		// printf("\n");
-		if (builtin(var, ecmd))
-			return;
-		execve(ft_strjoin("/usr/bin/", ecmd->name), ecmd->args, var->env.newenv);
+		if (builtincheck(ecmd->name))
+			exit(builtin(var, ecmd));
+		execve(exe_path_set(var, ecmd->name), ecmd->args, var->env.newenv);
 		// execv(ft_strjoin("/usr/bin/", ecmd->name), ecmd->args);
 
 		printf("exec %s failed\n", ecmd->name);
@@ -515,7 +536,22 @@ void	runcmd(t_cmd *cmd, t_vars *var)
 	}
 	else
 		panic("runcmd");
-	// exit(0);
+	exit(0);
+}
+
+void	fill_path(t_vars *var)
+{
+	t_allways aws;
+
+	free(var->temp);
+	var->temp = ft_split(get_env_var(var, "PATH"), ':');
+	var->exepath = malloc(sizeof(char *) * ft_lstlen(var->temp));
+	aws.i = 0;
+	while (var->temp[aws.i])
+	{
+		var->exepath[aws.i] = ft_strjoin(var->temp[aws.i], "/");
+		aws.i++;
+	}
 }
 
 void	initialisation(t_vars *var, char **env)
@@ -533,6 +569,8 @@ void	initialisation(t_vars *var, char **env)
 	var->cod = 0;
 	init_environment(var);
 	init_export(var);
+	fill_path(var);
+	hostname(var);
 }
 
 void	hostname(t_vars *var)
@@ -541,7 +579,7 @@ void	hostname(t_vars *var)
 
 	fd = open("/proc/sys/kernel/hostname", O_RDONLY);
 	ft_export(var, ft_strjoin("HOSTNAME=", 
-		ft_split(get_next_line(fd), '\n')[0]), 0);
+	ft_split(get_next_line(fd), '\n')[0]), 0);
 }
 
 int	main(int ac, char *av[], char **env)
@@ -593,7 +631,6 @@ int	main(int ac, char *av[], char **env)
 	// runcmd(var->cmd[var->cod], var);
 	// ++var->cod;
 	
-	hostname(var);
 	while (1)
 	{
 		// chdir("..");
@@ -611,14 +648,18 @@ int	main(int ac, char *av[], char **env)
 
 
 		// fill_in_test3(var);
-		fill_in_test4(var);
-		// fill_in_test1(var);
+		// fill_in_test5(var);
+		fill_in_test1(var);
 		// // one_pipe_fill_in_test1(var);
-		runcmd(var->cmd[var->cod], var);
+		if (fork1() == 0)
+			runcmd(var->cmd[var->cod], var);
+		wait(0);
 		++var->cod;
-		// fill_in_test2(var);
-		// runcmd(var->cmd[var->cod], var);
-		// ++var->cod;
+		fill_in_test2(var);
+		if (fork1() == 0)
+			runcmd(var->cmd[var->cod], var);
+		wait(0);
+		++var->cod;
 	}
 	return (0);
 }

@@ -92,7 +92,7 @@ typedef struct	s_vars
 {
 	int		exit_code;
 
-	// environment
+	/* environment */
 	t_env	env;
 	char	*tmp;
 	char	*tmp1;
@@ -102,6 +102,8 @@ typedef struct	s_vars
 	char	**temp1;
 	char	**temp2;
 	char	***temp3;
+
+	char	**exepath;
 
 	char	*buff;
 
@@ -117,6 +119,7 @@ void	panic(char *s);
 int		fork1(void);
 
 void	runcmd(t_cmd *cmd, t_vars *var);
+void	fill_path(t_vars *var);
 void	initialisation(t_vars *var, char **env);
 void	hostname(t_vars *var);
 

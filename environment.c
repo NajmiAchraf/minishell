@@ -21,13 +21,8 @@ int	replace_variable(t_vars *var, char *to_check, char *value)
 	{
 		if (!ft_strcmp(var->env.newexp[aws.i][0], to_check))
 		{
-		// printf("==============================>%s =?= %s=%s\n", to_check, var->env.newexp[aws.i][0], var->env.newexp[aws.i][1]);
 			ft_unset(var, to_check);
-			// ft_unset(var, var->env.newexp[aws.i][0]);
-			// show_exp(var);
-		// printf("==============================>%s =?= %s\n", to_check, value);
 			ft_export(var, value, 1);
-		// printf("==============================>%s =?= %s=%s\n", to_check, var->env.newexp[aws.i][0], var->env.newexp[aws.i][1]);
 			return (1);
 		}
 	}
@@ -48,9 +43,6 @@ int	var_into_var(t_vars *var, char **to_check, t_allways aws)
 		var->tmp = ft_substr(to_check[1], aws.i + 1, aws.k - aws.i - 1);
 		free(var->tmp2);
 		var->tmp2 = ft_substr(to_check[1], aws.k, ft_strlen(to_check[1]));
-		
-		// printf("%s = %s %s %s\n", to_check, var->tmp1, var->tmp, var->tmp2);
-		// printf("here\n");
 		if (!get_env_var(var, var->tmp))
 			ft_export(var, ft_strjoin(ft_strjoin(ft_strjoin(variable, "="), var->tmp1), var->tmp2), 0);
 		else
@@ -75,20 +67,6 @@ int	name_into_var(t_vars *var, char **to_check, t_allways aws)
 	var->tmp = ft_substr(to_check[0], aws.i + 1, aws.k - aws.i - 1);
 	free(var->tmp2);
 	var->tmp2 = ft_substr(to_check[0], aws.k, ft_strlen(to_check[0]));
-
-	// printf("%s => %s %s %s\n", to_check, var->tmp1, var->tmp, var->tmp2);
-	// printf("here\n");
-	// printf("%s %s %s %s %s\n", var->tmp1, get_env_var(var, var->tmp), var->tmp2, "=", variable);
-	// printf("%s \n", 
-	// ft_strjoin(
-		// ft_strjoin(
-			// ft_strjoin(
-				// ft_strjoin(var->tmp1
-				// , get_env_var(var, var->tmp))
-				// , var->tmp2)
-				// , "=")
-				// , variable));
-
 	if (!get_env_var(var, var->tmp))
 		ft_export(var, ft_strjoin(ft_strjoin(ft_strjoin(var->tmp1, var->tmp2), "="), variable), 0);
 	else
@@ -113,7 +91,6 @@ int	outside_search_variable(t_vars *var, char *to_search, char *variable)
 			}
 			free(var->tmp);
 			var->tmp = ft_substr(to_search, aws.i + 1, aws.k - aws.i - 1);
-			// printf("%s  |>  %s =?= %s  || k = %zu\n", to_search, var->tmp, variable, aws.k - aws.i - 1);
 			if (!ft_strcmp(var->tmp, variable) || to_search[aws.k] == '\0')
 				return (var_into_var(var, var->temp, aws));
 		}
@@ -170,23 +147,15 @@ int	validate_variable(t_vars *var, char *to_check)
 {
 	t_allways aws;
 
-	printf("validate start |> %s\n\n", to_check);
 	free(var->temp);
 	var->temp = ft_split(to_check, '=');
 	aws.i = ft_lstlen(var->temp);
-	printf("splited %d ==> %s\n\n", aws.i, var->temp[0]);
 	if (inside_search_variable(var, var->temp[0], 1))
-	{
 		return (0);
-		// return (name_into_var(var, var->temp[0], var->temp[1]));
-	}
 	if (aws.i == 2)
 	{
-		// printf("var-> %s\n", var->temp[1]);
 		if (outside_search_variable(var, var->temp[1], var->temp[0]))
 			return (0);
-		// return (var_into_var(var, var->temp[0], var->temp[1]));
-		// printf("|>ZLL = %s\n", get_env_var(var, "ZLL"));
 	}
 	if (replace_variable(var, var->temp[0], to_check))
 		return (0);
@@ -194,8 +163,6 @@ int	validate_variable(t_vars *var, char *to_check)
 	{
 		if (inside_search_variable(var, var->temp[1], 2))
 			return (0);
-		// return (var_into_var(var, var->temp[0], var->temp[1]));
-		// printf("<|ZLL = %s\n", get_env_var(var, "ZLL"));
 	}
 	if (little_checker(var))
 		return (2);
