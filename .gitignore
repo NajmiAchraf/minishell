@@ -5,7 +5,6 @@
 minishell
 Libft/libft.a
 LibftPlus/libftplus.a
-XV6
-minihouda
+EXTRA_SEARCH
 sh.c
 valgrind-out.txt

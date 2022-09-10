@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+void	free1(char **tofree)
+{
+	t_allways	aws;
+
+	aws.i = 0;
+	while (tofree[aws.i])
+	{
+		free(tofree[aws.i]);
+		aws.i++;
+	}
+	free(tofree);
+}
+
 int	replace_variable(t_vars *var, char *to_check, char *value)
 {
 	t_allways aws;
@@ -134,7 +147,7 @@ int	little_checker(t_vars *var)
 		aws.i = 0;
 		while (var->temp[0][++aws.i])
 		{
-			if (!isalnum(var->temp[0][aws.i]) && var->temp[0][aws.i] != '_')
+			if (!ft_isalnum(var->temp[0][aws.i]) && var->temp[0][aws.i] != '_')
 				return (1);
 		}
 	}
@@ -147,7 +160,7 @@ int	validate_variable(t_vars *var, char *to_check)
 {
 	t_allways aws;
 
-	free(var->temp);
+	free1(var->temp);
 	var->temp = ft_split(to_check, '=');
 	aws.i = ft_lstlen(var->temp);
 	if (inside_search_variable(var, var->temp[0], 1))
@@ -208,7 +221,7 @@ void	init_export(t_vars *var)
 	while (var->env.env[aws.i])
 	{
 		var->env.newexp[aws.i] = malloc(sizeof(char *) * 3);
-		free(var->temp);
+		free1(var->temp);
 		var->temp = ft_split(var->env.env[aws.i], '=');
 		var->env.newexp[aws.i][0] = ft_strdup(var->temp[0]);
 		var->env.newexp[aws.i][1] = ft_strdup(ft_strchr(var->env.env[aws.i], '=') + 1);
@@ -260,7 +273,7 @@ void	ft_export(t_vars *var, char *to_add, int pass)
 void	export_add(t_vars *var, char *to_add)
 {
 	var->env.newexp[var->env.sizeofexp] = malloc(sizeof(char *) * 3);
-	free(var->temp);
+	free1(var->temp);
 	var->temp = ft_split(to_add, '=');
 	var->env.newexp[var->env.sizeofexp][0] = ft_strdup(var->temp[0]);
 	if (ft_strchr(to_add, '='))
@@ -287,7 +300,7 @@ void	ft_unset(t_vars *var, char *to_del)
 	aws.i = -1;
 	while (++aws.i < var->env.sizeofenv)
 	{
-		free(var->temp);
+		free1(var->temp);
 		var->temp = ft_split(var->env.newenv[aws.i], '=');
 		if (ft_strcmp(var->temp[0], to_del) == 0)
 		{

@@ -12,12 +12,11 @@
 
 NAME = minishell
 
-CFLAGS = #-Wall -Werror -Wextra
+CFLAGS = -g #-Wall -Werror -Wextra
 
 SOURCE = \
 		./minishell.c	\
-		./environment.c	\
-		# ./sh.c	\
+		./environment.c
 
 OBJ = $(SOURCE:.c=.o)
 
@@ -70,7 +69,7 @@ C_RES = \033[0m
 .PHONY : all clean fclean re
 
 %.o: %.c
-	@gcc $(CFLAGS) -c $^ -o $@
+	gcc $(CFLAGS) -c $^ -o $@
 
 all : $(NAME)
 	@echo "$(C_L_BLUE)[EXECUTE MINISHELL ...]$(C_RES)"

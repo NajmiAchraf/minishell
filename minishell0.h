@@ -3,43 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/06 18:14:58 by ohrete           ###   ########.fr       */
+/*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
+/*   Updated: 2022/06/30 21:17:09 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <fcntl.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <signal.h>
-# include <fcntl.h>
 # include <sys/wait.h>
-# include <readline/readline.h>
 # include <readline/history.h>
-
-# include "./libft/libft.h"
+# include <readline/readline.h>
 
 # include "Libft/libft.h"
 # include "LibftPlus/libftplus.h"
 # include "get_next_line/get_next_line.h"
-
-# define OUTPUT '>'
-# define INPUT '<'
-# define PIPE '|'
-# define APPEND 'A' // >>
-# define EXPAND '$'
-# define SQ '\''
-# define DQ '\"'
-# define HERE_DOC 'H' // <<
-# define WORD 'W'
-
-# define FIL 1
-# define NAM 2
 
 # define C_RES		"\033[0m"
 # define C_RED		"\033[1;31m"
@@ -54,63 +38,6 @@
 
 # define MAXARG	10
 
-/* ************************************************************************** */
-/*								STRUCT OF PARSER							  */
-/* ************************************************************************** */
-
-int g_status;
-//env
-typedef struct s_env
-{
-	char			*name;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
-
-//tokenizer
-typedef struct s_token
-{
-	char			*str;
-	int				id;
-	char			**av;
-	t_env			*fst_link;
-	struct s_token	*next;
-}	t_token;
-
-//save last value of envp and argv
-typedef struct s_save
-{
-	t_env *env;
-	char **av;
-}	t_save;
-
-/*** strcut for parser ***/
-typedef struct s_cmd
-{
-	char *str;
-	struct s_cmd *next;
-}	t_cmd;
-
-typedef struct s_file
-{
-	char *str;
-	int id;
-	struct s_file *next;
-}	t_file;
-typedef struct s_final
-{
-	int		type;
-	int		infile;
-	int		outfile;
-	t_file	*file;
-	t_cmd	*name;
-	char	**cmd;
-	struct s_final *next;
-}	t_final;
-
-/* ************************************************************************** */
-/*								STRUCT OF EXECUTION							  */
-/* ************************************************************************** */
 
 typedef struct s_cmd t_cmd;
 
@@ -142,8 +69,8 @@ struct s_cmd
 {
 	int type;
 	t_execcmd	*exe;
-	t_redircmd	*red;
 	t_pipecmd	*pip;
+	t_redircmd	*red;
 };
 
 typedef struct s_env
@@ -151,6 +78,8 @@ typedef struct s_env
 	size_t	sizeofexp;
 	size_t	sizeofenv;
 	char	**env;
+	char	**newenv;
+	char	***newexp;
 }	t_env;
 
 typedef struct	s_allways
@@ -158,7 +87,6 @@ typedef struct	s_allways
 	size_t	i;
 	size_t	j;
 	size_t	k;
-	int		p[2];
 }	t_allways;
 
 typedef struct	s_vars
@@ -179,51 +107,14 @@ typedef struct	s_vars
 	char	**exepath;
 
 	char	*buff;
-
+	int		fd[2][2];
+	int		idx_fd;
 	t_cmd	**cmd;
 	size_t	cod;
 }	t_vars;
 
-
 /* ************************************************************************** */
-/*								PARSRER FUNCTIONS							  */
-/* ************************************************************************** */
-
-int syntax_error(char *str);
-char	*search_name(char *name, int i);
-char	*search_value(char *value, int i);
-t_env	*fill_struct(char *name, char *value);
-void	add_first(t_env **fst_link, t_env *new);
-void	add_last(t_env **head, t_env *new);
-char	*getting_env(t_env *env, char *name);
-t_env	*setting_env(char **env);
-int		space(char c);
-t_token	*new_node(char *str, int id);
-void	add_token_last(t_token **head, t_token *new);
-void	single_quote(t_token **head, char *line, int *i);
-char	*ft_expand(char *str, t_env *env, char **av);
-void	double_quote(t_save *save, t_token **temp, char *line, int *i);
-int		skip_char(char c);
-void	setting_word(t_save *save, t_token **temp, char *line, int *i);
-void	redirection(t_token **head, char *str, int *i);
-int		other_char(char c);
-void	dollar(t_save *save, t_token **temp, char *line, int *i);
-void	pipe_sign(t_token **head, int *i);
-void	tokens(char *line, t_token **temp, t_save *save, int *i);
-t_token *	tokenizer(char *line, char **av, t_env *env);
-t_final	*ft_parser(t_token *data);
-void ft_output(t_final *cmd);
-void	ft_free(t_final *cmd);
-int		check_dollar(char *str);
-void	ft_freetokens(t_token *data);
-void	ft_signals(void);
-void	rl_replace_line (const char *text, int clear_undo);
-void	to_array(t_final *node);
-int		list_size(t_cmd *list);
-int		list_size1(t_final *list);
-
-/* ************************************************************************** */
-/*								MAIN FILE									  */
+/*								MAIN FUNCTIONS								  */
 /* ************************************************************************** */
 
 void	trouble(char *s);
