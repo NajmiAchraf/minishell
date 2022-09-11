@@ -6,11 +6,11 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 16:39:54 by anajmi            #+#    #+#             */
-/*   Updated: 2022/07/01 02:18:25 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/11 16:33:25 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	free1(char **tofree)
 {

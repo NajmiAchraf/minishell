@@ -1,385 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/05 12:54:53 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/11 15:34:54 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	fill_in_test0(t_vars *var)
-{
-	/*echo $PWD*/
-
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->type = EXEC;
-
-	var->cmd[var->cod]->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->exe->name, "echo", 5);
-
-	// var->cmd[var->cod]->exe->args[0] = ft_strdup("$USERNAM E$USER=0$USER");
-	// var->cmd[var->cod]->exe->args[0] = ft_strdup("ZLL=1$ZLL23$USER");
-	var->cmd[var->cod]->exe->args[0] = ft_strdup("$$");
-	var->cmd[var->cod]->exe->args[1] = NULL;
-	// ft_strlcpy(var->cmd[var->cod]->pip->left->exe->args[0], "-la", 4);
-	// ft_bzero(var->cmd[var->cod]->pip->left->exe->args[1], 1);
-}
-
-void	fill_in_test1(t_vars *var)
-{
-	/*export abc=123*/
-
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->type = EXEC;
-
-	var->cmd[var->cod]->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->exe->name, "export", 7);
-
-	var->cmd[var->cod]->exe->args[0] = ft_strdup(ft_strjoin(ft_strjoin("a", ft_itoa(var->cod)), "c=1$XDG_SESSION_TYPE:23$USER"));
-	var->cmd[var->cod]->exe->args[1] = NULL;
-}
-
-void	fill_in_test2(t_vars *var)
-{
-	/*export*/
-
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->type = EXEC;
-
-	var->cmd[var->cod]->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->exe->name, "export", 7);
-
-	var->cmd[var->cod]->exe->args[0] = NULL;
-}
-
-void	fill_in_test3(t_vars *var)
-{
-
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->type = EXEC;
-
-	var->cmd[var->cod]->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->exe->name, "cd", 5);
-
-	var->cmd[var->cod]->exe->args[0] = ft_strdup("~");
-	var->cmd[var->cod]->exe->args[1] = NULL;
-}
-
-void	fill_in_test4(t_vars *var)
-{
-	/* pwd */
-
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->type = EXEC;
-
-	var->cmd[var->cod]->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->exe->name, "pwd", 4);
-
-	var->cmd[var->cod]->exe->args[0] = NULL;
-}
-
-void	fill_in_test5(t_vars *var)
-{
-	/* pwd */
-
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->type = EXEC;
-
-	var->cmd[var->cod]->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->exe->name, "ls", 3);
-
-	var->cmd[var->cod]->exe->args[0] = NULL;
-}
-
-void	one_pipe_fill_in_test0(t_vars *var)
-{
-	/*ls -la | wc -l*/
-	
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->type = PIPE;
-	
-	var->cmd[var->cod]->pip = (t_pipecmd*)malloc(sizeof(t_pipecmd));
-	
-	var->cmd[var->cod]->pip->type = PIPE;
-	var->cmd[var->cod]->pip->left = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->pip->left->type = EXEC;
-
-	var->cmd[var->cod]->pip->left->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->left->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->left->exe->name, "ls", 3);
-
-	var->cmd[var->cod]->pip->left->exe->args[0] = ft_strdup("ls");
-	var->cmd[var->cod]->pip->left->exe->args[1] = ft_strdup("-la");
-	var->cmd[var->cod]->pip->left->exe->args[2] = NULL;
-	// ft_strlcpy(var->cmd[var->cod]->pip->left->exe->args[0], "-la", 4);
-	// ft_bzero(var->cmd[var->cod]->pip->left->exe->args[1], 1);
-
-	var->cmd[var->cod]->pip->right = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->pip->right->type = EXEC;
-	
-	var->cmd[var->cod]->pip->right->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->right->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->right->exe->name, "wc", 3);
-
-	var->cmd[var->cod]->pip->right->exe->args[0] = ft_strdup("wc");
-	var->cmd[var->cod]->pip->right->exe->args[1] = ft_strdup("-l");
-	var->cmd[var->cod]->pip->right->exe->args[2] = NULL;
-	// ft_strlcpy(var->cmd[var->cod]->pip->right->pip->right->exe->args[0], "-l", 3);
-	// ft_bzero(var->cmd[var->cod]->pip->right->pip->right->exe->args[1], 1);
-	// printf("%s\n", var->cmd[var->cod]->pip->right->pip->right->exe->args[0]);
-}
-
-void	one_pipe_fill_in_test0test(t_vars *var)
-{
-	/*ls -la | wc -l*/
-	
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->type = PIPE;
-	
-	var->cmd[var->cod]->pip = (t_pipecmd*)malloc(sizeof(t_pipecmd));
-	
-	var->cmd[var->cod]->pip->type = PIPE;
-	var->cmd[var->cod]->pip->left = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->pip->left->type = EXEC;
-
-	var->cmd[var->cod]->pip->left->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->left->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->left->exe->name, "wc", 3);
-
-	var->cmd[var->cod]->pip->left->exe->args[0] = ft_strdup("wc");
-	var->cmd[var->cod]->pip->left->exe->args[1] = ft_strdup("-l");
-	var->cmd[var->cod]->pip->left->exe->args[2] = NULL;
-	// ft_strlcpy(var->cmd[var->cod]->pip->left->exe->args[0], "-la", 4);
-	// ft_bzero(var->cmd[var->cod]->pip->left->exe->args[1], 1);
-
-	var->cmd[var->cod]->pip->right = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->pip->right->type = EXEC;
-	
-	var->cmd[var->cod]->pip->right->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->right->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->right->exe->name, "ls", 3);
-
-	var->cmd[var->cod]->pip->right->exe->args[0] = ft_strdup("ls");
-	var->cmd[var->cod]->pip->right->exe->args[1] = ft_strdup("-la");
-	var->cmd[var->cod]->pip->right->exe->args[2] = NULL;
-	// ft_strlcpy(var->cmd[var->cod]->pip->right->pip->right->exe->args[0], "-l", 3);
-	// ft_bzero(var->cmd[var->cod]->pip->right->pip->right->exe->args[1], 1);
-	// printf("%s\n", var->cmd[var->cod]->pip->right->pip->right->exe->args[0]);
-}
-
-void	one_pipe_fill_in_test1(t_vars *var)
-{
-	/*export abc=123 | ls -l*/
-	
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->type = PIPE;
-	
-	var->cmd[var->cod]->pip = (t_pipecmd*)malloc(sizeof(t_pipecmd));
-	
-	var->cmd[var->cod]->pip->type = PIPE;
-	var->cmd[var->cod]->pip->left = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->pip->left->type = EXEC;
-
-	var->cmd[var->cod]->pip->left->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->left->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->left->exe->name, "export", 7);
-
-	var->cmd[var->cod]->pip->left->exe->args[0] = ft_strdup(ft_strjoin(ft_strjoin("a", ft_itoa(var->cod)), "c=1$XDG_SESSION_TYPE:23$USER"));
-	var->cmd[var->cod]->pip->left->exe->args[1] = NULL;
-	// ft_strlcpy(var->cmd[var->cod]->pip->left->exe->args[0], "-la", 4);
-	// ft_bzero(var->cmd[var->cod]->pip->left->exe->args[1], 1);
-
-	var->cmd[var->cod]->pip->right = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->pip->right->type = EXEC;
-	
-	var->cmd[var->cod]->pip->right->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->right->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->right->exe->name, "ls", 3);
-
-	var->cmd[var->cod]->pip->right->exe->args[0] = ft_strdup("-l");
-	var->cmd[var->cod]->pip->right->exe->args[1] = NULL;
-	// ft_strlcpy(var->cmd[var->cod]->pip->right->pip->right->exe->args[0], "-l", 3);
-	// ft_bzero(var->cmd[var->cod]->pip->right->pip->right->exe->args[1], 1);
-	// printf("%s\n", var->cmd[var->cod]->pip->right->pip->right->exe->args[0]);
-}
-
-void	two_pipes_fill_in_test0(t_vars *var)
-{
-	/*ls -la | grep -r "mini" | wc -l*/
-	
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->type = PIPE;
-	
-	var->cmd[var->cod]->pip = (t_pipecmd*)malloc(sizeof(t_pipecmd));
-	
-	var->cmd[var->cod]->pip->type = PIPE;
-	var->cmd[var->cod]->pip->left = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->pip->left->type = EXEC;
-
-	var->cmd[var->cod]->pip->left->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->left->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->left->exe->name, "grep", 3);
-
-	var->cmd[var->cod]->pip->left->exe->args[0] = ft_strdup("grep");
-	var->cmd[var->cod]->pip->left->exe->args[1] = ft_strdup("mini");
-	var->cmd[var->cod]->pip->left->exe->args[2] = NULL;
-
-	var->cmd[var->cod]->pip->right = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->pip->right->type = PIPE;
-	
-	var->cmd[var->cod]->pip->right->pip = (t_pipecmd*)malloc(sizeof(t_pipecmd));
-
-	var->cmd[var->cod]->pip->right->pip->type = PIPE;
-	
-	var->cmd[var->cod]->pip->right->pip->left = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->pip->right->pip->left->type = EXEC;
-	var->cmd[var->cod]->pip->right->pip->left->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->right->pip->left->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->right->pip->left->exe->name, "ls", 5);
-
-	var->cmd[var->cod]->pip->right->pip->left->exe->args[0] = ft_strdup("ls");
-	var->cmd[var->cod]->pip->right->pip->left->exe->args[0] = ft_strdup("-l");
-	var->cmd[var->cod]->pip->right->pip->left->exe->args[1] = NULL;
-	
-	var->cmd[var->cod]->pip->right->pip->right = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->pip->right->pip->right->type = EXEC;
-	
-	var->cmd[var->cod]->pip->right->pip->right->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->right->pip->right->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->right->pip->right->exe->name, "wc", 3);
-
-	var->cmd[var->cod]->pip->right->pip->right->exe->args[0] = ft_strdup("wc");
-	var->cmd[var->cod]->pip->right->pip->right->exe->args[0] = ft_strdup("-l");
-	var->cmd[var->cod]->pip->right->pip->right->exe->args[1] = NULL;
-	// ft_strlcpy(var->cmd[var->cod]->pip->right->pip->right->exe->args[0], "-l", 3);
-	// ft_bzero(var->cmd[var->cod]->pip->right->pip->right->exe->args[1], 1);
-	// printf("%s\n", var->cmd[var->cod]->pip->right->pip->right->exe->args[0]);
-}
-
-void	two_pipes_fill_in_test0test(t_vars *var)
-{
-	/*ls -l | grep mini | wc -l*/
-	
-	var->cmd[var->cod] = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->type = PIPE;
-	
-	var->cmd[var->cod]->pip = (t_pipecmd*)malloc(sizeof(t_pipecmd));
-	
-	var->cmd[var->cod]->pip->type = PIPE;
-
-	var->cmd[var->cod]->pip->left = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->pip->left->type = PIPE;
-	
-	var->cmd[var->cod]->pip->left->pip = (t_pipecmd*)malloc(sizeof(t_pipecmd));
-
-	var->cmd[var->cod]->pip->left->pip->type = PIPE;
-	
-	var->cmd[var->cod]->pip->left->pip->left = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->pip->left->pip->left->type = EXEC;
-	var->cmd[var->cod]->pip->left->pip->left->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->left->pip->left->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->left->pip->left->exe->name, "ls", 5);
-
-	var->cmd[var->cod]->pip->left->pip->left->exe->args[0] = ft_strdup("ls");
-	var->cmd[var->cod]->pip->left->pip->left->exe->args[0] = ft_strdup("-l");
-	var->cmd[var->cod]->pip->left->pip->left->exe->args[1] = NULL;
-	
-	var->cmd[var->cod]->pip->left->pip->right = (t_cmd*)malloc(sizeof(t_cmd));
-	
-	var->cmd[var->cod]->pip->left->pip->right->type = EXEC;
-	
-	var->cmd[var->cod]->pip->left->pip->right->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->left->pip->right->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->left->pip->right->exe->name, "grep", 3);
-
-	var->cmd[var->cod]->pip->left->pip->right->exe->args[0] = ft_strdup("grep");
-	var->cmd[var->cod]->pip->left->pip->right->exe->args[0] = ft_strdup("mini");
-	var->cmd[var->cod]->pip->left->pip->right->exe->args[1] = NULL;
-
-
-	var->cmd[var->cod]->pip->right = (t_cmd*)malloc(sizeof(t_cmd));
-
-	var->cmd[var->cod]->pip->right->type = EXEC;
-
-	var->cmd[var->cod]->pip->right->exe = (t_execcmd*)malloc(sizeof(t_execcmd));
-
-	var->cmd[var->cod]->pip->right->exe->type = EXEC;
-
-	ft_strlcpy(var->cmd[var->cod]->pip->right->exe->name, "wc", 3);
-
-	var->cmd[var->cod]->pip->right->exe->args[0] = ft_strdup("wc");
-	var->cmd[var->cod]->pip->right->exe->args[1] = ft_strdup("-l");
-	var->cmd[var->cod]->pip->right->exe->args[2] = NULL;
-}
-
+#include "../minishell.h"
 
 /*********************/
 /* BUILTIN FUNCTIONS */
@@ -403,12 +34,10 @@ int	fork1(void)
 
 char	*dir()
 {
-	// char	cwd[FILENAME_MAX];
-	char	*cwd;
+	char	cwd[FILENAME_MAX];
 
-	cwd = (char *)malloc(sizeof(char) * FILENAME_MAX);
 	getcwd(cwd, sizeof(cwd));
-	return (cwd);
+	return (ft_strdup(cwd));
 }
 
 int	echo_check(char *args)
@@ -425,25 +54,25 @@ int	echo_check(char *args)
 	return (1);
 }
 
-int	echo(t_vars *var, t_execcmd *ecmd)
+int	echo(t_vars *var, t_final *final)
 {
 	t_allways aws;
 
-	aws.i = 0;
+	aws.i = 1;
 	aws.k = 1;
-	if (ecmd->args[aws.i][0] == '-' && ecmd->args[aws.i][1])
+	if (final->cmd[aws.i][0] == '-' && final->cmd[aws.i][1])
 	{
-		while (ecmd->args[aws.i])
+		while (final->cmd[aws.i])
 		{
-			if (!echo_check(ecmd->args[aws.i]))
+			if (!echo_check(final->cmd[aws.i]))
 				break;
 			aws.k = 0;
 			aws.i++;
 		}
 	}
-	while (ecmd->args[aws.i])
+	while (final->cmd[aws.i])
 	{
-		printf("%s ", ecmd->args[aws.i]);
+		printf("%s ", final->cmd[aws.i]);
 		aws.i++;
 	}
 	printf("\b");
@@ -452,32 +81,31 @@ int	echo(t_vars *var, t_execcmd *ecmd)
 	return (1);
 }
 
-int	cd(t_vars *var, t_execcmd *ecmd)
+int	cd(t_vars *var, t_final *final)
 {
 	if (check_env_var(var, "HOME"))
 	{
-		if (ft_lstlen(ecmd->args) == 0)
+		if (ft_lstlen(final->cmd) == 1)
 		{
-			ecmd->args[0] = ft_strdup(get_env_var(var, "HOME"));
-			ecmd->args[1] = NULL;
+			final->cmd[1] = ft_strdup(get_env_var(var, "HOME"));
 		}
-		else if (!ft_strcmp(ecmd->args[0], "~"))
+		else if (!ft_strcmp(final->cmd[1], "~"))
 		{
-			free(ecmd->args[0]);
-			ecmd->args[0] = ft_strdup(get_env_var(var, "HOME"));
+			free(final->cmd[1]);
+			final->cmd[1] = ft_strdup(get_env_var(var, "HOME"));
 		}
 	}
 	else
 		trouble("cd $HOME");
 
-	if (ft_lstlen(ecmd->args) > 1 && ecmd->args[0][0] != '-')
+	if (ft_lstlen(final->cmd) > 2 && final->cmd[1][0] != '-')
 	{
 		printf("minishell: cd: too many arguments\n");
 		return (0);
 	}
-	else if (ecmd->args[0][0] == '-')
+	else if (final->cmd[1][0] == '-')
 	{
-		printf("minishell: cd: %s: invalid option\n", ecmd->args[0]);
+		printf("minishell: cd: %s: invalid option\n", final->cmd[1]);
 		return (0);
 	}
 	else if (check_env_var(var, "OLDPWD") && check_env_var(var, "PWD"))
@@ -485,10 +113,10 @@ int	cd(t_vars *var, t_execcmd *ecmd)
 		free(var->tmp3);
 		var->tmp3 = ft_strdup(get_env_var(var, "OLDPWD"));
 		ft_export(var, ft_strjoin("OLDPWD=", dir()), 0);
-		if (chdir(ecmd->args[0]))
+		if (chdir(final->cmd[1]))
 		{
 			ft_export(var, ft_strjoin("OLDPWD=", var->tmp3), 0);
-			printf("minishell: cd: %s: No such file or directory\n", ecmd->args[0]);
+			printf("minishell: cd: %s: No such file or directory\n", final->cmd[1]);
 			return (0);
 		}
 		pwd(var);
@@ -505,19 +133,19 @@ int	pwd(t_vars *var)
 	return (1);
 }
 
-int	export(t_vars *var, t_execcmd *ecmd)
+int	export(t_vars *var, t_final *final)
 {
 	t_allways aws;
 
-	if (!ecmd->args[0])
+	if (!final->cmd[1])
 		show_exp(var);
 	else
 	{
-		aws.i = 0;
-		while (ecmd->args[aws.i])
+		aws.i = 1;
+		while (final->cmd[aws.i])
 		{
 			// if (ft_isalpha(ecmd->args[aws.i][0]) || ecmd->args[aws.i][0] == '_' || ecmd->args[aws.i][0] == '$')
-				ft_export(var, ecmd->args[aws.i], 0);
+				ft_export(var, final->cmd[aws.i], 0);
 			// else
 			// 	printf("bash: export: `%s': not a valid identifier\n", ecmd->args[aws.i]);
 			aws.i++;
@@ -526,26 +154,26 @@ int	export(t_vars *var, t_execcmd *ecmd)
 	return (1);
 }
 
-int	unset(t_vars *var, t_execcmd *ecmd)
+int	unset(t_vars *var, t_final *final)
 {
 	t_allways aws;
 
-	aws.i = 0;
-	while (ecmd->args[aws.i])
+	aws.i = 1;
+	while (final->cmd[aws.i])
 	{
-		ft_unset(var, ecmd->args[aws.i]);
+		ft_unset(var, final->cmd[aws.i]);
 		aws.i++;
 	}
-	show_exp(var);
+	// show_exp(var);
 	return (1);
 }
 
-int	environment(t_vars *var, t_execcmd *ecmd)
+int	environment(t_vars *var, t_final *final)
 {
-	if (!ecmd->args[0])
+	if (!final->cmd[1])
 		show_env(var);
 	else
-		printf("env: ‘%s’: No such file or directory\n", ecmd->args[0]);
+		printf("env: ‘%s’: No such file or directory\n", final->cmd[1]);
 	return (1);
 }
 
@@ -560,22 +188,22 @@ int	builtincheck(char *name)
 	return (0);
 }
 
-int	builtin(t_vars *var, t_execcmd *ecmd)
+int	builtin(t_vars *var, t_final *final)
 {
 /*	◦ exit with no options */
-	if (!ft_strcmp(ecmd->name , "echo"))
-		return (echo(var, ecmd));
-	else if (!ft_strcmp(ecmd->name , "cd"))
-		return (cd(var, ecmd));
-	else if (!ft_strcmp(ecmd->name , "pwd"))
+	if (!ft_strcmp(final->cmd[0], "echo"))
+		return (echo(var, final));
+	else if (!ft_strcmp(final->cmd[0], "cd"))
+		return (cd(var, final));
+	else if (!ft_strcmp(final->cmd[0], "pwd"))
 		return (pwd(var));
-	else if (!ft_strcmp(ecmd->name , "export"))
-		return (export(var, ecmd));
-	else if (!ft_strcmp(ecmd->name , "unset"))
-		return (unset(var, ecmd));
-	else if (!ft_strcmp(ecmd->name , "env"))
-		return (environment(var, ecmd));
-	// else if (!ft_strcmp(ecmd->name , "exit"))
+	else if (!ft_strcmp(final->cmd[0], "export"))
+		return (export(var, final));
+	else if (!ft_strcmp(final->cmd[0], "unset"))
+		return (unset(var, final));
+	else if (!ft_strcmp(final->cmd[0], "env"))
+		return (environment(var, final));
+	// else if (!ft_strcmp(final->cmd[0], "exit"))
 	// 	return (exit(EXIT_SUCCESS));
 	return (0);
 }
@@ -594,7 +222,7 @@ char	*exe_path_set(t_vars *var, char *exe)
 	return (NULL);
 }
 
-void	runcmd(t_cmd *cmd, t_vars *var)
+/* void	runcmd(t_cmd *cmd, t_vars *var)
 {
 	t_execcmd	*ecmd;
 	t_redircmd	*rcmd;
@@ -666,7 +294,7 @@ void	runcmd(t_cmd *cmd, t_vars *var)
 	else
 		trouble("runcmd");
 	// exit(0);
-}
+} */
 
 void	fill_path(t_vars *var)
 {
@@ -704,11 +332,7 @@ void	initialisation(t_vars *var, char **env)
 	init_export(var);
 	fill_path(var);
 	// hostname(var);
-	var->idx_fd = 1;
-	for (int i = 0; i <= var->idx_fd; i++)
-	{
-		pipe(var->fd[var->idx_fd]);
-	}
+
 }
 
 void	hostname(t_vars *var)
@@ -720,7 +344,7 @@ void	hostname(t_vars *var)
 	ft_split(get_next_line(fd), '\n')[0]), 0);
 }
 
-int	main(int ac, char *av[], char **env)
+/* int	main(int ac, char *av[], char **env)
 {
 	t_vars	*var;
 	char	cwd[1024];
@@ -728,7 +352,7 @@ int	main(int ac, char *av[], char **env)
 	var = malloc(sizeof(t_vars));
 	initialisation(var, env);
 
-	/* ft_export(var, "TEST_MINISHELL=0", 1);
+	ft_export(var, "TEST_MINISHELL=0", 1);
 	ft_export(var, "ENV_EXP_UNST=0", 1);
 	ft_export(var, "ENV_EXP_UNST1=0", 1);
 	ft_export(var, "ENV_EXP_UNST2=0", 1);
@@ -748,11 +372,11 @@ int	main(int ac, char *av[], char **env)
 	printf("--------------------------------------------------------------------3\n");
 	show_exp(var);
 	printf("--------------------------------------------------------------------4\n");
-	printf("%s\n", get_env_var(var, "PATH")); */
+	printf("%s\n", get_env_var(var, "PATH"));
 	
 
 
-	/* execv(ecmd->name, ecmd->args);
+	execv(ecmd->name, ecmd->args);
 
 	fill_in_test0(var);
 	runcmd(var->cmd[var->cod], var);
@@ -768,7 +392,7 @@ int	main(int ac, char *av[], char **env)
 	++var->cod;
 	two_pipes_fill_in_test(var);
 	runcmd(var->cmd[var->cod], var);
-	++var->cod; */
+	++var->cod;
 	
 	while (1)
 	{
@@ -803,7 +427,7 @@ int	main(int ac, char *av[], char **env)
 		// ++var->cod;
 	}
 	return (0);
-}
+} */
 
 
 

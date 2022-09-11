@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:50:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/11 03:14:26 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/11 16:45:50 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ t_final	*ft_parser(t_token *data)
 			tmp->file = NULL;
 			tmp->name = NULL;
 		}
-		while (data && strcmp(data->str, "|") != 0)
+		while (data && ft_strcmp(data->str, "|") != 0)
 		{
 			if (redirect(data->str))
 			{

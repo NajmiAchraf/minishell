@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/06/30 21:17:09 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/11 16:42:12 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@
 # define C_BLUE		"\033[1;34m"
 # define C_CYAN		"\033[1;36m"
 
-# define EXEC	1
-# define REDIR	2
-# define PIPE	3
+// # define EXEC	1
+// # define REDIR	2
+// # define PIPE	3
 
 # define MAXARG	10
 
 
-typedef struct s_cmd t_cmd;
+/* typedef struct s_cmd t_cmd;
 
 typedef struct s_execcmd
 {
@@ -67,16 +67,16 @@ struct s_cmd
 	t_execcmd	*exe;
 	t_pipecmd	*pip;
 	t_redircmd	*red;
-};
+}; */
 
-typedef struct s_env
+typedef struct s_envp
 {
 	size_t	sizeofexp;
 	size_t	sizeofenv;
 	char	**env;
 	char	**newenv;
 	char	***newexp;
-}	t_env;
+}	t_envp;
 
 typedef struct	s_allways
 {
@@ -90,7 +90,7 @@ typedef struct	s_vars
 	int		exit_code;
 
 	/* environment */
-	t_env	env;
+	t_envp	env;
 	char	*tmp;
 	char	*tmp1;
 	char	*tmp2;
@@ -126,17 +126,17 @@ void	hostname(t_vars *var);
 /*								BUILTIN FUNCTIONS							  */
 /* ************************************************************************** */
 
-int		builtin(t_vars *var, t_execcmd *ecmd);
+int		builtin(t_vars *var, t_final *final);
 
 int		echo_check(char *args);
-int		echo(t_vars *var, t_execcmd *ecmd);
-int		cd(t_vars *var, t_execcmd *ecmd);
+int		echo(t_vars *var, t_final *fianl);
+int		cd(t_vars *var, t_final *fianl);
 int		pwd(t_vars *var);
-int		export(t_vars *var, t_execcmd *ecmd);
-int		unset(t_vars *var, t_execcmd *ecmd);
-int		environment(t_vars *var, t_execcmd *ecmd);
+int		export(t_vars *var, t_final *fianl);
+int		unset(t_vars *var, t_final *fianl);
+int		environment(t_vars *var, t_final *fianl);
 
-int		builtin(t_vars *var, t_execcmd *ecmd);
+int		builtin(t_vars *var, t_final *fianl);
 
 /* ******************** */
 /*		DIRECTORY		*/
