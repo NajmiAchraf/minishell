@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 11:26:50 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/11 03:12:49 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/11 16:50:53 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	control_c(int sig)
 {
 	(void)sig;
 
-	rl_replace_line("", 0);
-	ft_putchar_fd('\n', 1);
-	rl_on_new_line();
-	rl_redisplay();
+	// rl_replace_line("", 0);
+	// ft_putchar_fd('\n', 1);
+	// rl_on_new_line();
+	// rl_redisplay();
 	return ;
 }
 void	ft_signals(void)
@@ -28,7 +28,7 @@ void	ft_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-int	main(int ac, char **av, char **env)
+/* int	main(int ac, char **av, char **env)
 {
 	char	*line;
 	t_token	*data;
@@ -106,4 +106,4 @@ int	main(int ac, char **av, char **env)
 			//system("leaks minishell");
 		}
 	}
-}
+} */

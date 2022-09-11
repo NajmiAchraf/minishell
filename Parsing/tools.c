@@ -24,6 +24,7 @@ void ft_output(t_final *s)
     while (final)
 	{
 		i = 0;
+		printf("in %d => out %d\n", final->infile, final->outfile);
 		printf("output cmd number %d\n",id);
 		cmd = final->cmd;
 		while (cmd[i])
@@ -31,14 +32,14 @@ void ft_output(t_final *s)
 			printf("name cmd is = %s and id is %d\n", cmd[i], id);
 			i++;
 		}
-		file = final->file;
-		while (file != NULL)
-		{
-			printf("name file is = %s and id is = %d\n", file->str, file->id);
-			file = file->next;
-		}
+		// file = final->file;
+		// while (file != NULL)
+		// {
+		// 	printf("name file is = %s and id is = %d\n", file->str, file->id);
+		// 	file = file->next;
+		// }
 		final= final->next;
-		printf("end node number %d\n", id);
+		// printf("end node number %d\n", id);
 		id++;
 	}
 }

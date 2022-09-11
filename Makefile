@@ -6,7 +6,7 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/11 14:35:10 by anajmi           ###   ########.fr        #
+#    Updated: 2022/09/11 16:50:06 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,13 @@ PARSE =	\
 EXEC =	\
 	./minishell.c					\
 	./Execution/execution.c			\
-	./Execution/environment.c
+	./Execution/environment.c		\
+	./Execution/pipes_redirections.c			\
 
 SRCS = $(PARSE) $(EXEC)
-
-LFLAGS = -lreadline -L./Users/anajmi/goinfre/brew/opt/readline/8.1.2/lib -I./Users/anajmi/goinfre/brew/opt/readline/8.1.2/include
+#/Users/anajmi/goinfre/brew/opt/readline
+# LFLAGS = -lreadline -L./Users/anajmi/goinfre/brew/opt/readline/8.1.2/lib -I./Users/anajmi/goinfre/brew/opt/readline/8.1.2/include
+LFLAGS = -lreadline -L/Users/anajmi/.brew/opt/readline/lib -I/Users/anajmi/.brew/opt/readline/include
 
 OBJ = $(SRCS:.c=.o)
 
@@ -63,17 +65,6 @@ FCLEANLIBPL = rm -f $(ARPLS)
 RELIBPL = make re -C $(LIBPL)
 
 #*******************************#
-#			GNL					#
-#*******************************#
-
-GNL = ./get_next_line
-ARGNL = $(GNL)/get_next_line.a
-ALLGNL = make -C $(GNL)
-CLEANGNL = make clean -C $(GNL)
-FCLEANGNL = rm -f $(ARGNL)
-REGNL = make re -C $(GNL)
-
-#*******************************#
 #			COLORS				#
 #*******************************#
 
@@ -98,14 +89,12 @@ all : $(NAME)
 $(NAME) : $(OBJ)
 	$(ALLIBFT)
 	$(ALLIBPL)
-	$(ALLGNL)
-	gcc $(OBJ) $(ARLIB) $(ARPLS) $(ARGNL) $(LFLAGS) -o $(NAME)
+	gcc $(OBJ) $(ARLIB) $(ARPLS) $(LFLAGS) -o $(NAME)
 	@echo "$(C_GREEN)[MINISHELL MANDATORY CREATED!]$(C_RES)"
 
 clean :
 	@$(CLEANLIBFT)
 	@$(CLEANLIBPL)
-	@$(CLEANGNL)
 	rm -f $(OBJ)
 	@echo "$(C_RED)[MINISHELL OBJECTS DELETED!]$(C_RES)"
 
@@ -114,8 +103,6 @@ fclean : clean
 	@echo "$(C_RED)[LIBFT ARCHIVE DELETED!]$(C_RES)"
 	@$(FCLEANLIBPL)
 	@echo "$(C_RED)[LIBFT PLUS ARCHIVE DELETED!]$(C_RES)"
-	@$(FCLEANGNL)
-	@echo "$(C_RED)[GET NEXT LINE ARCHIVE DELETED!]$(C_RES)"
 	@rm -f $(NAME)
 	@echo "$(C_RED)[MINISHELL EXECUTABLES DELETED!]$(C_RES)"
 

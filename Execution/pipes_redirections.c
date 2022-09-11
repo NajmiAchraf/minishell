@@ -1,21 +1,39 @@
-#include "minishell.h"
+#include "../minishell.h"
 
-void	iterate(t_final **node)
+int	list_size1(t_final *list)
 {
+	t_final	*tmp;
 	int	i;
-	int	len;
-	t_final *n;
+	
+	if (!list)
+		return (0);
+	i = 1;
+	tmp = list;
+	while(tmp->next)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+int	iterate(t_final **node)
+{
+	int		i;
+	int		len;
+	t_final	*n;
 
 	i = 1;
 	n = *node;
 	len = list_size1(n);
-	while (i <= len)
+	while (n)
 	{
 		int	p[2];
 
 		pipe(p);
 		if (i == 1)
 			(n)->infile = 0;
+
 		if ((n)->outfile == -1)
 			(n)->outfile = p[1];
 
@@ -29,14 +47,45 @@ void	iterate(t_final **node)
 		n = n->next;
 		i++;
 	}
+	return (len);
 }
 
-void	executor(t_vars *var, t_final **node)
+void	executor(char **env, t_final **n)
 {
-	iterate(node);
-	if (fork1() == 0)
+	int		len;
+	t_final	*node;
+	t_final	*start;
+	int		i;
+
+	i = 0;
+	node = *n;
+	len = iterate(n);
+	while (node)
 	{
-		dup2((*node)->infile, 1);
-		execvp(exe_path_set(var, ecmd->name), ecmd->args);
+		int pid = fork();
+		if (pid == 0)
+		{
+			start = *n;
+			dup2((node)->infile, 0);
+			dup2((node)->outfile, 1);
+			while (start)
+			{
+				if ((start)->infile != 0)
+					close((start)->infile);
+				if ((start)->outfile != 1)
+					close((start)->outfile);
+				start = start->next;
+			}
+			execve((node)->cmd[0], (node)->cmd, env);
+			exit(1);
+		}
+		if ((node)->infile != 0)
+			close((node)->infile);
+		if ((node)->outfile != 1)
+			close((node)->outfile);
+		if (i == len - 1)
+			while (wait(NULL) > 0);
+		node = (node)->next;
+		i++;
 	}
 }

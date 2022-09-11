@@ -76,8 +76,10 @@ int	main(int ac, char **av, char **env)
 			else
 				printf("minishell: syntax error\n");
 			final_data = ft_parser(data);
-			ft_output(final_data);
-			// iterate(final_data);
+			//iterate(&final_data);
+			executor(env, &final_data);
+			//ft_output(final_data);
+			//printf("len ==> \n\n\n");
 			free(line);
 			//system("leaks minishell");
 		}

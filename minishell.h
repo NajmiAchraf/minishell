@@ -24,8 +24,7 @@
 
 # include "Libft/libft.h"
 # include "LibftPlus/libftplus.h"
-# include "get_next_line/get_next_line.h"
-
+#define HERE fprintf(stderr, "HERE   %s  in  %d\n", __FILE__, __LINE__);
 # include "Parsing/parsing.h"
 # include "Execution/execution.h"
 

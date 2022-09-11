@@ -324,25 +324,15 @@ void	initialisation(t_vars *var, char **env)
 	var->temp[0] = NULL;
 	var->temp1 = malloc(sizeof(char *));
 	var->temp2 = malloc(sizeof(char *));
-	var->buff = malloc(sizeof(char));
+	// var->buff = malloc(sizeof(char));
 	var->env.env = env;
-	var->cmd = (t_cmd **)malloc(sizeof(t_cmd *) * FILENAME_MAX);
+	// var->cmd = (t_cmd **)malloc(sizeof(t_cmd *) * FILENAME_MAX);
 	var->cod = 0;
 	init_environment(var);
 	init_export(var);
 	fill_path(var);
-	// hostname(var);
-
 }
 
-void	hostname(t_vars *var)
-{
-	int	fd;
-
-	fd = open("/proc/sys/kernel/hostname", O_RDONLY);
-	ft_export(var, ft_strjoin("HOSTNAME=", 
-	ft_split(get_next_line(fd), '\n')[0]), 0);
-}
 
 /* int	main(int ac, char *av[], char **env)
 {
