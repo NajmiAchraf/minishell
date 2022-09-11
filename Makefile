@@ -14,11 +14,30 @@ NAME = minishell
 
 CFLAGS = -g #-Wall -Werror -Wextra
 
-SOURCE = \
-		./minishell.c	\
-		./environment.c
+PARSE = \
+	./Parsing/minishell.c \
+	./Parsing/syntax_error.c \
+	./Parsing/ft_environment.c \
+	./Parsing/environment_utils.c \
+	./Parsing/tokenizer.c \
+	./Parsing/token_utils.c \
+	./Parsing/token_utils2.c \
+	./Parsing/expanding.c \
+	./Parsing/parser.c \
+	./Parsing/tools.c\
+	# ./Parsing/pars_utils.c \
+	# ./Parsing/pars_utils2.c \
+	# ./Parsing/parsing/parse.c 
 
-OBJ = $(SOURCE:.c=.o)
+EXEC = \
+	./Execution/execution.c	\
+	./Execution/environment.c
+
+SRCS = $(PARSE) $(EXEC)
+
+LFLAGS = -lreadline -L/Users/ohrete/.brew/opt/readline/lib -I/Users/ohrete/.brew/opt/readline/include
+
+OBJ = $(SRCS:.c=.o)
 
 #*******************************#
 #			LIBFT				#
@@ -73,15 +92,13 @@ C_RES = \033[0m
 
 all : $(NAME)
 	@echo "$(C_L_BLUE)[EXECUTE MINISHELL ...]$(C_RES)"
-#	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
-#	@cat valgrind-out.txt 
 	./minishell
 
 $(NAME) : $(OBJ)
 	$(ALLIBFT)
 	$(ALLIBPL)
 	$(ALLGNL)
-	gcc $(OBJ) $(ARLIB) $(ARPLS) $(ARGNL) -lreadline -o $(NAME)
+	gcc $(OBJ) $(ARLIB) $(ARPLS) $(ARGNL) $(LFLAGS) -o $(NAME)
 	@echo "$(C_GREEN)[MINISHELL MANDATORY CREATED!]$(C_RES)"
 
 clean :

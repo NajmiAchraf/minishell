@@ -1,32 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   pars_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/06 18:14:58 by ohrete           ###   ########.fr       */
+/*   Created: 2022/08/27 01:20:35 by ohrete            #+#    #+#             */
+/*   Updated: 2022/08/27 01:20:50 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../minishell.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <signal.h>
-# include <fcntl.h>
-# include <sys/wait.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-# include "Libft/libft.h"
-# include "LibftPlus/libftplus.h"
-# include "get_next_line/get_next_line.h"
-
-# include "Parsing/parsing.h"
-# include "Execution/execution.h"
-
-#endif
