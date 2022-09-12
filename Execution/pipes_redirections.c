@@ -50,7 +50,29 @@ int	iterate(t_final **node)
 	return (len);
 }
 
-void	executor(char **env, t_final **n)
+void	iterate_file(t_final **node)
+{
+	t_file		*file;
+	t_final		*n;
+
+	n = *node;
+	while (n)
+	{
+		file = n->file;
+		while (file)
+		{
+			if (file->id == 1)
+				n->infile = open(file->str, O_RDONLY, 0777);
+			if (file->id == 2)
+				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			if (file->id == 3)
+				n->outfile = open(file->str, O_WRONLY | O_CREAT | APPEND, 0777);
+			file = file->next;
+		}
+		n = n->next;
+	}
+}
+void	executor(t_vars *var, t_final **n)
 {
 	int		len;
 	t_final	*node;
@@ -60,10 +82,10 @@ void	executor(char **env, t_final **n)
 	i = 0;
 	node = *n;
 	len = iterate(n);
+	iterate_file(n);
 	while (node)
 	{
-		int pid = fork();
-		if (pid == 0)
+		if (fork1() == 0)
 		{
 			start = *n;
 			dup2((node)->infile, 0);
@@ -76,7 +98,8 @@ void	executor(char **env, t_final **n)
 					close((start)->outfile);
 				start = start->next;
 			}
-			execve((node)->cmd[0], (node)->cmd, env);
+			execve(exe_path_set(var, (node)->cmd[0]), (node)->cmd, var->env.newenv);
+			printf("exec %s failed\n", (node)->cmd[0]);
 			exit(1);
 		}
 		if ((node)->infile != 0)

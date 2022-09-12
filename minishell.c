@@ -55,7 +55,8 @@ int	main(int ac, char **av, char **env)
 	id = 1;
 	if (ac > 1)
 		return (0);
-	// initialisation(var, env);
+	var = malloc(sizeof(t_vars));
+	initialisation(var, env);
 	fst_link = setting_env(env);
 	while (1)
 	{
@@ -77,7 +78,7 @@ int	main(int ac, char **av, char **env)
 				printf("minishell: syntax error\n");
 			final_data = ft_parser(data);
 			//iterate(&final_data);
-			executor(env, &final_data);
+			executor(var, &final_data);
 			//ft_output(final_data);
 			//printf("len ==> \n\n\n");
 			free(line);

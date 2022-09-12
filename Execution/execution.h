@@ -135,8 +135,11 @@ int		unset(t_vars *var, t_final *fianl);
 int		environment(t_vars *var, t_final *fianl);
 
 int		builtin(t_vars *var, t_final *fianl);
+
 char	*exe_path_set(t_vars *var, char *exe);
-void	executor(char **env, t_final **node);
+void	executor(t_vars *var, t_final **n);
+int		list_size1(t_final *list);
+int		iterate(t_final **node);
 
 /* ******************** */
 /*		DIRECTORY		*/
@@ -167,6 +170,4 @@ void	show_exp(t_vars *var);
 char	*get_env_var(t_vars *var, char *to_get);
 int		check_env_var(t_vars *var, char *to_check);
 
-int		list_size1(t_final *list);
-int		iterate(t_final **node);
 #endif
