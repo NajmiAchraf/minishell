@@ -95,8 +95,8 @@ void	ft_signals(void)
 			// // // printf("output %s\n", data->str);
 			// printf("after parser \n");
 			ft_output(final_data);
-			//*printf("data ===== %s\n", data->str);
-			//**ft_freetokens(data); //holaaa
+			// *printf("data ===== %s\n", data->str);
+			// *ft_freetokens(data); //holaaa
 			//data = NULL;
 			// ft_free(final_data);
 			// printf("****\n");

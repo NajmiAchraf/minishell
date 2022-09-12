@@ -102,7 +102,8 @@ char *inside_dollar(char *str, t_env *env, char **av, int *i)
 		while (str[(*i)] && (ft_isalnum(str[(*i)]) || str[(*i)] == '_'))
 			(*i)++;
 		var.ptr = ft_substr(str, var.start, (*i) - var.start);
-		var.ptr = getting_env(env, var.ptr);
+		// var.ptr = getting_env(env, var.ptr);
+		var.ptr = get_env_var(env->env_var, var.ptr);
 	}
 	var.new = ft_strjoin(var.new, var.ptr);
 	return (var.new);

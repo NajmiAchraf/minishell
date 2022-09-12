@@ -40,6 +40,7 @@ typedef struct s_env
 {
 	char			*name;
 	char			*value;
+	t_vars			*env_var;
 	struct s_env	*next;
 }	t_env;
 

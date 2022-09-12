@@ -12,7 +12,7 @@
 
 NAME = minishell
 
-CFLAGS = -g #-Wall -Werror -Wextra
+CFLAGS = -fsanitize=address -g #-Wall -Werror -Wextra
 
 PARSE =	\
 	./Parsing/syntax_error.c		\
@@ -89,7 +89,7 @@ all : $(NAME)
 $(NAME) : $(OBJ)
 	$(ALLIBFT)
 	$(ALLIBPL)
-	gcc $(OBJ) $(ARLIB) $(ARPLS) $(LFLAGS) -o $(NAME)
+	gcc $(OBJ) $(CFLAGS) $(ARLIB) $(ARPLS) $(LFLAGS) -o $(NAME)
 	@echo "$(C_GREEN)[MINISHELL MANDATORY CREATED!]$(C_RES)"
 
 clean :

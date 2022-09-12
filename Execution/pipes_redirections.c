@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipes_redirections.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
+/*   Updated: 2022/09/12 13:52:37 by anajmi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	list_size1(t_final *list)
@@ -72,6 +84,7 @@ void	iterate_file(t_final **node)
 		n = n->next;
 	}
 }
+
 void	executor(t_vars *var, t_final **n)
 {
 	int		len;
@@ -85,29 +98,40 @@ void	executor(t_vars *var, t_final **n)
 	iterate_file(n);
 	while (node)
 	{
-		if (fork1() == 0)
+		if (len == 1 && builtincheck((node)->cmd[0]))
+			builtin(var, node);
+		else
 		{
-			start = *n;
-			dup2((node)->infile, 0);
-			dup2((node)->outfile, 1);
-			while (start)
+			if (fork1() == 0)
 			{
-				if ((start)->infile != 0)
-					close((start)->infile);
-				if ((start)->outfile != 1)
-					close((start)->outfile);
-				start = start->next;
+				start = *n;
+				dup2((node)->infile, 0);
+				dup2((node)->outfile, 1);
+				while (start)
+				{
+					if ((start)->infile != 0)
+						close((start)->infile);
+					if ((start)->outfile != 1)
+						close((start)->outfile);
+					start = start->next;
+				}
+
+				if (builtincheck((node)->cmd[0]))
+				{
+					builtin(var, node);
+					exit(0);
+				}
+				execve(exe_path_set(var, (node)->cmd[0]), (node)->cmd, var->env.newenv);
+				printf("exec %s failed\n", (node)->cmd[0]);
+				exit(1);
 			}
-			execve(exe_path_set(var, (node)->cmd[0]), (node)->cmd, var->env.newenv);
-			printf("exec %s failed\n", (node)->cmd[0]);
-			exit(1);
+			if ((node)->infile != 0)
+				close((node)->infile);
+			if ((node)->outfile != 1)
+				close((node)->outfile);
+			if (i == len - 1)
+				while (wait(NULL) > 0);
 		}
-		if ((node)->infile != 0)
-			close((node)->infile);
-		if ((node)->outfile != 1)
-			close((node)->outfile);
-		if (i == len - 1)
-			while (wait(NULL) > 0);
 		node = (node)->next;
 		i++;
 	}

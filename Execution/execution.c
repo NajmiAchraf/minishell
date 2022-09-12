@@ -60,12 +60,11 @@ int	echo(t_vars *var, t_final *final)
 
 	aws.i = 1;
 	aws.k = 1;
+	
 	if (final->cmd[aws.i][0] == '-' && final->cmd[aws.i][1])
 	{
-		while (final->cmd[aws.i])
+		while (final->cmd[aws.i] && final->cmd[aws.i][0] == '-' && echo_check(final->cmd[aws.i]))
 		{
-			if (!echo_check(final->cmd[aws.i]))
-				break;
 			aws.k = 0;
 			aws.i++;
 		}
@@ -88,48 +87,43 @@ int	cd(t_vars *var, t_final *final)
 		if (ft_lstlen(final->cmd) == 1)
 		{
 			final->cmd[1] = ft_strdup(get_env_var(var, "HOME"));
-		}
-		else if (!ft_strcmp(final->cmd[1], "~"))
-		{
-			free(final->cmd[1]);
-			final->cmd[1] = ft_strdup(get_env_var(var, "HOME"));
+			final->cmd[2] = NULL;
 		}
 	}
 	else
 		trouble("cd $HOME");
 
-	if (ft_lstlen(final->cmd) > 2 && final->cmd[1][0] != '-')
+	if (!ft_strcmp(final->cmd[1], "~"))
 	{
-		printf("minishell: cd: too many arguments\n");
+		free(final->cmd[1]);
+		final->cmd[1] = ft_strdup(var->tilda);
+	}
+	if (ft_lstlen(final->cmd) > 2 || final->cmd[1][0] == '-')
+	{
+		printf("minishell: cd: %s: error\n", final->cmd[1]);
 		return (0);
 	}
-	else if (final->cmd[1][0] == '-')
-	{
-		printf("minishell: cd: %s: invalid option\n", final->cmd[1]);
-		return (0);
-	}
-	else if (check_env_var(var, "OLDPWD") && check_env_var(var, "PWD"))
+	else
 	{
 		free(var->tmp3);
-		var->tmp3 = ft_strdup(get_env_var(var, "OLDPWD"));
-		ft_export(var, ft_strjoin("OLDPWD=", dir()), 0);
+		var->tmp3 = dir();
 		if (chdir(final->cmd[1]))
 		{
-			ft_export(var, ft_strjoin("OLDPWD=", var->tmp3), 0);
 			printf("minishell: cd: %s: No such file or directory\n", final->cmd[1]);
 			return (0);
 		}
 		pwd(var);
+		ft_export(var, ft_strjoin("OLDPWD=", var->tmp3), 0);
 		ft_export(var, ft_strjoin("PWD=", dir()), 0);
 	}
-	else
-		trouble("cd $PWD");
+	// else
+	// 	trouble("cd $PWD");
 	return (1);
 }
 
 int	pwd(t_vars *var)
 {
-	printf("%s\n", get_env_var(var, "PWD"));
+	printf("%s\n", dir());
 	return (1);
 }
 
@@ -164,7 +158,6 @@ int	unset(t_vars *var, t_final *final)
 		ft_unset(var, final->cmd[aws.i]);
 		aws.i++;
 	}
-	// show_exp(var);
 	return (1);
 }
 
@@ -177,6 +170,18 @@ int	environment(t_vars *var, t_final *final)
 	return (1);
 }
 
+// int	exiting(t_vars *var, t_final *final)
+// {
+// 	t_allways aws;
+
+// 	aws.i = ft_lstlen(final->cmd);
+// 	if (aws.i == 0)
+// 	{
+// 		printf("exit\n");
+// 		exit(0);
+// 	}
+	
+// }
 
 int	builtincheck(char *name)
 {
@@ -300,6 +305,8 @@ void	fill_path(t_vars *var)
 {
 	t_allways aws;
 
+	// if (!var->env.env[0])
+	// 	return ;
 	if (!check_env_var(var, "PATH"))
 		trouble("fill_path");
 	free1(var->temp);
@@ -326,8 +333,12 @@ void	initialisation(t_vars *var, char **env)
 	var->temp2 = malloc(sizeof(char *));
 	// var->buff = malloc(sizeof(char));
 	var->env.env = env;
+	
+	var->tilda = ft_strdup("/Users/anajmi"); // ohrete
 	// var->cmd = (t_cmd **)malloc(sizeof(t_cmd *) * FILENAME_MAX);
 	var->cod = 0;
+	// if (!env[0])
+	// 	return;
 	init_environment(var);
 	init_export(var);
 	fill_path(var);
@@ -418,6 +429,4 @@ void	initialisation(t_vars *var, char **env)
 	}
 	return (0);
 } */
-
-
 

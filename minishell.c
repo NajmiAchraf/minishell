@@ -58,6 +58,7 @@ int	main(int ac, char **av, char **env)
 	var = malloc(sizeof(t_vars));
 	initialisation(var, env);
 	fst_link = setting_env(env);
+	fst_link->env_var = var;
 	while (1)
 	{
 		ft_signals();

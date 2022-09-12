@@ -101,7 +101,7 @@ typedef struct	s_vars
 	char	***temp3;
 
 	char	**exepath;
-
+	char	*tilda;
 	char	*buff;
 	// t_cmd	**cmd;
 	size_t	cod;
@@ -115,7 +115,7 @@ void	trouble(char *s);
 int		fork1(void);
 void	free1(char **tofree);
 
-void	runcmd(t_cmd *cmd, t_vars *var);
+// void	runcmd(t_cmd *cmd, t_vars *var);
 void	fill_path(t_vars *var);
 void	initialisation(t_vars *var, char **env);
 void	hostname(t_vars *var);
@@ -134,6 +134,7 @@ int		export(t_vars *var, t_final *fianl);
 int		unset(t_vars *var, t_final *fianl);
 int		environment(t_vars *var, t_final *fianl);
 
+int		builtincheck(char *name);
 int		builtin(t_vars *var, t_final *fianl);
 
 char	*exe_path_set(t_vars *var, char *exe);
@@ -151,6 +152,7 @@ char	*dir();
 /*		ENVIRONMENT		*/
 /* ******************** */
 
+void	free1(char **tofree);
 int		replace_variable(t_vars *var, char *to_check, char *value);
 int		var_into_var(t_vars *var, char **to_check, t_allways aws);
 int		name_into_var(t_vars *var, char **to_check, t_allways aws);
