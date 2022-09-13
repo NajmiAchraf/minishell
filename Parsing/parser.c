@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:50:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/11 16:45:50 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/12 02:39:33 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 int	list_size(t_cmd *list)
 {
@@ -41,7 +40,7 @@ void	to_array(t_final *node)
 		i = 0;
 		while (node->name)
 		{
-			node->cmd[i] = ft_strdup(node->name->str);
+			node->cmd[i] = my_strdup(node->name->str);
 			node->name = node->name->next;
 			i++;
 		}
@@ -89,7 +88,7 @@ t_file	*file_node(char *str, int type)
 		return (NULL);
 	// new_node = NULL;
 	new_node->next = NULL;  //*****
-	new_node->str = ft_strdup(str);
+	new_node->str = my_strdup(str);
 	new_node->id = type;
 	//printf("creat file node \n");
 	return (new_node);
@@ -102,7 +101,7 @@ t_cmd	*cmd_node(char *str)
 	new_node =  (t_cmd *)malloc(sizeof (t_cmd));
 	if (!new_node)
 		return (NULL);
-	new_node->str = ft_strdup(str);
+	new_node->str = my_strdup(str);
 	new_node->next = NULL;  //*****   
 	//printf("|%s| \n", (*name)->str);
 	//printf("creat cmd node \n");
@@ -185,3 +184,109 @@ t_final	*ft_parser(t_token *data)
 	to_array(head);
 	return (head);
 }
+
+
+
+
+//FOR NORM
+// void	check_nodes(t_final *head)
+// {
+// 	t_final *link;
+// 	t_final *tmp;
+	
+// 	tmp = create_node();
+// 	if (head == NULL)
+// 	{
+// 		head = tmp;
+// 		link = head;
+// 		tmp->file = NULL;
+// 		tmp->name = NULL;
+// 	}
+// 	else
+// 	{
+// 		link->next = tmp;
+// 		link = tmp;
+// 		tmp->file = NULL;
+// 		tmp->name = NULL;
+// 	}
+// 	printf("fin\n");
+// }
+
+// t_final	*ft_parser(t_token *data)
+// {
+// 	t_final *head;
+// 	t_final *tmp;
+// 	t_final *link;
+// 	t_token *save;
+// 	t_file *save_file;
+// 	t_file *node_file;
+// 	t_cmd *save_cmd;
+// 	t_cmd *node_cmd;
+// 	int		type;
+
+// 	head = NULL;
+// 	save = data;
+// 	while (data)
+// 	{
+// 		tmp = create_node();
+// 		printf("koko\n");
+// 		check_nodes(head);
+// 		// if (head == NULL)
+// 		// {
+// 		// 	head = tmp;
+// 		// 	link = head;
+// 		// 	tmp->file = NULL;
+// 		// 	tmp->name = NULL;
+// 		// }
+// 		// else
+// 		// {
+// 		// 	link->next = tmp;
+// 		// 	link = tmp;
+// 		// 	tmp->file = NULL;
+// 		// 	tmp->name = NULL;
+// 		// }
+// 		while (data && ft_strcmp(data->str, "|") != 0)
+// 		{
+// 			if (redirect(data->str))
+// 			{
+// 				type = redirect(data->str);
+// 				data = data->next;
+// 				node_file = file_node(data->str, type);
+// 				if (tmp->file == NULL)
+// 				{
+// 					tmp->file = node_file;
+// 					save_file = node_file;
+// 				}
+// 				else
+// 				{
+// 					save_file->next = node_file;
+// 					save_file = node_file;
+// 				}
+// 			}
+// 			else
+// 			{
+// 				node_cmd = cmd_node(data->str);
+// 				if (tmp->name == NULL)
+// 				{
+// 					tmp->name = node_cmd;
+// 					save_cmd = node_cmd;
+// 				}
+// 				else
+// 				{
+// 					save_cmd->next = node_cmd;
+// 					save_cmd = node_cmd;
+// 				}
+// 			}
+// 			data = data->next;
+// 		}
+// 		if (tmp->name)
+// 			node_cmd->next = NULL;
+// 		if (tmp->file)
+// 			node_file->next = NULL;
+// 		if (data != NULL)
+// 			data = data->next;
+// 	}
+// 	tmp->next = NULL;
+// 	to_array(head);
+// 	return (head);
+// }

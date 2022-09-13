@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:06:24 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/11 02:22:13 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/11 17:50:57 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 //     table = malloc(sizeof(char *) * counting_line(env) + 1);
 //     while (env[i])
 //     {
-//         table[i] = ft_strdup(env[i]);
+//         table[i] = my_strdup(env[i]);
 //         printf("%s\n",table[i]);
 //         i++;
 //     }
@@ -68,12 +68,10 @@ char	*search_value(char *value, int i)
 t_env	*fill_struct(char *name, char *value)
 {
 	t_env	*new;
-	// char *tmp_name;
-	// char *value_temp;
 	
 	new = (t_env *)malloc(sizeof(t_env));
-	new->name = ft_strdup(name);
-	new->value = ft_strdup(value);
+	new->name = my_strdup(name);
+	new->value = my_strdup(value);
 	new->next = NULL;
 	return (new);
 }
@@ -85,12 +83,12 @@ char	*getting_env(t_env *env, char *name)
 		if (!ft_strcmp(name, env->name))
 		{
 			free(name);
-			return (ft_strdup(env->value));
+			return (my_strdup(env->value));
 		}
 		env = env->next;
 	}
 	free(name);
-	return (ft_strdup(""));
+	return (my_strdup(""));
 }
 
 t_env	*setting_env(char **env)

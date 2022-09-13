@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 //The Parser is the software component that reads the command line such as “ls -­al” 
 //and puts it into a data structure called C​ommand Table ​that will store the commands that will be executed.
@@ -98,7 +98,7 @@ void	 my_cmds(t_token **head)
 		//printf("my table\n");
 		while(tab)
 		{
-			tmp_head->cmd[i] = ft_strdup(tab->str);
+			tmp_head->cmd[i] = my_strdup(tab->str);
 			i++;
 			tab = tab->next;
 		}
@@ -115,25 +115,25 @@ void	redirects(t_token **line, t_token **head)
 	{
 		if (!(*line)->next)
 			my_errors(1);
-		(*head)->infile = ft_strdup((*line)->str);
+		(*head)->infile = my_strdup((*line)->str);
 	}
 	else if ((*line)->id == OUTPUT)
 	{
 		if (!(*line)->next)
 			my_errors(1);
-		(*head)->outfile = ft_strdup((*line)->str);
+		(*head)->outfile = my_strdup((*line)->str);
 	}
 	else if ((*line)->id == HERE_DOC)
 	{
 		if (!(*line)->next)
 			my_errors(1);
-		(*head)->here_d= ft_strdup((*line)->str);
+		(*head)->here_d= my_strdup((*line)->str);
 	}
 	else if ((*line)->id == APPEND)
 	{
 		if (!(*line)->next)
 			my_errors(1);
-		(*head)->append = ft_strdup((*line)->str);
+		(*head)->append = my_strdup((*line)->str);
 	}
 	(*line) = (*line)->next;
 }

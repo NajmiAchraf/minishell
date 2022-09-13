@@ -83,6 +83,7 @@ typedef struct	s_allways
 	size_t	i;
 	size_t	j;
 	size_t	k;
+	int		e;
 }	t_allways;
 
 typedef struct	s_vars

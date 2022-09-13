@@ -28,10 +28,8 @@
 
 typedef struct s_final t_final;
 typedef struct s_vars t_vars;
-// # include "Parsing/parsing.h"
+# include "Parsing/parsing.h"
 # include "Execution/execution.h"
-
-
 
 # define OUTPUT '>'
 # define INPUT '<'
@@ -42,9 +40,6 @@ typedef struct s_vars t_vars;
 # define DQ '\"'
 # define HERE_DOC 'H' // <<
 # define WORD 'W'
-# define FIL 1
-# define NAM 2
-
 
 int g_status;
 //env
@@ -125,10 +120,10 @@ void	tokens(char *line, t_token **temp, t_save *save, int *i);
 t_token *	tokenizer(char *line, char **av, t_env *env);
 t_final	*ft_parser(t_token *data);
 void ft_output(t_final *cmd);
-void	ft_free(t_final *cmd);
+void	free_parser(t_final *cmd);
 int check_dollar(char *str);
 
-void ft_freetokens(t_token *data);
+void free_tokens(t_token *data);
 // t_token	*create_node(void);
 //void	add_last_list(t_token **head, t_token *new);
 //int		 list_size(t_token *list);
@@ -137,5 +132,6 @@ void ft_freetokens(t_token *data);
 void	ft_signals(void);
 void	rl_replace_line (const char *text, int clear_undo);
 void	to_array(t_final *node);
+
 
 #endif

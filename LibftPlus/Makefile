@@ -21,7 +21,9 @@ SRC =	\
 	./ft_lstlen.c	\
 	./ft_lstslen.c	\
 	./ft_swap_dp.c	\
-	./ft_swap_tp.c
+	./ft_swap_tp.c	\
+	./my_strdup.c	\
+	./my_strjoin.c
 
 OBJS = $(SRC:.c=.o)
 

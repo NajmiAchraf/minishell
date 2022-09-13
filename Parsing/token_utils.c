@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:25:58 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/11 03:05:13 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/11 19:13:37 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	double_quote(t_save *save, t_token **temp, char *line, int *i)
 	if (check_dollar(str) != 0)
 	{
 		expand = ft_expand(str, save->env, save->av);
+		free (str);
 		add_token_last(temp, new_node(expand, DQ));
 	}
 	else
@@ -89,18 +90,18 @@ void	redirection(t_token **head, char *str, int *i)
 {
 	if (str[*i] == '>' && str[*i + 1] == '>')
 	{
-		add_token_last(head, new_node(ft_strdup(">>"), APPEND));
+		add_token_last(head, new_node(my_strdup(">>"), APPEND));
 		(*i)++;
 	}
 	else if (str[*i] == '<' && str[*i + 1] == '<')
 	{
-		add_token_last(head, new_node(ft_strdup("<<"), HERE_DOC));
+		add_token_last(head, new_node(my_strdup("<<"), HERE_DOC));
 		(*i)++;
 	}
 	else if (str[*i] == '>')
-		add_token_last(head, new_node(ft_strdup(">"), OUTPUT));
+		add_token_last(head, new_node(my_strdup(">"), OUTPUT));
 	else if (str[*i] == '<')
-		add_token_last(head, new_node(ft_strdup("<"), INPUT));
+		add_token_last(head, new_node(my_strdup("<"), INPUT));
 	(*i)++;
 }
 

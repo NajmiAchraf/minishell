@@ -75,8 +75,15 @@ void	iterate_file(t_final **node)
 		{
 			if (file->id == 1)
 				n->infile = open(file->str, O_RDONLY, 0777);
+			if (file->id == -1)
+				return ;
 			if (file->id == 2)
 				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			if (n->outfile == -1)
+			{
+				printf("PROBLEM\n"); // Fix later
+				return ;
+			}
 			if (file->id == 3)
 				n->outfile = open(file->str, O_WRONLY | O_CREAT | APPEND, 0777);
 			file = file->next;

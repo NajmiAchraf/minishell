@@ -62,10 +62,10 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		ft_signals();
-		line = readline("minishell~ ");
+		line = readline("minishell→ ");
 		if (!line) 
 		{
-			printf("minishell~ exit");
+			printf("exit");
 			exit(0); //control_D
 		}
 		if (line[0] != '\0') //for skipping \n
@@ -73,7 +73,13 @@ int	main(int ac, char **av, char **env)
 			add_history(line);
 			if (syntax_error(line) != 0)
 			{
+				/* echo "|" // | ls // ls | // syntax test directly // $USER segv // "./execution" // */
 				data = tokenizer(line, av, fst_link);
+				// while (data != NULL)
+				// {
+				// 	printf("word1 = %s, id = %d\n", data->str, data->id);
+				// 	data = data->next;
+				// }
 			}
 			else
 				printf("minishell: syntax error\n");
@@ -82,6 +88,18 @@ int	main(int ac, char **av, char **env)
 			executor(var, &final_data);
 			//ft_output(final_data);
 			//printf("len ==> \n\n\n");
+
+			//printf("end output \n");
+			// printf("before parser %s\n", data->str);
+			//@final_data = ft_parser(data);
+			// parser (&data);
+			// // // printf("output %s\n", data->str);
+			//@ft_output(final_data);
+			//*printf("data ===== %s\n", data->str);
+			free_tokens(data); //holaaa
+			//data = NULL;
+			// ft_freeparser(final_data);
+			//execution;
 			free(line);
 			//system("leaks minishell");
 		}

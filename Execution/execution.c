@@ -86,21 +86,26 @@ int	cd(t_vars *var, t_final *final)
 	{
 		if (ft_lstlen(final->cmd) == 1)
 		{
-			final->cmd[1] = ft_strdup(get_env_var(var, "HOME"));
+			final->cmd[1] = ft_strdup(get_env_var(var, "HOME"));// SIGFAULT
 			final->cmd[2] = NULL;
 		}
 	}
 	else
-		trouble("cd $HOME");
+		trouble("cd $HOME"); //bash: cd: HOME not set
 
 	if (!ft_strcmp(final->cmd[1], "~"))
 	{
 		free(final->cmd[1]);
 		final->cmd[1] = ft_strdup(var->tilda);
 	}
-	if (ft_lstlen(final->cmd) > 2 || final->cmd[1][0] == '-')
+	if (final->cmd[1][0] == '-')
 	{
-		printf("minishell: cd: %s: error\n", final->cmd[1]);
+		printf("minishell: cd: %s: invalid option\n", final->cmd[0]);
+		return (0);
+	}
+	else if (ft_lstlen(final->cmd) > 2)
+	{
+		printf("minishell: cd: too many arguments\n");
 		return (0);
 	}
 	else
@@ -112,7 +117,6 @@ int	cd(t_vars *var, t_final *final)
 			printf("minishell: cd: %s: No such file or directory\n", final->cmd[1]);
 			return (0);
 		}
-		pwd(var);
 		ft_export(var, ft_strjoin("OLDPWD=", var->tmp3), 0);
 		ft_export(var, ft_strjoin("PWD=", dir()), 0);
 	}
@@ -164,24 +168,65 @@ int	unset(t_vars *var, t_final *final)
 int	environment(t_vars *var, t_final *final)
 {
 	if (!final->cmd[1])
-		show_env(var);
+		show_env(var); // update SHLVL=4
 	else
 		printf("env: ‘%s’: No such file or directory\n", final->cmd[1]);
 	return (1);
 }
 
-// int	exiting(t_vars *var, t_final *final)
-// {
-// 	t_allways aws;
+static int	check_exit(char *cmds)
+{
+	int i, j;
+	t_allways aws;
 
-// 	aws.i = ft_lstlen(final->cmd);
-// 	if (aws.i == 0)
-// 	{
-// 		printf("exit\n");
-// 		exit(0);
-// 	}
-	
-// }
+	aws.i = 0;
+	if (cmds[aws.i] == '-' || cmds[aws.i] == '+')
+		aws.i++;
+	if (cmds[aws.i] == '\0')
+		return (0);
+	while (cmds[aws.i])
+	{
+		if (!ft_isdigit(cmds[aws.i]))
+			return (0);
+		aws.i++;
+	}
+	return (1);
+}
+
+int	exiting(t_vars *var, t_final *final)
+{
+	t_allways aws;
+
+	aws.i = ft_lstlen(final->cmd);
+	// unsigned char c = 656884651669684;
+	// printf("%d\n", c);
+	if (aws.i == 1)
+	{
+		printf("exit\n");
+		exit(EXIT_SUCCESS);
+	}
+	else if (aws.i >= 2 && check_exit(final->cmd[1]))
+	{
+		printf("exit\n");
+		// aws.e = (unsigned char)ft_atoi(final->cmd[1]);
+		// // printf("%d\n", aws.e);
+		// exit((int)aws.e);
+		exit(ft_atoi(final->cmd[1])%256);
+	}
+	else if (aws.i >= 2 && !check_exit(final->cmd[1]))
+	{
+		printf ("minishell: exit: numeric argument required\n");
+		exit(255);
+	}
+	else if (aws.i > 2 && check_exit(final->cmd[1]))
+	{
+		printf("exit\nminishell: exit: too many arguments\n");
+		// status = 1;
+	}
+	else
+		exit(EXIT_FAILURE);
+	return (0);
+}
 
 int	builtincheck(char *name)
 {
@@ -208,8 +253,8 @@ int	builtin(t_vars *var, t_final *final)
 		return (unset(var, final));
 	else if (!ft_strcmp(final->cmd[0], "env"))
 		return (environment(var, final));
-	// else if (!ft_strcmp(final->cmd[0], "exit"))
-	// 	return (exit(EXIT_SUCCESS));
+	else if (!ft_strcmp(final->cmd[0], "exit"))
+		return (exiting(var, final));
 	return (0);
 }
 
@@ -311,14 +356,16 @@ void	fill_path(t_vars *var)
 		trouble("fill_path");
 	free1(var->temp);
 	var->temp = ft_split(get_env_var(var, "PATH"), ':');
-	var->exepath = malloc(sizeof(char *) * (ft_lstlen(var->temp) + 1));
+	var->exepath = malloc(sizeof(char *) * (ft_lstlen(var->temp) + 3));
 	aws.i = 0;
 	while (var->temp[aws.i])
 	{
 		var->exepath[aws.i] = ft_strjoin(var->temp[aws.i], "/");
 		aws.i++;
 	}
-	var->exepath[aws.i] = NULL;
+	var->exepath[aws.i] = ft_strdup("./");
+	var->exepath[aws.i + 1] = ft_strdup("");
+	var->exepath[aws.i + 2] = NULL;
 }
 
 void	initialisation(t_vars *var, char **env)

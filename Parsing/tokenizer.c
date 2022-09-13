@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:00:09 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/11 03:04:11 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/13 03:09:21 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 void	pipe_sign(t_token **head, int *i)
 {
-	add_token_last(head, new_node(ft_strdup("|"), PIPE));
+	add_token_last(head, new_node(my_strdup("|"), PIPE));
 	(*i)++;
 }
 
@@ -71,13 +71,12 @@ void	pipe_sign(t_token **head, int *i)
 // 	}
 // }
 
-//FOR THE NORM, STILL NEED SOME UPDATES TO HANDLE SPACES 
 void	tokens(char *line, t_token **temp, t_save *save, int *i)
 {
 	if (line[*i] == '\'')
 		single_quote(temp, line, i); //done with leaks
 	else if (line[*i] == '\"')
-		double_quote(save, temp, line, i); //done with leaks
+		double_quote(save, temp, line, i); //still
 	else if (space(line[*i]))
 		(*i)++;
 	else if (line[*i] == '$')
@@ -87,7 +86,7 @@ void	tokens(char *line, t_token **temp, t_save *save, int *i)
 	else if (line[*i] == '|')
 		pipe_sign(temp, i); //done 
 	else
-		setting_word(save, temp, line, i); //done with leaks
+		setting_word(save, temp, line, i); //still
 }
 
 t_token *tokenizer(char *line, char **av, t_env *env)

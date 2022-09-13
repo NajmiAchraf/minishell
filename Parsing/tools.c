@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:52:39 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/10 22:18:51 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/13 02:57:04 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void ft_output(t_final *s)
     while (final)
 	{
 		i = 0;
-		printf("in %d => out %d\n", final->infile, final->outfile);
 		printf("output cmd number %d\n",id);
 		cmd = final->cmd;
 		while (cmd[i])
@@ -32,14 +31,14 @@ void ft_output(t_final *s)
 			printf("name cmd is = %s and id is %d\n", cmd[i], id);
 			i++;
 		}
-		// file = final->file;
-		// while (file != NULL)
-		// {
-		// 	printf("name file is = %s and id is = %d\n", file->str, file->id);
-		// 	file = file->next;
-		// }
+		file = final->file;
+		while (file != NULL)
+		{
+			printf("name file is = %s and id is = %d\n", file->str, file->id);
+			file = file->next;
+		}
 		final= final->next;
-		// printf("end node number %d\n", id);
+		printf("end node number %d\n", id);
 		id++;
 	}
 }
@@ -72,7 +71,7 @@ void ft_output(t_final *s)
 // }
 
 
-void	ft_free(t_final *cmd)
+void	free_parser(t_final *cmd)
 {
 	t_file	*tmp;
 	t_final	*pointer;
@@ -103,7 +102,7 @@ void	ft_free(t_final *cmd)
 }
 
 
-// void ft_freetokens(t_token *data)
+// void free_tokens(t_token *data)
 // {
 // 	t_token *tmp;
 // 	t_token *node;
@@ -120,7 +119,7 @@ void	ft_free(t_final *cmd)
 // 	printf("end free \n");
 // }
 
-void ft_freetokens(t_token *data)
+void free_tokens(t_token *data)
 {
 	t_token *tmp;
 	t_token *node;
@@ -152,7 +151,7 @@ void ft_freetokens(t_token *data)
 //     new = (t_node)malloc(sizeof(t_node));
 //     if (!new)
 //         return ;
-//     new->data = ft_strdup(data);
+//     new->data = my_strdup(data);
 //     new->next = NULL;
 //     if (*head == NULL)
 //         head = new;
