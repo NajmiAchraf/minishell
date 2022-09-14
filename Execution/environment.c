@@ -95,7 +95,7 @@ void	init_environment(t_vars *var)
 	t_allways aws;
 
 	aws.i = 0;
-	var->env.newenv = malloc(sizeof(char *) * 1024);
+	var->env.newenv = malloc(sizeof(char *) * 4096);
 	while (var->env.env[aws.i])
 	{
 		var->env.newenv[aws.i] = ft_strdup(var->env.env[aws.i]);
@@ -110,7 +110,7 @@ void	init_export(t_vars *var)
 	t_allways aws;
 
 	aws.i = 0;
-	var->env.newexp = malloc(sizeof(char **) * 1024);
+	var->env.newexp = malloc(sizeof(char **) * 4096);
 	while (var->env.env[aws.i])
 	{
 		var->env.newexp[aws.i] = malloc(sizeof(char *) * 3);
@@ -257,7 +257,7 @@ int	check_env_var(t_vars *var, char *to_check)
 	while (++aws.j < var->env.sizeofexp - 1)
 	{
 		if (!ft_strcmp(var->env.newexp[aws.j][0], to_check))
-			return (1);
+			return (0);
 	}
-	return (0);
+	return (1);
 }

@@ -131,15 +131,15 @@ void free_tokens(t_token *data)
 	{
 		//printf("|%s|\n", data->str);
 		tmp = new->next;
-		printf("%s\n", new->str);
-		printf("%p\n", new->str);
+		// printf("%s\n", new->str);
+		// printf("%p\n", new->str);
 		//printf("%s\n",new->next->str);
 		//printf("%p\n",new->next->str);
 		free(new->str);
 		free(new);
 		new = tmp;
 	}
-	printf("end free \n");
+	// printf("end free \n");
 }
 
 

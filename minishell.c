@@ -79,31 +79,32 @@ int	main(int ac, char **av, char **env)
 				// {
 				// 	printf("word1 = %s, id = %d\n", data->str, data->id);
 				// 	data = data->next;
-				// }
+
+				// var->final = final_data;	
+				final_data = ft_parser(data);
+				//iterate(&final_data);
+				executor(var, &final_data);
+				//ft_output(final_data);
+				//printf("len ==> \n\n\n");
+
+				//printf("end output \n");
+				// printf("before parser %s\n", data->str);
+				//@final_data = ft_parser(data);
+				// parser (&data);
+				// // // printf("output %s\n", data->str);
+				//@ft_output(final_data);
+				//*printf("data ===== %s\n", data->str);
+				free_tokens(data); //holaaa
+				//data = NULL;
+				// ft_freeparser(final_data);
+				//execution;
+				free(line);
+				//system("leaks minishell");
+					// }
 			}
 			else
 				printf("minishell: syntax error\n");
-			final_data = ft_parser(data);
-			//iterate(&final_data);
-			executor(var, &final_data);
-			//ft_output(final_data);
-			//printf("len ==> \n\n\n");
-
-			//printf("end output \n");
-			// printf("before parser %s\n", data->str);
-			//@final_data = ft_parser(data);
-			// parser (&data);
-			// // // printf("output %s\n", data->str);
-			//@ft_output(final_data);
-			//*printf("data ===== %s\n", data->str);
-			free_tokens(data); //holaaa
-			//data = NULL;
-			// ft_freeparser(final_data);
-			//execution;
-			free(line);
-			//system("leaks minishell");
 		}
-		// var->final = final_data;
 	}
 }
 

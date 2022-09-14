@@ -81,7 +81,7 @@ void	iterate_file(t_final **node)
 				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 			if (n->outfile == -1)
 			{
-				printf("PROBLEM\n"); // Fix later
+				printf("minishell: can't open %s file\n", file->str); // Fix later
 				return ;
 			}
 			if (file->id == 3)
@@ -105,8 +105,8 @@ void	executor(t_vars *var, t_final **n)
 	iterate_file(n);
 	while (node)
 	{
-		if (len == 1 && builtincheck((node)->cmd[0]))
-			builtin(var, node);
+		if (len == 1 && !builtincheck((node)->cmd[0]))
+			g_status = builtin(var, node);
 		else
 		{
 			if (fork1() == 0)
@@ -123,13 +123,13 @@ void	executor(t_vars *var, t_final **n)
 					start = start->next;
 				}
 
-				if (builtincheck((node)->cmd[0]))
+				if (!builtincheck((node)->cmd[0]))
 				{
-					builtin(var, node);
+					g_status = builtin(var, node);
 					exit(0);
 				}
-				execve(exe_path_set(var, (node)->cmd[0]), (node)->cmd, var->env.newenv);
-				printf("exec %s failed\n", (node)->cmd[0]);
+				g_status = execve(exe_path_set(var, (node)->cmd[0]), (node)->cmd, var->env.newenv);
+				printf("minishell: execve: %s failed\n", (node)->cmd[0]);
 				exit(1);
 			}
 			if ((node)->infile != 0)
