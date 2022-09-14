@@ -157,7 +157,7 @@ int		var_into_var(t_vars *var, char **to_check, t_allways aws);
 int		name_into_var(t_vars *var, char **to_check, t_allways aws);
 int		outside_search_variable(t_vars *var, char *to_search, char *variable);
 int		inside_search_variable(t_vars *var, char *to_search, int gen);
-int		little_checker(t_vars *var);
+int		little_checker(char *to_check);
 int		validate_variable(t_vars *var, char *to_check);
 
 void	sort_export(t_vars *var);

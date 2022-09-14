@@ -73,7 +73,12 @@ int	main(int ac, char **av, char **env)
 			add_history(line);
 			if (syntax_error(line) != 0)
 			{
-				/* echo "|" // | ls // ls | // syntax test directly // $USER segv // "./execution" // */
+				/* echo "|" // | ls // ls | // syntax test directly // $USER segv // "./execution" //  */ 
+				/*
+					minishell→ export A
+					minishell→ $A
+					AddressSanitizer:DEADLYSIGNAL
+				*/
 				data = tokenizer(line, av, fst_link);
 				// while (data != NULL)
 				// {
