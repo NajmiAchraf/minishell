@@ -116,7 +116,6 @@ void	trouble(char *s);
 int		fork1(void);
 void	free1(char **tofree);
 
-// void	runcmd(t_cmd *cmd, t_vars *var);
 void	fill_path(t_vars *var);
 void	initialisation(t_vars *var, char **env);
 void	hostname(t_vars *var);
@@ -127,7 +126,6 @@ void	hostname(t_vars *var);
 
 int		builtin(t_vars *var, t_final *final);
 
-int		echo_check(char *args);
 int		echo(t_vars *var, t_final *fianl);
 int		cd(t_vars *var, t_final *fianl);
 int		pwd(t_vars *var);

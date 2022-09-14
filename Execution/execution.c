@@ -39,7 +39,7 @@ char	*dir()
 	return (ft_strdup(cwd));
 }
 
-int	echo_check(char *args)
+static int	echo_check(char *args)
 {
 	t_allways aws;
 
@@ -79,7 +79,7 @@ int	echo(t_vars *var, t_final *final)
 	return (0);
 }
 
-int	change_directory(t_vars *var, char *chemin)
+static int	change_directory(t_vars *var, char *chemin)
 {
 	free(var->tmp3);
 	var->tmp3 = dir();
@@ -170,14 +170,14 @@ static int	check_exit(char *cmds)
 	if (cmds[aws.i] == '-' || cmds[aws.i] == '+')
 		aws.i++;
 	if (cmds[aws.i] == '\0')
-		return (0);
+		return (1);
 	while (cmds[aws.i])
 	{
 		if (!ft_isdigit(cmds[aws.i]))
-			return (0);
+			return (1);
 		aws.i++;
 	}
-	return (1);
+	return (0);
 }
 
 int	exiting(t_vars *var, t_final *final)
@@ -185,30 +185,25 @@ int	exiting(t_vars *var, t_final *final)
 	t_allways aws;
 
 	aws.i = ft_lstlen(final->cmd);
-	// unsigned char c = 656884651669684;
-	// printf("%d\n", c);
 	if (aws.i == 1)
 	{
-		printf("exit0\n");
+		printf("exit\n");
 		exit(EXIT_SUCCESS);
+	}
+	else if (aws.i > 2 && !check_exit(final->cmd[1]))
+	{
+		printf("exit\nminishell: exit: too many arguments\n");
+		return (1);
 	}
 	else if (aws.i >= 2 && check_exit(final->cmd[1]))
 	{
-		printf("exit1\n");
-		// aws.e = (unsigned char)ft_atoi(final->cmd[1]);
-		// // printf("%d\n", aws.e);
-		// exit((int)aws.e);
-		exit(ft_atoi(final->cmd[1])%256);
+		printf("exit\nminishell: exit: numeric argument required\n");
+		exit(255);
 	}
 	else if (aws.i >= 2 && !check_exit(final->cmd[1]))
 	{
-		printf("minishell: exit: numeric argument required\n");
-		exit(255);
-	}
-	else if (aws.i > 2 && check_exit(final->cmd[1]))
-	{
-		printf("exit\nminishell: exit: too many arguments\n");
-		// status = 1;
+		printf("exit\n");
+		exit(ft_atoi(final->cmd[1])%256);
 	}
 	else
 		exit(EXIT_FAILURE);
