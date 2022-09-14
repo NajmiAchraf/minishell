@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:50:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/12 02:39:33 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/14 22:08:56 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,11 @@ t_final	*ft_parser(t_token *data)
 		{
 			if (redirect(data->str))
 			{
+				if (data->str[0] == redirect(data->str) || data->next == NULL)
+				{
+					printf("minishell: syntax error\n");
+					return (0);
+				}
 				type = redirect(data->str);
 				data = data->next;
 				node_file = file_node(data->str, type);

@@ -23,7 +23,7 @@ PARSE =	\
 	./Parsing/token_utils2.c		\
 	./Parsing/expanding.c			\
 	./Parsing/parser.c				\
-	./Parsing/parsing.c				\
+	./Parsing/signals.c				\
 	./Parsing/tools.c				\
 	# ./Parsing/pars_utils.c 		\
 	# ./Parsing/pars_utils2.c 		\
