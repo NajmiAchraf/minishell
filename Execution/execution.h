@@ -102,7 +102,7 @@ typedef struct	s_vars
 	char	***temp3;
 
 	char	**exepath;
-	char	*tilda;
+	char	*tilde;
 	char	*buff;
 	// t_cmd	**cmd;
 	size_t	cod;

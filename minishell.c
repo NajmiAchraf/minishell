@@ -65,14 +65,14 @@ int	main(int ac, char **av, char **env)
 		line = readline("minishell→ ");
 		if (!line) 
 		{
-			printf("exit");
+			ft_putendl_fd("exit", 1);
 			exit(0); //control_D
 		}
 		if (line[0] != '\0') //for skipping \n
 		{
-			add_history(line);
 			if (syntax_error(line) != 0)
 			{
+				add_history(line);
 				/* echo "|" // | ls // ls | // syntax test directly // $USER segv // "./execution" //  */ 
 				/*
 					minishell→ export A

@@ -12,6 +12,15 @@
 
 #include "../minishell.h"
 
+// int	heredoc()
+// {
+
+// 	free(var->buff);
+// 	var->buff = readline("→ ");
+// 	add_history(var->buff);
+// 	// printf("%s\n", var->buff);
+// }
+
 int	list_size1(t_final *list)
 {
 	t_final	*tmp;
@@ -73,7 +82,7 @@ void	iterate_file(t_final **node)
 		file = n->file;
 		while (file)
 		{
-			if (file->id == 1)//<
+			if (file->id == 1) /* < */
 			{
 				if (n->infile != -1) // to close and dup before
 					close(n->infile);
@@ -81,7 +90,7 @@ void	iterate_file(t_final **node)
 				if (n->infile == -1)
 					return ;
 			}
-			if (file->id == 2)//>
+			if (file->id == 2) /* > */
 			{
 				if (n->outfile != -1) // to close and dup before
 					close(n->outfile);
@@ -92,11 +101,11 @@ void	iterate_file(t_final **node)
 					return ;
 				}
 			}
-			if (file->id == 3)//>>
+			if (file->id == 3) /* >> */
 			{
 				if (n->outfile != -1) // to close and dup before
 					close(n->outfile);
-				n->outfile = open(file->str, O_WRONLY | O_CREAT | APPEND, 0666);
+				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_APPEND, 0666);
 				if (n->outfile == -1)
 				{
 					printf("minishell: can't open %s file\n", file->str); // Fix later
@@ -122,41 +131,48 @@ void	executor(t_vars *var, t_final **n)
 	iterate_file(n);
 	while (node)
 	{
-		if (len == 1 && !builtincheck((node)->cmd[0]))
-			g_status = builtin(var, node);
-		else
+		if (node->cmd[0])
 		{
-			if (fork1() == 0)
+			if (len == 1 && !builtincheck((node)->cmd[0]))
+				g_status = builtin(var, node);
+			else
 			{
-				start = *n;
-				dup2((node)->infile, 0);
-				dup2((node)->outfile, 1);
-				while (start)
+				if (fork1() == 0)
 				{
-					if ((start)->infile != 0)
-						close((start)->infile);
-					if ((start)->outfile != 1)
-						close((start)->outfile);
-					start = start->next;
-				}
+					start = *n;
+					dup2((node)->infile, 0);
+					dup2((node)->outfile, 1);
+					while (start)
+					{
+						if ((start)->infile != 0)
+							close((start)->infile);
+						if ((start)->outfile != 1)
+							close((start)->outfile);
+						start = start->next;
+					}
 
-				if (!builtincheck((node)->cmd[0]))
-				{
-					g_status = builtin(var, node);
-					exit(0);
+					if (!builtincheck((node)->cmd[0]))
+					{
+						g_status = builtin(var, node);
+						exit(0);
+					}
+					g_status = execve(exe_path_set(var, (node)->cmd[0]), (node)->cmd, var->env.newenv);
+					printf("minishell: execve: %s failed\n", (node)->cmd[0]);
+					exit(1);
 				}
-				g_status = execve(exe_path_set(var, (node)->cmd[0]), (node)->cmd, var->env.newenv);
-				printf("minishell: execve: %s failed\n", (node)->cmd[0]);
-				exit(1);
+				if ((node)->infile != 0)
+					close((node)->infile);
+				if ((node)->outfile != 1)
+					close((node)->outfile);
+				if (i == len - 1)
+					while (wait(NULL) > 0);
 			}
-			if ((node)->infile != 0)
-				close((node)->infile);
-			if ((node)->outfile != 1)
-				close((node)->outfile);
-			if (i == len - 1)
-				while (wait(NULL) > 0);
 		}
+		else
+			printf("minishell: execve: %s bash: ls: No such file or directory\n", (node)->cmd[0]);
 		node = (node)->next;
 		i++;
 	}
 }
+
+

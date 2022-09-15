@@ -15,25 +15,25 @@ NAME = minishell
 CFLAGS = -fsanitize=address -g #-Wall -Werror -Wextra
 
 PARSE =	\
-	./Parsing/syntax_error.c		\
-	./Parsing/ft_environment.c		\
-	./Parsing/environment_utils.c 	\
-	./Parsing/tokenizer.c			\
-	./Parsing/token_utils.c			\
-	./Parsing/token_utils2.c		\
-	./Parsing/expanding.c			\
-	./Parsing/parser.c				\
-	./Parsing/signals.c				\
-	./Parsing/tools.c				\
-	# ./Parsing/pars_utils.c 		\
-	# ./Parsing/pars_utils2.c 		\
+	./Parsing/syntax_error.c			\
+	./Parsing/ft_environment.c			\
+	./Parsing/environment_utils.c 		\
+	./Parsing/tokenizer.c				\
+	./Parsing/token_utils.c				\
+	./Parsing/token_utils2.c			\
+	./Parsing/expanding.c				\
+	./Parsing/parser.c					\
+	./Parsing/signals.c					\
+	./Parsing/tools.c					\
+	# ./Parsing/pars_utils.c 			\
+	# ./Parsing/pars_utils2.c 			\
 	# ./Parsing/parsing/parse.c 
 
 EXEC =	\
-	./minishell.c					\
-	./Execution/execution.c			\
-	./Execution/environment.c		\
-	./Execution/pipes_redirections.c			\
+	./minishell.c						\
+	./Execution/execution.c				\
+	./Execution/environment.c			\
+	./Execution/pipes_redirections.c	\
 
 SRCS = $(PARSE) $(EXEC)
 #/Users/anajmi/goinfre/brew/opt/readline

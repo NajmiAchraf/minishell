@@ -25,6 +25,7 @@ void	trouble(char *s)
 void	troublep(char *s)
 {
 	printf("minishell: %s.\n", s);
+	g_status = 1;
 }
 
 int	fork1(void)
@@ -65,22 +66,24 @@ int	echo(t_vars *var, t_final *final)//putstr !!!
 
 	aws.i = 1;
 	aws.k = 1;
-	
-	if (final->cmd[aws.i][0] == '-' && final->cmd[aws.i][1])
+	if (final->cmd[aws.i])
 	{
-		while (final->cmd[aws.i] && final->cmd[aws.i][0] == '-' && !echo_check(final->cmd[aws.i]))
+		if (final->cmd[aws.i][0] == '-' && final->cmd[aws.i][1])
 		{
-			aws.k = 0;
+			while (final->cmd[aws.i] && final->cmd[aws.i][0] == '-' && !echo_check(final->cmd[aws.i]))
+			{
+				aws.k = 0;
+				aws.i++;
+			}
+		}
+		while (final->cmd[aws.i])
+		{
+			ft_putstr_fd(final->cmd[aws.i], 1);
+			ft_putchar_fd(' ', 1);
 			aws.i++;
 		}
+		ft_putchar_fd('\b', 1);
 	}
-	while (final->cmd[aws.i])
-	{
-		ft_putstr_fd(final->cmd[aws.i], 1);
-		ft_putchar_fd(' ', 1);
-		aws.i++;
-	}
-	ft_putchar_fd('\b', 1);
 	if (aws.k)
 		ft_putchar_fd('\n', 1);
 	return (0);
@@ -111,8 +114,8 @@ int	cd(t_vars *var, t_final *final)
 		else
 			return (change_directory(var, get_env_var(var, "HOME")));
 	}
-	else if (!ft_strcmp(final->cmd[1], "~"))
-		return (change_directory(var, var->tilda));
+	// else if (!ft_strcmp(final->cmd[1], "~"))
+	// 	return (change_directory(var, var->tilde));
 	else
 		return (change_directory(var, final->cmd[1]));
 	return (0);
@@ -153,7 +156,7 @@ int	unset(t_vars *var, t_final *final)
 	while (final->cmd[aws.i])
 	{
 		if (little_checker(final->cmd[aws.i]))
-			printf("bash: unset: `%s': not a valid identifier\n", final->cmd[aws.i]);
+			printf("minishell: unset: `%s': not a valid identifier\n", final->cmd[aws.i]);
 		else
 			ft_unset(var, final->cmd[aws.i]);
 		aws.i++;
@@ -234,8 +237,6 @@ int	builtincheck(char *name)
 
 int	builtin(t_vars *var, t_final *final)
 {
-	// free(var->tmp);
-
 	if (!ft_strcmp(final->cmd[0], "echo"))
 		return (echo(var, final));
 	else if (!ft_strcmp(final->cmd[0], "cd"))
@@ -303,7 +304,7 @@ void	initialisation(t_vars *var, char **env)
 	var->exepath[0] = NULL;
 
 	var->env.env = env;
-	var->tilda = ft_strdup("/Users/anajmi"); // ohrete
+	var->tilde = ft_strdup("/Users/anajmi"); // ohrete
 	// var->cmd = (t_cmd **)malloc(sizeof(t_cmd *) * FILENAME_MAX);
 	var->cod = 0;
 	if (!env)
