@@ -16,7 +16,7 @@
 /* BUILTIN FUNCTIONS */
 /*********************/
 
-void	trouble(char *s)
+void	troublec(char *s)
 {
 	printf("minishell: %s.\n", s);
 	exit(1);
@@ -34,7 +34,7 @@ int	fork1(void)
 
 	pid = fork();
 	if (pid == -1)
-		trouble("fork");
+		troublec("fork");
 	return pid;
 }
 
@@ -114,8 +114,6 @@ int	cd(t_vars *var, t_final *final)
 		else
 			return (change_directory(var, get_env_var(var, "HOME")));
 	}
-	// else if (!ft_strcmp(final->cmd[1], "~"))
-	// 	return (change_directory(var, var->tilde));
 	else
 		return (change_directory(var, final->cmd[1]));
 	return (0);
@@ -166,13 +164,19 @@ int	unset(t_vars *var, t_final *final)
 
 int	environment(t_vars *var, t_final *final)
 {
-	if (!final->cmd[1])
-		show_env(var); // update SHLVL=4
-	else
+	t_allways aws;
+
+	aws.i = 1;
+	while (final->cmd[aws.i])
 	{
-		printf("env: ‘%s’: No such file or directory\n", final->cmd[1]);
-		return (1);
+		if (ft_strcmp(final->cmd[aws.i], "env"))
+		{
+			printf("minishell: env: ‘%s’: No such file or directory\n", final->cmd[aws.i]);
+			return (1);
+		}
+		aws.i++;
 	}
+	show_env(var);
 	return (0);
 }
 
@@ -259,7 +263,7 @@ char	*exe_path_set(t_vars *var, char *exe)
 	t_allways aws;
 
 	if (check_env_var(var, "PATH"))
-		trouble("PATH");
+		troublec("PATH");
 	fill_path(var);
 	aws.i = 0;
 	while (var->exepath[aws.i])
@@ -304,8 +308,6 @@ void	initialisation(t_vars *var, char **env)
 	var->exepath[0] = NULL;
 
 	var->env.env = env;
-	var->tilde = ft_strdup("/Users/anajmi"); // ohrete
-	// var->cmd = (t_cmd **)malloc(sizeof(t_cmd *) * FILENAME_MAX);
 	var->cod = 0;
 	if (!env)
 	{
@@ -315,85 +317,10 @@ void	initialisation(t_vars *var, char **env)
 	}
 	init_environment(var);
 	init_export(var);
-
 	ft_unset(var, "OLDPWD");
 	ft_export(var, "OLDPWD", 1);
+	ft_export(var, ft_strjoin("SHLVL=", ft_itoa(ft_atoi(get_env_var(var, "SHLVL")) + 1)), 0);
 }
-
-
-/* void	runcmd(t_cmd *cmd, t_vars *var)
-{
-	t_execcmd	*ecmd;
-	t_redircmd	*rcmd;
-	t_pipecmd	*pcmd;
-
-	// if (cmd == 0)
-	// 	exit(0);
-
-	if (cmd->type == EXEC)
-	{
-		ecmd = cmd->exe;
-		size_t i = 0;
-		if (ecmd->name[0] == 0)
-			exit(0);
-		if (builtincheck(ecmd->name))
-		{
-			builtin(var, ecmd);
-			return ;
-		}
-		else
-		{
-			// execve(exe_path_set(var, ecmd->name), ecmd->args, var->env.newenv);
-			execvp(exe_path_set(var, ecmd->name), ecmd->args);
-			// execv(ft_strjoin("/usr/bin/", ecmd->name), ecmd->args);
-			// perror("");
-			printf("exec %s failed\n", ecmd->name);
-		}
-	}
-	// else if (cmd->type == REDIR)
-	// {
-	// 	rcmd = cmd->red;
-	// 	close(rcmd->fd);
-	// 	if (open(rcmd->file, rcmd->mode) < 0){
-	// 		printf("open %s failed\n", rcmd->file);
-	// 		exit(0);
-	// 	}
-	// 	runcmd(rcmd->cmd, var);
-	// }
-	else if (cmd->type == PIPE)
-	{
-		pcmd = cmd->pip;
-		// if (var->idx_fd > 0)
-		// {
-		// 	if (pipe(var->fd[var->idx_fd]) < 0)
-		// 		trouble("pipe");
-		// }
-		if (fork1() == 0){
-			// close(0);
-			dup2(var->fd[var->idx_fd][1], 1);
-			// close(p[0]);
-			runcmd(pcmd->left, var);
-			// close(p[1]);
-		}
-		if (fork1() == 0){
-			// close(1);
-			dup2(var->fd[var->idx_fd][0], 0);
-			// close(p[1]);
-			runcmd(pcmd->right, var);
-			// close(p[0]);
-		}
-		// close(p[1]);
-		// close(p[0]);
-		wait(NULL);
-		wait(NULL);
-		// while (waitpid(-1, NULL, 0) < 0)
-		// {}
-		// exit(0);
-	}
-	else
-		trouble("runcmd");
-	// exit(0);
-} */
 
 /* int	main(int ac, char *av[], char **env)
 {

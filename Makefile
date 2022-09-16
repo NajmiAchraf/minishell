@@ -36,10 +36,9 @@ EXEC =	\
 	./Execution/pipes_redirections.c	\
 
 SRCS = $(PARSE) $(EXEC)
-#/Users/anajmi/goinfre/brew/opt/readline
-# LFLAGS = -lreadline -L./Users/anajmi/goinfre/brew/opt/readline/8.1.2/lib -I./Users/anajmi/goinfre/brew/opt/readline/8.1.2/include
-LFLAGS = -lreadline -L/Users/anajmi/.brew/opt/readline/lib -I/Users/anajmi/.brew/opt/readline/include
-
+CONTROL = @stty -echoctl
+RE_PATH = /Users/anajmi/brew/brew/Cellar/readline/8.1.2
+LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 OBJ = $(SRCS:.c=.o)
 
 #*******************************#
@@ -89,6 +88,7 @@ all : $(NAME)
 $(NAME) : $(OBJ)
 	$(ALLIBFT)
 	$(ALLIBPL)
+	$(CONTROL) 
 	gcc $(OBJ) $(CFLAGS) $(ARLIB) $(ARPLS) $(LFLAGS) -o $(NAME)
 	@echo "$(C_GREEN)[MINISHELL MANDATORY CREATED!]$(C_RES)"
 

@@ -12,14 +12,77 @@
 
 #include "../minishell.h"
 
-// int	heredoc()
-// {
+/*
+bash-3.2$ << lim |
+> hqw
+> hqwq
+> hqwhqwhqwh
+> lim
+> |
+bash: syntax error near unexpected token `|'
+bash-3.2$ << lim >
+> hqw
+> hqwwq
+> lim
+bash: syntax error near unexpected token `newline'
+bash-3.2$ cat <<a<<b<<c
+> hqw
+> hqw
+> hqwh
+> a
+> hqwh
+> qwhqwh
+> b
+> hqw
+> hqwhwq
+> c
+hqw
+hqwhwq
+bash-3.2$ cat <<a << b | <<salam | echo haha << lbs
+> hw
+> hqw
+> hqwhqw
+> a
+> hqwh
+> qw
+> hqwhqw
+> hqw
+> hqwh
+> b
+> hwq
+> qwhq
+> whqwh
+> salam
+> hwqh
+> qhwqhqwh
+> lbs
+haha
+bash-3.2$ cat <<a <<b echo << c
+> hqw
+> hqwhqwh
+> a
+> hqwh
+> qwhqw
+> b
+> hqwh
+> qhwqwhqwh
+> c
+cat: echo: No such file or directory
+bash-3.2$ 
+*/
 
-// 	free(var->buff);
-// 	var->buff = readline("→ ");
-// 	add_history(var->buff);
-// 	// printf("%s\n", var->buff);
-// }
+int	heredoc(t_vars *var, t_final *final)
+{
+	free(var->end);
+	var->end = ft_strdup(var->line);
+	while (1)
+	{
+		free(var->line);
+		var->line = readline("> ");
+		add_history(var->line);
+	}
+	
+}
 
 int	list_size1(t_final *list)
 {
@@ -174,5 +237,3 @@ void	executor(t_vars *var, t_final **n)
 		i++;
 	}
 }
-
-

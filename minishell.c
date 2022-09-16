@@ -45,7 +45,6 @@
 
 int	main(int ac, char **av, char **env)
 {
-	char	*line;
 	t_vars	*var;
 	t_token	*data;
 	t_env	*fst_link;
@@ -62,24 +61,24 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		ft_signals();
-		line = readline("minishell→ ");
-		if (!line) 
+		var->line = readline("minishell→ ");
+		if (!var->line) 
 		{
 			ft_putendl_fd("exit", 1);
 			exit(0); //control_D
 		}
-		if (line[0] != '\0') //for skipping \n
+		if (var->line[0] != '\0') //for skipping \n
 		{
-			if (syntax_error(line) != 0)
+			if (syntax_error(var->line) != 0)
 			{
-				add_history(line);
+				add_history(var->line);
 				/* echo "|" // | ls // ls | // syntax test directly // $USER segv // "./execution" //  */ 
 				/*
 					minishell→ export A
 					minishell→ $A
 					AddressSanitizer:DEADLYSIGNAL
 				*/
-				data = tokenizer(line, av, fst_link);
+				data = tokenizer(var->line, av, fst_link);
 				// while (data != NULL)
 				// {
 				// 	printf("word1 = %s, id = %d\n", data->str, data->id);
@@ -103,7 +102,7 @@ int	main(int ac, char **av, char **env)
 				//data = NULL;
 				// ft_freeparser(final_data);
 				//execution;
-				free(line);
+				free(var->line);
 				//system("leaks minishell");
 					// }
 			}

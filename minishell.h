@@ -133,6 +133,6 @@ void free_tokens(t_token *data);
 void	ft_signals(void);
 void	rl_replace_line (const char *text, int clear_undo);
 void	to_array(t_final *node);
-
+void	control_c(int sig);
 
 #endif

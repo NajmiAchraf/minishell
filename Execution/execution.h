@@ -103,8 +103,8 @@ typedef struct	s_vars
 
 	char	**exepath;
 	char	*tilde;
-	char	*buff;
-	// t_cmd	**cmd;
+	char	*line;
+	char	*end;
 	size_t	cod;
 }	t_vars;
 
@@ -112,7 +112,7 @@ typedef struct	s_vars
 /*								MAIN FUNCTIONS								  */
 /* ************************************************************************** */
 
-void	trouble(char *s);
+void	troublec(char *s);
 int		fork1(void);
 void	free1(char **tofree);
 

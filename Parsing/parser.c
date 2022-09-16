@@ -185,7 +185,6 @@ t_final	*ft_parser(t_token *data)
 		if (data != NULL)
 			data = data->next;
 	}
-	tmp->next = NULL;
 	to_array(head);
 	return (head);
 }

@@ -16,10 +16,10 @@ void	control_c(int sig)
 {
 	(void)sig;
 
-	// rl_replace_line("", 0);
-	// ft_putchar_fd('\n', 1);
-	// rl_on_new_line();
-	// rl_redisplay();
+	rl_replace_line("", 0);
+	ft_putchar_fd('\n', 1);
+	rl_on_new_line();
+	rl_redisplay();
 	return ;
 }
 void	ft_signals(void)

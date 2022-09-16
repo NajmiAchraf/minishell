@@ -67,8 +67,7 @@ int	validate_variable(t_vars *var, char *to_check)
 	// TODO : parsing !!!!!!
 	free1(var->temp);
 	var->temp = ft_split(to_check, '=');
-	aws.i = ft_lstlen(var->temp);
-	if (!ft_strchr(to_check, '='))
+	if (ft_strchr(to_check, '=') == NULL && !check_env_var(var, var->temp[0])) // not fixed yet
 		return (0);
 	else if (replace_variable(var, var->temp[0], to_check))
 		return (0);
@@ -255,7 +254,7 @@ char	*get_env_var(t_vars *var, char *to_get)
 	t_allways aws;
 
 	aws.i = -1;
-	while (++aws.i < var->env.sizeofexp - 1)
+	while (++aws.i < var->env.sizeofexp)
 	{
 		if (!ft_strcmp(var->env.newexp[aws.i][0], to_get))
 			return (var->env.newexp[aws.i][1]);
@@ -268,7 +267,7 @@ int	check_env_var(t_vars *var, char *to_check)
 	t_allways aws;
 
 	aws.j = -1;
-	while (++aws.j < var->env.sizeofexp - 1)
+	while (++aws.j < var->env.sizeofexp)
 	{
 		if (!ft_strcmp(var->env.newexp[aws.j][0], to_check))
 			return (0);
