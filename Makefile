@@ -17,7 +17,7 @@ CFLAGS = -fsanitize=address -g #-Wall -Werror -Wextra
 PARSE =	\
 	./Parsing/syntax_error.c			\
 	./Parsing/ft_environment.c			\
-	./Parsing/environment_utils.c 		\
+	./Parsing/environment_utils.c		\
 	./Parsing/tokenizer.c				\
 	./Parsing/token_utils.c				\
 	./Parsing/token_utils2.c			\
@@ -37,7 +37,7 @@ EXEC =	\
 
 SRCS = $(PARSE) $(EXEC)
 CONTROL = @stty -echoctl
-RE_PATH = /Users/anajmi/brew/brew/Cellar/readline/8.1.2
+RE_PATH = ~/brew/brew/Cellar/readline/8.1.2
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 OBJ = $(SRCS:.c=.o)
 
