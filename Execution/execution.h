@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -88,7 +89,7 @@ typedef struct	s_allways
 
 typedef struct	s_vars
 {
-	int		exit_code;
+	size_t	hdocs;
 
 	/* environment */
 	t_envp	env;
@@ -104,7 +105,8 @@ typedef struct	s_vars
 	char	**exepath;
 	char	*tilde;
 	char	*line;
-	char	*end;
+	char	**end;
+	char	**delimiter;
 	size_t	cod;
 }	t_vars;
 
@@ -124,6 +126,7 @@ void	hostname(t_vars *var);
 /*								BUILTIN FUNCTIONS							  */
 /* ************************************************************************** */
 
+void	heredoc(t_vars *var, t_final *final);
 int		builtin(t_vars *var, t_final *final);
 
 int		echo(t_vars *var, t_final *fianl);

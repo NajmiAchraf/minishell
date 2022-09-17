@@ -30,16 +30,21 @@
 // 	return (1);
 // }
 
-int	syntax_error(char *str)  // still this case: > | l && empty node
+int	syntax_error(char *str) 
 {
 	int	i;
+	int f;
 
 	i = 0;
 	if (str[0] == '|')
 		return (0);
 	while (str[i] !='\0')
 	{
-		if(str[i] == '|' && str[i + 1] == '|')
+		if (f == 0 && (str[i] == '\'' || str[i] =='"'))
+			f= str[i];
+		else if (f == str[i])
+			f = 0;
+		if(str[i] == '|' && str[i + 1] == '|' && f == 0)
 			return (0);
 		i++;
 	}
@@ -47,5 +52,3 @@ int	syntax_error(char *str)  // still this case: > | l && empty node
 		return (0);
 	return (1);
 }
-
-// still case of begin with one pipe

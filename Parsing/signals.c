@@ -14,14 +14,16 @@
 
 void	control_c(int sig)
 {
-	(void)sig;
-
-	rl_replace_line("", 0);
-	ft_putchar_fd('\n', 1);
-	rl_on_new_line();
-	rl_redisplay();
-	return ;
+	if (sig == SIGINT)
+	{
+		ft_putchar_fd('\n', 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		g_status = 1;
+	}
 }
+
 void	ft_signals(void)
 {
 	signal(SIGINT, control_c);

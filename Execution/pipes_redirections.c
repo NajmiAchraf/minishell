@@ -71,17 +71,46 @@ cat: echo: No such file or directory
 bash-3.2$ 
 */
 
-int	heredoc(t_vars *var, t_final *final)
+void	heredoc(t_vars *var, t_final *final)
 {
-	free(var->end);
-	var->end = ft_strdup(var->line);
+	var->hdocs++;
+	var->delimiter[var->hdocs] = ft_strdup(final->file->str);
 	while (1)
 	{
-		free(var->line);
 		var->line = readline("> ");
-		add_history(var->line);
+		free(var->tmp);
+		var->tmp = var->end[var->hdocs];
+		if (!ft_strcmp(var->line, var->delimiter[var->hdocs]))
+			break ;
+		if (!var->end[var->hdocs])
+			var->end[var->hdocs] = ft_strdup(var->line);
+		else
+			var->end[var->hdocs] = ft_strjoin(ft_strjoin(var->end[var->hdocs], "\n"), var->line);
+		free(var->line);
 	}
+	free(var->tmp);
+	var->tmp = var->end[var->hdocs];
+	var->end[var->hdocs] = ft_strjoin(var->end[var->hdocs], "\n");
+
+	free(var->tmp);
+	var->tmp = final->file->str;
+	final->file->str = ft_strdup(var->delimiter[var->hdocs]);
+	var->end[var->hdocs + 1] = NULL;
+
+
+	// char *fd = ".vscode";
+	// struct stat *buf;
+
+	// buf = malloc(sizeof(struct stat));
+
+	// stat(fd, buf);
+	// stat(fd, ENOTDIR);
+	// // int size = buf->st_size;
+	// int size = buf->st_flags;
 	
+	// printf("\n\n\n\nsize ==> %d\n\n\n\n",size);
+
+	// free(buf);
 }
 
 int	list_size1(t_final *list)
@@ -147,7 +176,7 @@ void	iterate_file(t_final **node)
 		{
 			if (file->id == 1) /* < */
 			{
-				if (n->infile != -1) // to close and dup before
+				if (n->infile != -1) // to close and dup before || redirection to folder
 					close(n->infile);
 				n->infile = open(file->str, O_RDONLY);
 				if (n->infile == -1)
@@ -181,6 +210,27 @@ void	iterate_file(t_final **node)
 	}
 }
 
+void	sig_handler0(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		g_status = 131;
+		printf("QUIT : 3\n");
+		exit(EXIT_SUCCESS);
+	}
+	else if (sig == SIGINT)
+		printf("FORK\n");
+}
+
+void	sig_handler1(int sig)
+{
+	if (sig == SIGQUIT || sig == SIGINT)
+	{
+		printf("QUIT : FORK\n");
+		exit(EXIT_SUCCESS);
+	}
+}
+
 void	executor(t_vars *var, t_final **n)
 {
 	int		len;
@@ -200,8 +250,16 @@ void	executor(t_vars *var, t_final **n)
 				g_status = builtin(var, node);
 			else
 			{
+				// signal(SIGQUIT, SIG_DFL);
+				// signal(SIGINT, SIG_DFL);
+				// signal(SIGQUIT, sig_handler0);
+				// signal(SIGINT, sig_handler1);
 				if (fork1() == 0)
 				{
+					signal(SIGINT, SIG_DFL);
+					signal(SIGQUIT, SIG_DFL);
+					signal(SIGINT, sig_handler0);
+					signal(SIGQUIT, sig_handler0);
 					start = *n;
 					dup2((node)->infile, 0);
 					dup2((node)->outfile, 1);
@@ -223,6 +281,8 @@ void	executor(t_vars *var, t_final **n)
 					printf("minishell: execve: %s failed\n", (node)->cmd[0]);
 					exit(1);
 				}
+				// signal(SIGINT, SIG_DFL);
+				// ft_signals();
 				if ((node)->infile != 0)
 					close((node)->infile);
 				if ((node)->outfile != 1)
@@ -232,7 +292,9 @@ void	executor(t_vars *var, t_final **n)
 			}
 		}
 		else
-			printf("minishell: execve: %s bash: ls: No such file or directory\n", (node)->cmd[0]);
+		{
+			printf("minishell: execve: %s No such file or directory\n", (node)->cmd[0]);
+		}
 		node = (node)->next;
 		i++;
 	}

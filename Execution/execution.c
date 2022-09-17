@@ -306,9 +306,13 @@ void	initialisation(t_vars *var, char **env)
 	var->temp2 = malloc(sizeof(char *));
 	var->exepath = malloc(sizeof(char *));
 	var->exepath[0] = NULL;
-
+	var->end = malloc(sizeof(char *) * FILENAME_MAX);
+	var->end[0] = NULL;
+	var->delimiter = malloc(sizeof(char *) * FILENAME_MAX);
+	var->hdocs = -1;
 	var->env.env = env;
 	var->cod = 0;
+
 	if (!env)
 	{
 		var->env.env = malloc(sizeof(char *));

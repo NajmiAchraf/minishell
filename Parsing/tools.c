@@ -129,6 +129,7 @@ void free_tokens(t_token *data)
 
 	while (new != NULL)
 	{
+		printf("FREED ?\n");
 		//printf("|%s|\n", data->str);
 		tmp = new->next;
 		// printf("%s\n", new->str);
@@ -139,8 +140,10 @@ void free_tokens(t_token *data)
 		free(new);
 		new = tmp;
 	}
+	
 	// printf("end free \n");
 }
+
 
 
 // void    creat_node(t_node *head, char *data)

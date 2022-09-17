@@ -139,7 +139,7 @@ t_final	*ft_parser(t_token *data)
 			tmp->file = NULL;
 			tmp->name = NULL;
 		}
-		while (data && ft_strcmp(data->str, "|") != 0)
+		while (data && data->str && ft_strcmp(data->str, "|") != 0)
 		{
 			if (redirect(data->str))
 			{

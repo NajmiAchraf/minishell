@@ -58,10 +58,12 @@ int	main(int ac, char **av, char **env)
 	initialisation(var, env);
 	fst_link = setting_env(env);
 	fst_link->env_var = var;
+	ft_signals();
 	while (1)
 	{
-		ft_signals();
+		// ft_signals();
 		var->line = readline("minishell→ ");
+		ft_signals();
 		if (!var->line) 
 		{
 			ft_putendl_fd("exit", 1);
@@ -72,12 +74,7 @@ int	main(int ac, char **av, char **env)
 			if (syntax_error(var->line) != 0)
 			{
 				add_history(var->line);
-				/* echo "|" // | ls // ls | // syntax test directly // $USER segv // "./execution" //  */ 
-				/*
-					minishell→ export A
-					minishell→ $A
-					AddressSanitizer:DEADLYSIGNAL
-				*/
+				/* echo "|" */
 				data = tokenizer(var->line, av, fst_link);
 				// while (data != NULL)
 				// {
@@ -87,6 +84,7 @@ int	main(int ac, char **av, char **env)
 				// var->final = final_data;	
 				final_data = ft_parser(data);
 				//iterate(&final_data);
+				// heredoc(var, final_data);
 				executor(var, &final_data);
 				//ft_output(final_data);
 				//printf("len ==> \n\n\n");
@@ -98,7 +96,7 @@ int	main(int ac, char **av, char **env)
 				// // // printf("output %s\n", data->str);
 				//@ft_output(final_data);
 				//*printf("data ===== %s\n", data->str);
-				free_tokens(data); //holaaa
+				//free_tokens(data); //holaaa
 				//data = NULL;
 				// ft_freeparser(final_data);
 				//execution;
