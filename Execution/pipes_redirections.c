@@ -70,47 +70,55 @@ bash-3.2$ cat <<a <<b echo << c
 cat: echo: No such file or directory
 bash-3.2$ 
 */
-
-void	heredoc(t_vars *var, t_final *final)
+void	clear_fd(char *to_clear, int fd)
 {
-	var->hdocs++;
-	var->delimiter[var->hdocs] = ft_strdup(final->file->str);
+	size_t	i;
+
+	i = 0;
+	// if (!to_clear[i])
+	// 	return ;
+	while (to_clear[i])
+	{
+		ft_putchar_fd('\b', fd);
+		i++;
+	}
+	
+}
+char	*heredoc(t_vars *var, char *delimiter)
+{
+	int	i;
+
+	i = 0;
 	while (1)
 	{
 		var->line = readline("> ");
-		free(var->tmp);
-		var->tmp = var->end[var->hdocs];
-		if (!ft_strcmp(var->line, var->delimiter[var->hdocs]))
+		if (!ft_strcmp(var->line, delimiter))
 			break ;
-		if (!var->end[var->hdocs])
-			var->end[var->hdocs] = ft_strdup(var->line);
+		free(var->tmp);
+		var->tmp = var->hdocs;
+		if (i == 0)
+			var->hdocs = ft_strjoin(var->line, "\n");
 		else
-			var->end[var->hdocs] = ft_strjoin(ft_strjoin(var->end[var->hdocs], "\n"), var->line);
+			var->hdocs = ft_strjoin(var->hdocs, ft_strjoin(var->line, "\n"));
 		free(var->line);
+		i++;
 	}
-	free(var->tmp);
-	var->tmp = var->end[var->hdocs];
-	var->end[var->hdocs] = ft_strjoin(var->end[var->hdocs], "\n");
-
-	free(var->tmp);
-	var->tmp = final->file->str;
-	final->file->str = ft_strdup(var->delimiter[var->hdocs]);
-	var->end[var->hdocs + 1] = NULL;
+	return (ft_strdup(var->hdocs));
 
 
-	// char *fd = ".vscode";
-	// struct stat *buf;
+/* 	char *fd = ".vscode";
+	struct stat *buf;
 
-	// buf = malloc(sizeof(struct stat));
+	buf = malloc(sizeof(struct stat));
 
-	// stat(fd, buf);
-	// stat(fd, ENOTDIR);
-	// // int size = buf->st_size;
-	// int size = buf->st_flags;
+	stat(fd, buf);
+	stat(fd, ENOTDIR);
+	// int size = buf->st_size;
+	int size = buf->st_flags;
 	
-	// printf("\n\n\n\nsize ==> %d\n\n\n\n",size);
+	printf("\n\n\n\nsize ==> %d\n\n\n\n",size);
 
-	// free(buf);
+	free(buf); */
 }
 
 int	list_size1(t_final *list)
@@ -147,14 +155,15 @@ int	iterate(t_final **node)
 		if (i == 1)
 			(n)->infile = 0;
 
-		if ((n)->outfile == -1)
-			(n)->outfile = p[1];
-
 		if (i < len)
 		{
 			if ((n)->next->infile == -1)
 				(n)->next->infile = p[0];
 		}
+
+		if ((n)->outfile == -1)
+			(n)->outfile = p[1];
+
 		if (i == len)
 			(n)->outfile = 1;
 		n = n->next;
@@ -163,15 +172,17 @@ int	iterate(t_final **node)
 	return (len);
 }
 
-void	iterate_file(t_final **node)
+void	iterate_file(t_vars *var, t_final **node)
 {
 	t_file		*file;
 	t_final		*n;
+	t_allways	aws;
 
 	n = *node;
 	while (n)
 	{
 		file = n->file;
+		aws.save_in = n->infile;
 		while (file)
 		{
 			if (file->id == 1) /* < */
@@ -203,6 +214,12 @@ void	iterate_file(t_final **node)
 					printf("minishell: can't open %s file\n", file->str); // Fix later
 					return ;
 				}
+			}
+			if (file->id == 4) /* << */
+			{
+				fprintf(stderr, "***%d", aws.save_in);
+				clear_fd(var->hdocs, aws.save_in);
+				ft_putstr_fd(heredoc(var, n->file->str), aws.save_in);
 			}
 			file = file->next;
 		}
@@ -241,7 +258,7 @@ void	executor(t_vars *var, t_final **n)
 	i = 0;
 	node = *n;
 	len = iterate(n);
-	iterate_file(n);
+	iterate_file(var, n);
 	while (node)
 	{
 		if (node->cmd[0])

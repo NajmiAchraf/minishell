@@ -12,7 +12,7 @@
 
 NAME = minishell
 
-CFLAGS = -fsanitize=address -g #-Wall -Werror -Wextra
+CFLAGS = -fsanitize=address -g # -Wall -Werror -Wextra
 
 PARSE =	\
 	./Parsing/syntax_error.c			\

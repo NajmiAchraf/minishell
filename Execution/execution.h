@@ -85,11 +85,12 @@ typedef struct	s_allways
 	size_t	j;
 	size_t	k;
 	int		e;
+	int		save_in;
 }	t_allways;
 
 typedef struct	s_vars
 {
-	size_t	hdocs;
+	char	*hdocs;
 
 	/* environment */
 	t_envp	env;
@@ -105,8 +106,6 @@ typedef struct	s_vars
 	char	**exepath;
 	char	*tilde;
 	char	*line;
-	char	**end;
-	char	**delimiter;
 	size_t	cod;
 }	t_vars;
 
@@ -126,7 +125,6 @@ void	hostname(t_vars *var);
 /*								BUILTIN FUNCTIONS							  */
 /* ************************************************************************** */
 
-void	heredoc(t_vars *var, t_final *final);
 int		builtin(t_vars *var, t_final *final);
 
 int		echo(t_vars *var, t_final *fianl);
@@ -173,5 +171,11 @@ void	show_env(t_vars *var);
 void	show_exp(t_vars *var);
 char	*get_env_var(t_vars *var, char *to_get);
 int		check_env_var(t_vars *var, char *to_check);
+
+/* ******************** */
+/*		EXECUTION		*/
+/* ******************** */
+
+char	*heredoc(t_vars *var, char *str);
 
 #endif

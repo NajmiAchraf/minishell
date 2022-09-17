@@ -96,12 +96,12 @@ int	main(int ac, char **av, char **env)
 				// // // printf("output %s\n", data->str);
 				//@ft_output(final_data);
 				//*printf("data ===== %s\n", data->str);
-				//free_tokens(data); //holaaa
+				free_tokens(data); //holaaa
 				//data = NULL;
 				// ft_freeparser(final_data);
 				//execution;
 				free(var->line);
-				//system("leaks minishell");
+				// system("leaks minishell");
 					// }
 			}
 			else
