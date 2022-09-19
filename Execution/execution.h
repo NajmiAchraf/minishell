@@ -152,7 +152,7 @@ int		validate_variable(t_vars *var, char *to_check);
 void	sort_export(t_vars *var);
 void	init_environment(t_vars *var);
 void	init_export(t_vars *var);
-void	ft_export(t_vars *var, char *to_add, int pass);
+int		ft_export(t_vars *var, char *to_add, int pass);
 void	export_add(t_vars *var, char *to_add);
 void	ft_unset(t_vars *var, char *to_del);
 void	show_env(t_vars *var);

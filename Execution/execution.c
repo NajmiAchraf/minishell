@@ -28,12 +28,6 @@ int	troublep(char *s)
 	return (1);
 }
 
-int	troublep1(char *s1, char *s2)
-{
-	printf("minishell: %s.\n", s1, s2);
-	g_status = 1;
-}
-
 int	fork1(void)
 {
 	int pid;
@@ -136,6 +130,7 @@ int	export(t_vars *var, t_final *node)
 {
 	t_allways aws;
 
+	aws.j = 0;
 	if (!node->cmd[1])
 		show_exp(var);
 	else
@@ -143,11 +138,13 @@ int	export(t_vars *var, t_final *node)
 		aws.i = 1;
 		while (node->cmd[aws.i])
 		{
-			ft_export(var, node->cmd[aws.i], 0);
+			aws.k = ft_export(var, node->cmd[aws.i], 0);
+			if (aws.k == 1)
+				aws.j = 1;
 			aws.i++;
 		}
 	}
-	return (0);
+	return (aws.j);
 }
 
 int	unset(t_vars *var, t_final *node)
@@ -155,15 +152,19 @@ int	unset(t_vars *var, t_final *node)
 	t_allways aws;
 
 	aws.i = 1;
+	aws.j = 0;
 	while (node->cmd[aws.i])
 	{
 		if (little_checker(node->cmd[aws.i]))
+		{
 			printf("minishell: unset: `%s': not a valid identifier\n", node->cmd[aws.i]);
+			aws.j = 1;
+		}
 		else
 			ft_unset(var, node->cmd[aws.i]);
 		aws.i++;
 	}
-	return (0);
+	return (aws.j);
 }
 
 int	environment(t_vars *var, t_final *node)

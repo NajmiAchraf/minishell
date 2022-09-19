@@ -66,7 +66,7 @@ int	validate_variable(t_vars *var, char *to_check)
 
 	free1(var->tmpp);
 	var->tmpp = ft_split(to_check, '=');
-	if (ft_strchr(to_check, '=') == NULL && !check_env_var(var, var->tmpp[0])) // not fixed yet
+	if (ft_strchr(to_check, '=') == NULL && !check_env_var(var, var->tmpp[0]))
 		return (0);
 	else if (replace_variable(var, var->tmpp[0], to_check))
 		return (0);
@@ -155,14 +155,18 @@ void	show_exp(t_vars *var)
 	}
 }
 
-void	ft_export(t_vars *var, char *to_add, int pass)
+int		ft_export(t_vars *var, char *to_add, int pass)
 {
 	if (!pass)
 		pass = validate_variable(var, to_add);
 	if (pass == 1)
 		export_add(var, to_add);
 	else if (pass == 2)
+	{
 		printf("minishell: export: `%s': not a valid identifier\n", to_add);
+		return (1);
+	}
+	return (0);
 }
 
 void	export_add(t_vars *var, char *to_add)
