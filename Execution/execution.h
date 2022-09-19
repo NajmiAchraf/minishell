@@ -84,6 +84,7 @@ typedef struct	s_allways
 	size_t	i;
 	size_t	j;
 	size_t	k;
+	size_t	len;
 	int		e;
 	int		save_in;
 }	t_allways;
@@ -96,12 +97,7 @@ typedef struct	s_vars
 	t_envp	env;
 	char	*tmp;
 	char	*tmp1;
-	char	*tmp2;
-	char	*tmp3;
-	char	**temp;
-	char	**temp1;
-	char	**temp2;
-	char	***temp3;
+	char	**tmpp;
 
 	char	**exepath;
 	char	*tilde;
@@ -114,6 +110,7 @@ typedef struct	s_vars
 /* ************************************************************************** */
 
 void	troublec(char *s);
+int		troublep(char *s);
 int		fork1(void);
 void	free1(char **tofree);
 
@@ -125,22 +122,17 @@ void	hostname(t_vars *var);
 /*								BUILTIN FUNCTIONS							  */
 /* ************************************************************************** */
 
-int		builtin(t_vars *var, t_final *final);
+int		builtin(t_vars *var, t_final *node);
 
-int		echo(t_vars *var, t_final *fianl);
-int		cd(t_vars *var, t_final *fianl);
-int		pwd(t_vars *var);
-int		export(t_vars *var, t_final *fianl);
-int		unset(t_vars *var, t_final *fianl);
-int		environment(t_vars *var, t_final *fianl);
+int		echo(t_vars *var, t_final *node);
+int		cd(t_vars *var, t_final *node);
+int		pwd(t_vars *var, t_final *node);
+int		export(t_vars *var, t_final *node);
+int		unset(t_vars *var, t_final *node);
+int		environment(t_vars *var, t_final *node);
 
 int		builtincheck(char *name);
-int		builtin(t_vars *var, t_final *fianl);
-
-char	*exe_path_set(t_vars *var, char *exe);
-void	executor(t_vars *var, t_final **n);
-int		list_size1(t_final *list);
-int		iterate(t_final **node);
+int		builtin(t_vars *var, t_final *node);
 
 /* ******************** */
 /*		DIRECTORY		*/
@@ -154,10 +146,6 @@ char	*dir();
 
 void	free1(char **tofree);
 int		replace_variable(t_vars *var, char *to_check, char *value);
-int		var_into_var(t_vars *var, char **to_check, t_allways aws);
-int		name_into_var(t_vars *var, char **to_check, t_allways aws);
-int		outside_search_variable(t_vars *var, char *to_search, char *variable);
-int		inside_search_variable(t_vars *var, char *to_search, int gen);
 int		little_checker(char *to_check);
 int		validate_variable(t_vars *var, char *to_check);
 
@@ -177,5 +165,9 @@ int		check_env_var(t_vars *var, char *to_check);
 /* ******************** */
 
 char	*heredoc(t_vars *var, char *str);
+char	*exe_path_set(t_vars *var, char *exe);
+void	executor(t_vars *var, t_final **node);
+int		list_size1(t_final *list);
+int		iterate(t_final **node);
 
 #endif

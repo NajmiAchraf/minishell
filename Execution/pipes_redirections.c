@@ -138,41 +138,40 @@ int	list_size1(t_final *list)
 	return (i);
 }
 
-int	iterate(t_final **node)
+int	iterate_pipes(t_final **node)
 {
-	int		i;
-	int		len;
-	t_final	*n;
+	t_allways	w;
+	t_final		*n;
 
-	i = 1;
+	w.i = 1;
 	n = *node;
-	len = list_size1(n);
+	w.len = list_size1(n);
 	while (n)
 	{
 		int	p[2];
 
 		pipe(p);
-		if (i == 1)
-			(n)->infile = 0;
+		if (w.i == 1)
+			n->infile = 0;
 
-		if (i < len)
+		if (n->outfile == -1)
+			n->outfile = p[1];
+
+		if (w.i < w.len)
 		{
-			if ((n)->next->infile == -1)
-				(n)->next->infile = p[0];
+			if (n->next->infile == -1)
+				n->next->infile = p[0];
 		}
 
-		if ((n)->outfile == -1)
-			(n)->outfile = p[1];
-
-		if (i == len)
-			(n)->outfile = 1;
+		if (w.i == w.len)
+			n->outfile = 1;
 		n = n->next;
-		i++;
+		w.i++;
 	}
-	return (len);
+	return (w.len);
 }
 
-void	iterate_file(t_vars *var, t_final **node)
+void	iterate_files(t_vars *var, t_final **node)
 {
 	t_file		*file;
 	t_final		*n;
@@ -187,7 +186,7 @@ void	iterate_file(t_vars *var, t_final **node)
 		{
 			if (file->id == 1) /* < */
 			{
-				if (n->infile != -1) // to close and dup before || redirection to folder
+				if (n->infile != -1 && n->infile != 0) // redirection to folder
 					close(n->infile);
 				n->infile = open(file->str, O_RDONLY);
 				if (n->infile == -1)
@@ -195,7 +194,7 @@ void	iterate_file(t_vars *var, t_final **node)
 			}
 			if (file->id == 2) /* > */
 			{
-				if (n->outfile != -1) // to close and dup before
+				if (n->outfile != -1 && n->outfile != 1)
 					close(n->outfile);
 				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 				if (n->outfile == -1)
@@ -206,7 +205,7 @@ void	iterate_file(t_vars *var, t_final **node)
 			}
 			if (file->id == 3) /* >> */
 			{
-				if (n->outfile != -1) // to close and dup before
+				if (n->outfile != -1 && n->outfile != 1)
 					close(n->outfile);
 				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_APPEND, 0666);
 				if (n->outfile == -1)
@@ -217,9 +216,15 @@ void	iterate_file(t_vars *var, t_final **node)
 			}
 			if (file->id == 4) /* << */
 			{
-				fprintf(stderr, "***%d", aws.save_in);
-				clear_fd(var->hdocs, aws.save_in);
-				ft_putstr_fd(heredoc(var, n->file->str), aws.save_in);
+				int fd[2];
+				pipe(fd);
+				if (n->infile != -1 && n->infile != 0) // redirection to folder
+					close(n->infile);
+				n->infile = fd[0];
+				// clear_fd(var->hdocs, n->infile);
+				ft_putstr_fd(heredoc(var, file->str), n->infile);
+				close(n->infile);
+				n->infile = fd[1];
 			}
 			file = file->next;
 		}
@@ -227,8 +232,7 @@ void	iterate_file(t_vars *var, t_final **node)
 	}
 }
 
-void	sig_handler0(int sig)
-{
+void	sig_handler0(int sig){
 	if (sig == SIGQUIT)
 	{
 		g_status = 131;
@@ -248,23 +252,62 @@ void	sig_handler1(int sig)
 	}
 }
 
-void	executor(t_vars *var, t_final **n)
+void	node_close(t_final *node)
 {
-	int		len;
-	t_final	*node;
-	t_final	*start;
-	int		i;
+	if (node->infile != 0)
+		close(node->infile);
+	if (node->outfile != 1)
+		close(node->outfile);
+}
 
-	i = 0;
-	node = *n;
-	len = iterate(n);
-	iterate_file(var, n);
-	while (node)
+void	full_close(t_final **node)
+{
+	t_final		*n;
+
+	n = *node;
+	while (n)
 	{
-		if (node->cmd[0])
+		node_close(n);
+		n = n->next;
+	}
+}
+
+int    duping(t_final *node)
+{
+    if (node->infile != 0)
+    {
+        if (dup2(node->infile, 0) == -1)
+            return (1);
+        close(node->infile);
+    }
+    if (node->outfile != 1)
+    {
+        if (dup2(node->outfile, 1) == -1)
+            return (1);
+        close(node->outfile);
+    }
+    return (0);
+}
+
+void	executor(t_vars *var, t_final **node)
+{
+	t_allways	w;
+	t_final		*n;
+	// t_final		*start;
+
+	w.i = 0;
+	n = *node;
+	w.len = iterate_pipes(node);
+	iterate_files(var, node);
+	while (n)
+	{
+		if (n->cmd[0])
 		{
-			if (len == 1 && !builtincheck((node)->cmd[0]))
-				g_status = builtin(var, node);
+			if (w.len == 1 && !builtincheck(n->cmd[0]))
+			{
+				g_status = builtin(var, n);
+				full_close(node);
+			}
 			else
 			{
 				// signal(SIGQUIT, SIG_DFL);
@@ -277,42 +320,31 @@ void	executor(t_vars *var, t_final **n)
 					signal(SIGQUIT, SIG_DFL);
 					signal(SIGINT, sig_handler0);
 					signal(SIGQUIT, sig_handler0);
-					start = *n;
-					dup2((node)->infile, 0);
-					dup2((node)->outfile, 1);
-					while (start)
-					{
-						if ((start)->infile != 0)
-							close((start)->infile);
-						if ((start)->outfile != 1)
-							close((start)->outfile);
-						start = start->next;
-					}
 
-					if (!builtincheck((node)->cmd[0]))
+					if (duping(n))
+						return ;
+					full_close(node);
+					if (!builtincheck(n->cmd[0]))
 					{
-						g_status = builtin(var, node);
+						n->infile = 0;
+						n->outfile = 1;
+						g_status = builtin(var, n);
 						exit(0);
 					}
-					g_status = execve(exe_path_set(var, (node)->cmd[0]), (node)->cmd, var->env.newenv);
-					printf("minishell: execve: %s failed\n", (node)->cmd[0]);
+					g_status = execve(exe_path_set(var, n->cmd[0]), n->cmd, var->env.newenv);
+					printf("minishell: execve: %s failed\n", n->cmd[0]);
 					exit(1);
 				}
 				// signal(SIGINT, SIG_DFL);
 				// ft_signals();
-				if ((node)->infile != 0)
-					close((node)->infile);
-				if ((node)->outfile != 1)
-					close((node)->outfile);
-				if (i == len - 1)
+				node_close(n);
+				if (w.i == w.len - 1)
 					while (wait(NULL) > 0);
 			}
 		}
 		else
-		{
-			printf("minishell: execve: %s No such file or directory\n", (node)->cmd[0]);
-		}
-		node = (node)->next;
-		i++;
+			printf("minishell: execve: %s No such file or directory\n", n->cmd[0]);
+		n = n->next;
+		w.i++;
 	}
 }

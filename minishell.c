@@ -23,10 +23,10 @@
 	while (1)
 	{
 		getcwd(cwd, sizeof(cwd));
-		free(var->temp);
-		var->temp = ft_split(cwd, '/');
-		if (ft_lstlen(var->temp) > 0)
-			printf("%s$ %s%s@%s %s%s %s|%s", C_GREEN, C_YELOW, get_env_var(var, "USER"), get_env_var(var, "HOSTNAME"), C_CYAN, var->temp[ft_lstlen(var->temp) - 1], C_RED, C_RES);
+		free(var->tmpp);
+		var->tmpp = ft_split(cwd, '/');
+		if (ft_lstlen(var->tmpp) > 0)
+			printf("%s$ %s%s@%s %s%s %s|%s", C_GREEN, C_YELOW, get_env_var(var, "USER"), get_env_var(var, "HOSTNAME"), C_CYAN, var->tmpp[ft_lstlen(var->tmpp) - 1], C_RED, C_RES);
 		else
 			printf("%s$ %s%s@%s %s%s %s|%s", C_GREEN, C_YELOW, get_env_var(var, "USER"), get_env_var(var, "HOSTNAME"), C_CYAN, cwd, C_RED, C_RES);
 		free(var->buff);
@@ -61,6 +61,30 @@ int	main(int ac, char **av, char **env)
 	ft_signals();
 	while (1)
 	{
+		/*
+		
+		int	fd[2];
+		pipe(fd);
+		while (1)
+		{
+			var->line = readline("minishell→ ");
+			write(fd[1], var->line, ft_strlen(var->line));
+			if (ft_strcmp(var->line, "limit"))
+				break;
+		}
+		close(fd[1]);
+		int child = fork();
+		if (!child)
+		{
+			char *aeee[] = {"/bin/cat", NULL};
+			dup2(fd[0], 0);
+			execve(aeee[0], aeee, env);
+		}
+		wait(NULL);
+		exit(0);
+		
+		*/
+		
 		// ft_signals();
 		var->line = readline("minishell→ ");
 		ft_signals();

@@ -64,14 +64,13 @@ int	validate_variable(t_vars *var, char *to_check)
 {
 	t_allways aws;
 
-	// TODO : parsing !!!!!!
-	free1(var->temp);
-	var->temp = ft_split(to_check, '=');
-	if (ft_strchr(to_check, '=') == NULL && !check_env_var(var, var->temp[0])) // not fixed yet
+	free1(var->tmpp);
+	var->tmpp = ft_split(to_check, '=');
+	if (ft_strchr(to_check, '=') == NULL && !check_env_var(var, var->tmpp[0])) // not fixed yet
 		return (0);
-	else if (replace_variable(var, var->temp[0], to_check))
+	else if (replace_variable(var, var->tmpp[0], to_check))
 		return (0);
-	if (little_checker(var->temp[0]))
+	if (little_checker(var->tmpp[0]))
 		return (2);
 	return (1);
 }
@@ -115,9 +114,9 @@ void	init_export(t_vars *var)
 	while (var->env.env[aws.i])
 	{
 		var->env.newexp[aws.i] = malloc(sizeof(char *) * 3);
-		free1(var->temp);
-		var->temp = ft_split(var->env.env[aws.i], '=');
-		var->env.newexp[aws.i][0] = ft_strdup(var->temp[0]);
+		free1(var->tmpp);
+		var->tmpp = ft_split(var->env.env[aws.i], '=');
+		var->env.newexp[aws.i][0] = ft_strdup(var->tmpp[0]);
 		var->env.newexp[aws.i][1] = ft_strdup(ft_strchr(var->env.env[aws.i], '=') + 1);
 		var->env.newexp[aws.i][2] = NULL;
 		aws.i++;
@@ -158,19 +157,6 @@ void	show_exp(t_vars *var)
 
 void	ft_export(t_vars *var, char *to_add, int pass)
 {
-	// TODO : parsing !!!!!!
-	/*
-	bash-3.2$ export B=OK
-	bash-3.2$ export | grep B
-	declare -x B="OK"
-	declare -x HOMEBREW_CACHE="/tmp/anajmi/Homebrew/Caches"
-	declare -x HOMEBREW_TEMP="/tmp/anajmi/Homebrew/Temp"
-	bash-3.2$ export B
-	bash-3.2$ export | grep B
-	declare -x B="OK"
-	declare -x HOMEBREW_CACHE="/tmp/anajmi/Homebrew/Caches"
-	declare -x HOMEBREW_TEMP="/tmp/anajmi/Homebrew/Temp"
-	*/
 	if (!pass)
 		pass = validate_variable(var, to_add);
 	if (pass == 1)
@@ -182,10 +168,9 @@ void	ft_export(t_vars *var, char *to_add, int pass)
 void	export_add(t_vars *var, char *to_add)
 {
 	var->env.newexp[var->env.sizeofexp] = malloc(sizeof(char *) * 3);
-	// TODO : parsing !!!!!!
-	free1(var->temp);
-	var->temp = ft_split(to_add, '=');
-	var->env.newexp[var->env.sizeofexp][0] = ft_strdup(var->temp[0]);
+	free1(var->tmpp);
+	var->tmpp = ft_split(to_add, '=');
+	var->env.newexp[var->env.sizeofexp][0] = ft_strdup(var->tmpp[0]);
 	if (ft_strchr(to_add, '='))
 	{
 		var->env.newexp[var->env.sizeofexp][1] = ft_strdup(ft_strchr(to_add, '=') + 1);
@@ -210,9 +195,9 @@ void	ft_unset(t_vars *var, char *to_del)
 	aws.i = -1;
 	while (++aws.i < var->env.sizeofenv)
 	{
-		free1(var->temp);
-		var->temp = ft_split(var->env.newenv[aws.i], '=');
-		if (ft_strcmp(var->temp[0], to_del) == 0)
+		free1(var->tmpp);
+		var->tmpp = ft_split(var->env.newenv[aws.i], '=');
+		if (ft_strcmp(var->tmpp[0], to_del) == 0)
 		{
 			free(var->env.newenv[aws.i]);
 			var->env.newenv[aws.i] = "~";
