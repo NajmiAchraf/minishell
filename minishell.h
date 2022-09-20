@@ -41,7 +41,6 @@ typedef struct s_vars t_vars;
 # define HERE_DOC 'H' // <<
 # define WORD 'W'
 
-// int	WEXITSTATUS(int g_status);
 int g_status;
 //env
 typedef struct s_env

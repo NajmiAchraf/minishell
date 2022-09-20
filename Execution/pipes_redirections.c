@@ -12,78 +12,13 @@
 
 #include "../minishell.h"
 
-/*
-bash-3.2$ << lim |
-> hqw
-> hqwq
-> hqwhqwhqwh
-> lim
-> |
-bash: syntax error near unexpected token `|'
-bash-3.2$ << lim >
-> hqw
-> hqwwq
-> lim
-bash: syntax error near unexpected token `newline'
-bash-3.2$ cat <<a<<b<<c
-> hqw
-> hqw
-> hqwh
-> a
-> hqwh
-> qwhqwh
-> b
-> hqw
-> hqwhwq
-> c
-hqw
-hqwhwq
-bash-3.2$ cat <<a << b | <<salam | echo haha << lbs
-> hw
-> hqw
-> hqwhqw
-> a
-> hqwh
-> qw
-> hqwhqw
-> hqw
-> hqwh
-> b
-> hwq
-> qwhq
-> whqwh
-> salam
-> hwqh
-> qhwqhqwh
-> lbs
-haha
-bash-3.2$ cat <<a <<b echo << c
-> hqw
-> hqwhqwh
-> a
-> hqwh
-> qwhqw
-> b
-> hqwh
-> qhwqwhqwh
-> c
-cat: echo: No such file or directory
-bash-3.2$ 
-*/
-void	clear_fd(char *to_clear, int fd)
+void	child_exit(int i)
 {
-	size_t	i;
-
-	i = 0;
-	// if (!to_clear[i])
-	// 	return ;
-	while (to_clear[i])
-	{
-		ft_putchar_fd('\b', fd);
-		i++;
-	}
-	
+	if (i = 1)
+		exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
+
 char	*heredoc(t_vars *var, char *delimiter)
 {
 	int	i;
@@ -175,13 +110,12 @@ void	iterate_files(t_vars *var, t_final **node)
 {
 	t_file		*file;
 	t_final		*n;
-	t_allways	aws;
+	int			fd[2];
 
 	n = *node;
 	while (n)
 	{
 		file = n->file;
-		aws.save_in = n->infile;
 		while (file)
 		{
 			if (file->id == 1) /* < */
@@ -190,7 +124,10 @@ void	iterate_files(t_vars *var, t_final **node)
 					close(n->infile);
 				n->infile = open(file->str, O_RDONLY);
 				if (n->infile == -1)
+				{
+					printf("minishell: can't open %s\n", file->str); // Fix later
 					return ;
+				}
 			}
 			if (file->id == 2) /* > */
 			{
@@ -199,7 +136,7 @@ void	iterate_files(t_vars *var, t_final **node)
 				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 				if (n->outfile == -1)
 				{
-					printf("minishell: can't open %s file\n", file->str); // Fix later
+					printf("minishell: can't open %s\n", file->str); // Fix later
 					return ;
 				}
 			}
@@ -210,21 +147,23 @@ void	iterate_files(t_vars *var, t_final **node)
 				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_APPEND, 0666);
 				if (n->outfile == -1)
 				{
-					printf("minishell: can't open %s file\n", file->str); // Fix later
+					printf("minishell: can't open %s\n", file->str); // Fix later
 					return ;
 				}
 			}
 			if (file->id == 4) /* << */
 			{
-				int fd[2];
-				pipe(fd);
-				if (n->infile != -1 && n->infile != 0) // redirection to folder
+				if (pipe(fd) == -1)
+				{
+					troublep("can't pipe HEREDOC\n"); // Fix later
+					return ;
+				}
+				if (n->infile != -1 && n->infile != 0)
 					close(n->infile);
-				n->infile = fd[0];
-				// clear_fd(var->hdocs, n->infile);
+				n->infile = fd[1];
 				ft_putstr_fd(heredoc(var, file->str), n->infile);
 				close(n->infile);
-				n->infile = fd[1];
+				n->infile = fd[0];
 			}
 			file = file->next;
 		}
@@ -252,12 +191,12 @@ void	sig_handler1(int sig)
 	}
 }
 
-void	node_close(t_final *node)
+int	node_close(t_final *node)
 {
 	if (node->infile != 0)
-		close(node->infile);
+		return (close(node->infile));
 	if (node->outfile != 1)
-		close(node->outfile);
+		return (close(node->outfile));
 }
 
 void	full_close(t_final **node)
@@ -270,6 +209,7 @@ void	full_close(t_final **node)
 		node_close(n);
 		n = n->next;
 	}
+	child_exit(0);
 }
 
 int    duping(t_final *node)
@@ -289,11 +229,41 @@ int    duping(t_final *node)
     return (0);
 }
 
+/*
+void    exec_cmd(t_cmdfinal **cmd_final)
+{
+    t_var    exec;
+    int        i;
+    int        status;
+
+    exec.flag = 0;
+    exec.child_pids = malloc(sizeof(int) * (*cmd_final)->number_node);
+    signal(SIGINT, SIG_IGN);
+    ft_cmd(cmd_final, &exec);
+    i = 0;
+    while (i < (*cmd_final)->number_node)
+    {
+        waitpid(exec.child_pids[i], &status, 0);
+        if (WIFEXITED(status))
+            t_global.state = WEXITSTATUS(status);
+        if (status == 2)
+            t_global.state = 128 + status;
+        else if (status == 3)
+        {
+            printf("Quit: %d\n", status);
+            t_global.state = 128 + status;
+        }
+        i++;
+    }
+    ret_fork(&exec);
+    return ;
+}
+*/
+
 void	executor(t_vars *var, t_final **node)
 {
 	t_allways	w;
 	t_final		*n;
-	// t_final		*start;
 
 	w.i = 0;
 	n = *node;
@@ -310,19 +280,15 @@ void	executor(t_vars *var, t_final **node)
 			}
 			else
 			{
-				// signal(SIGQUIT, SIG_DFL);
-				// signal(SIGINT, SIG_DFL);
-				// signal(SIGQUIT, sig_handler0);
-				// signal(SIGINT, sig_handler1);
-				if (fork1() == 0)
+    			signal(SIGINT, SIG_IGN);
+				w.pid = fork1();
+				if (w.pid == 0)
 				{
-					signal(SIGINT, SIG_DFL);
-					signal(SIGQUIT, SIG_DFL);
 					signal(SIGINT, sig_handler0);
 					signal(SIGQUIT, sig_handler0);
 
 					if (duping(n))
-						return ;
+						exit(1); // i don't know !!
 					full_close(node);
 					if (!builtincheck(n->cmd[0]))
 					{
@@ -331,19 +297,28 @@ void	executor(t_vars *var, t_final **node)
 						g_status = builtin(var, n);
 						exit(0);
 					}
-					g_status = execve(exe_path_set(var, n->cmd[0]), n->cmd, var->env.newenv);
+					execve(exe_path_set(var, n->cmd[0]), n->cmd, var->env.newenv);
 					printf("minishell: execve: %s failed\n", n->cmd[0]);
 					exit(1);
 				}
-				// signal(SIGINT, SIG_DFL);
-				// ft_signals();
 				node_close(n);
 				if (w.i == w.len - 1)
 					while (wait(NULL) > 0);
+       			// waitpid(w.pid, &w.status, 0);
+				// if (WIFEXITED(w.status))
+				// 	g_status = WEXITSTATUS(w.status);
+				// if (w.status == 2)
+				// 	g_status = 128 + w.status;
+				// else if (w.status == 3)
+				// {
+				// 	printf("Quit: %d\n", w.status);
+				// 	g_status = 128 + w.status;
+				// }
+				ft_signals();
 			}
 		}
-		else
-			printf("minishell: execve: %s No such file or directory\n", n->cmd[0]);
+		// else
+		// 	printf("minishell: %s No such file or directory\n", n->cmd[0]);
 		n = n->next;
 		w.i++;
 	}

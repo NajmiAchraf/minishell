@@ -85,8 +85,8 @@ typedef struct	s_allways
 	size_t	j;
 	size_t	k;
 	size_t	len;
-	int		e;
-	int		save_in;
+	int		pid;
+	int		status;
 }	t_allways;
 
 typedef struct	s_vars
