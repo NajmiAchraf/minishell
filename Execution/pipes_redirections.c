@@ -14,7 +14,7 @@
 
 void	child_exit(int i)
 {
-	if (i = 1)
+	if (i == 1)
 		exit(EXIT_FAILURE);
 	exit(EXIT_SUCCESS);
 }
@@ -209,7 +209,7 @@ void	full_close(t_final **node)
 		node_close(n);
 		n = n->next;
 	}
-	child_exit(0);
+	// child_exit(0);
 }
 
 int    duping(t_final *node)

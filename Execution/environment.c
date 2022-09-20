@@ -66,11 +66,17 @@ int	validate_variable(t_vars *var, char *to_check)
 
 	free1(var->tmpp);
 	var->tmpp = ft_split(to_check, '=');
-	if (ft_strchr(to_check, '=') == NULL && !check_env_var(var, var->tmpp[0]))
-		return (0);
-	else if (replace_variable(var, var->tmpp[0], to_check))
-		return (0);
-	if (little_checker(var->tmpp[0]))
+	printf("%s", var->tmpp[0]);
+	if (var->tmpp[0][0] != 0)
+	{
+		if (ft_strchr(to_check, '=') == NULL && !check_env_var(var, var->tmpp[0]))
+			return (0);
+		else if (replace_variable(var, var->tmpp[0], to_check))
+			return (0);
+		if (little_checker(var->tmpp[0]))
+			return (2);
+	}
+	else
 		return (2);
 	return (1);
 }
