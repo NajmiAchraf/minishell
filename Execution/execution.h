@@ -100,17 +100,16 @@ typedef struct	s_vars
 	char	**tmpp;
 
 	char	**exepath;
-	char	*tilde;
+	int		*pid;
 	char	*line;
-	size_t	cod;
 }	t_vars;
 
 /* ************************************************************************** */
 /*								MAIN FUNCTIONS								  */
 /* ************************************************************************** */
 
-void	troublec(char *s);
-int		troublep(char *s);
+void	trouble_exit(char *cmd, char *arg, char *msg, int error_status);
+int		trouble(char *cmd, char *arg, char *msg, int error_status);
 int		fork1(void);
 void	free1(char **tofree);
 

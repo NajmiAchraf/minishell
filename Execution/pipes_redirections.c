@@ -12,13 +12,6 @@
 
 #include "../minishell.h"
 
-void	child_exit(int i)
-{
-	if (i == 1)
-		exit(EXIT_FAILURE);
-	exit(EXIT_SUCCESS);
-}
-
 char	*heredoc(t_vars *var, char *delimiter)
 {
 	int	i;
@@ -120,12 +113,12 @@ void	iterate_files(t_vars *var, t_final **node)
 		{
 			if (file->id == 1) /* < */
 			{
-				if (n->infile != -1 && n->infile != 0) // redirection to folder
+				if (n->infile != -1 && n->infile != 0)
 					close(n->infile);
 				n->infile = open(file->str, O_RDONLY);
 				if (n->infile == -1)
 				{
-					printf("minishell: can't open %s\n", file->str); // Fix later
+					trouble("open", file->str, "can't open file", 1);
 					return ;
 				}
 			}
@@ -136,7 +129,7 @@ void	iterate_files(t_vars *var, t_final **node)
 				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 				if (n->outfile == -1)
 				{
-					printf("minishell: can't open %s\n", file->str); // Fix later
+					trouble("open", file->str, "can't open file", 1);
 					return ;
 				}
 			}
@@ -147,7 +140,7 @@ void	iterate_files(t_vars *var, t_final **node)
 				n->outfile = open(file->str, O_WRONLY | O_CREAT | O_APPEND, 0666);
 				if (n->outfile == -1)
 				{
-					printf("minishell: can't open %s\n", file->str); // Fix later
+					trouble("open", file->str, "can't open file", 1);
 					return ;
 				}
 			}
@@ -155,7 +148,7 @@ void	iterate_files(t_vars *var, t_final **node)
 			{
 				if (pipe(fd) == -1)
 				{
-					troublep("can't pipe HEREDOC\n"); // Fix later
+					trouble("pipe", NULL, "can't open heredoc", 1);
 					return ;
 				}
 				if (n->infile != -1 && n->infile != 0)
@@ -197,6 +190,7 @@ int	node_close(t_final *node)
 		return (close(node->infile));
 	if (node->outfile != 1)
 		return (close(node->outfile));
+	return (1);
 }
 
 void	full_close(t_final **node)
@@ -209,24 +203,22 @@ void	full_close(t_final **node)
 		node_close(n);
 		n = n->next;
 	}
-	// child_exit(0);
 }
 
-int    duping(t_final *node)
+void    duping(t_final *node)
 {
     if (node->infile != 0)
     {
         if (dup2(node->infile, 0) == -1)
-            return (1);
+            trouble_exit("dup2", NULL, "failed", 1);
         close(node->infile);
     }
     if (node->outfile != 1)
     {
         if (dup2(node->outfile, 1) == -1)
-            return (1);
+            trouble_exit("dup2", NULL, "failed", 1);
         close(node->outfile);
     }
-    return (0);
 }
 
 /*
@@ -266,6 +258,8 @@ void	executor(t_vars *var, t_final **node)
 	t_final		*n;
 
 	w.i = 0;
+	w.j = 0;
+	w.k = 1;
 	n = *node;
 	w.len = iterate_pipes(node);
 	iterate_files(var, node);
@@ -276,50 +270,65 @@ void	executor(t_vars *var, t_final **node)
 			if (w.len == 1 && !builtincheck(n->cmd[0]))
 			{
 				g_status = builtin(var, n);
+				if (g_status == 1)
+					trouble("builtin", n->cmd[0], "failed", 1);
 				full_close(node);
 			}
 			else
 			{
     			signal(SIGINT, SIG_IGN);
-				w.pid = fork1();
-				if (w.pid == 0)
+				var->pid[w.j] = fork1();
+				if (var->pid[w.j] == 0)
 				{
+    				signal(SIGINT, SIG_IGN);
 					signal(SIGINT, sig_handler0);
 					signal(SIGQUIT, sig_handler0);
 
-					if (duping(n))
-						exit(1); // i don't know !!
+					duping(n);
 					full_close(node);
 					if (!builtincheck(n->cmd[0]))
 					{
 						n->infile = 0;
 						n->outfile = 1;
 						g_status = builtin(var, n);
+						if (g_status == 1)
+							trouble_exit("builtin", n->cmd[0], "failed", 1);
 						exit(0);
 					}
 					execve(exe_path_set(var, n->cmd[0]), n->cmd, var->env.newenv);
-					printf("minishell: execve: %s failed\n", n->cmd[0]);
-					exit(1);
+					trouble_exit("execve", n->cmd[0], "failed", 1);
 				}
 				node_close(n);
-				if (w.i == w.len - 1)
-					while (wait(NULL) > 0);
-       			// waitpid(w.pid, &w.status, 0);
-				// if (WIFEXITED(w.status))
-				// 	g_status = WEXITSTATUS(w.status);
-				// if (w.status == 2)
-				// 	g_status = 128 + w.status;
-				// else if (w.status == 3)
-				// {
-				// 	printf("Quit: %d\n", w.status);
-				// 	g_status = 128 + w.status;
-				// }
-				ft_signals();
+				w.k = 0;
 			}
 		}
 		// else
 		// 	printf("minishell: %s No such file or directory\n", n->cmd[0]);
 		n = n->next;
 		w.i++;
+		w.j++;
+	}
+				
+	if (w.k == 0)
+	{
+		w.j = 0;
+		n = *node;
+		while (n)
+		{
+			waitpid(var->pid[w.j], &w.status, 0);
+			if (WIFEXITED(w.status))
+				g_status = WEXITSTATUS(w.status);
+			if (w.status == 2)
+				g_status = 128 + w.status;
+			else if (w.status == 3)
+			{
+				// trouble("Quit: %d\n", w.status);
+				printf("Quit: %d\n", w.status);
+				g_status = 128 + w.status;
+			}
+			n = n->next;
+			w.j++;
+		}
+		ft_signals();
 	}
 }
