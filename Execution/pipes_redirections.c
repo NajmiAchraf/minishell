@@ -6,47 +6,77 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/21 23:36:27 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/22 21:45:04 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+char	*var_into_heredoc(t_vars *var, char *to_check, t_allways aws)
+{
+	free(var->tmp1);
+	var->tmp1 = ft_substr(to_check, 0, aws.i);
+	free(var->tmp);
+	var->tmp = ft_substr(to_check, aws.i + 1, aws.k - aws.i - 1);
+	free(var->tmp2);
+	var->tmp2 = ft_substr(to_check, aws.k, ft_strlen(to_check));
+	if (!get_env_var(var, var->tmp))
+		return (ft_strjoin(var->tmp1, var->tmp2));
+	return (heredoc_expand(var,
+			ft_strjoin(ft_strjoin(var->tmp1,
+					get_env_var(var, var->tmp)), var->tmp2)));
+}
+
+char	*heredoc_expand(t_vars *var, char *to_search)
+{
+	t_allways	aws;
+
+	aws.i = -1;
+	while (to_search[++aws.i])
+	{
+		if (to_search[aws.i] == '$')
+		{
+			aws.k = aws.i;
+			while (to_search[++aws.k])
+			{
+				free(var->tmp);
+				var->tmp = ft_substr(to_search, aws.i + 1, aws.k - aws.i - 1);
+				if (!(check_env_var(var, var->tmp) || to_search[aws.k] == '_'
+						|| ft_isalpha(to_search[aws.k])))
+					break ;
+			}
+			return (var_into_heredoc(var, to_search, aws));
+		}
+	}
+	return (to_search);
+}
+
 char	*heredoc(t_vars *var, char *delimiter)
 {
 	int	i;
 
+	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
+	free(var->hdocs);
+	var->hdocs = ft_strdup("");
 	i = 0;
 	while (1)
 	{
 		var->line = readline("> ");
-		if (!ft_strcmp(var->line, delimiter))
+		if (var->line == NULL || !ft_strcmp(var->line, delimiter))
 			break ;
-		free(var->tmp);
-		var->tmp = var->hdocs;
+		free(var->tmp0);
+		var->tmp0 = var->hdocs;
 		if (i == 0)
-			var->hdocs = ft_strjoin(var->line, "\n");
+			var->hdocs = ft_strjoin(heredoc_expand(var, var->line), "\n");
 		else
-			var->hdocs = ft_strjoin(var->hdocs, ft_strjoin(var->line, "\n"));
+			var->hdocs = ft_strjoin(var->hdocs,
+					ft_strjoin(heredoc_expand(var, var->line), "\n"));
 		free(var->line);
 		i++;
 	}
+	ft_signals();
 	return (ft_strdup(var->hdocs));
-
-
-/* 	char *fd = ".vscode";
-	struct stat *buf;
-
-	buf = malloc(sizeof(struct stat));
-
-	stat(fd, buf);
-	stat(fd, ENOTDIR);
-	// int size = buf->st_size;
-	int size = buf->st_flags;
-	
-	printf("\n\n\n\nsize ==> %d\n\n\n\n",size);
-
-	free(buf); */
 }
 
 int	list_size1(t_final *list)
@@ -221,37 +251,6 @@ void    duping(t_final *node)
     }
 }
 
-/*
-void    exec_cmd(t_cmdfinal **cmd_final)
-{
-    t_var    exec;
-    int        i;
-    int        status;
-
-    exec.flag = 0;
-    exec.child_pids = malloc(sizeof(int) * (*cmd_final)->number_node);
-    signal(SIGINT, SIG_IGN);
-    ft_cmd(cmd_final, &exec);
-    i = 0;
-    while (i < (*cmd_final)->number_node)
-    {
-        waitpid(exec.child_pids[i], &status, 0);
-        if (WIFEXITED(status))
-            t_global.state = WEXITSTATUS(status);
-        if (status == 2)
-            t_global.state = 128 + status;
-        else if (status == 3)
-        {
-            printf("Quit: %d\n", status);
-            t_global.state = 128 + status;
-        }
-        i++;
-    }
-    ret_fork(&exec);
-    return ;
-}
-*/
-
 void	executor(t_vars *var, t_final **node)
 {
 	t_allways	w;
@@ -277,6 +276,7 @@ void	executor(t_vars *var, t_final **node)
 			else
 			{
     			signal(SIGINT, SIG_IGN);
+    			signal(SIGQUIT, SIG_IGN);
 				var->pid[w.j] = ft_fork();
 				if (var->pid[w.j] == 0)
 				{
@@ -297,6 +297,8 @@ void	executor(t_vars *var, t_final **node)
 					execve(exe_path_set(var, n->cmd[0]), n->cmd, var->env.newenv);
 					trouble_exit("execve", n->cmd[0], "failed", 1);
 				}
+				else if (var->pid[w.j] == -1)
+					return ;
 				node_close(n);
 				w.k = 0;
 			}

@@ -6,25 +6,26 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 01:19:25 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 01:42:49 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/22 21:55:38 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	show_env(t_vars *var)
+void	show_env(t_vars *var, t_final *node)
 {
 	t_allways	aws;
 
 	aws.i = 0;
 	while (aws.i < var->env.sizeofenv)
 	{
-		printf("%s\n", var->env.newenv[aws.i]);
+		ft_putstr_fd(var->env.newenv[aws.i], node->outfile);
+		ft_putstr_fd("\n", node->outfile);
 		aws.i++;
 	}
 }
 
-void	show_exp(t_vars *var)
+void	show_exp(t_vars *var, t_final *node)
 {
 	t_allways	aws;
 
@@ -32,10 +33,20 @@ void	show_exp(t_vars *var)
 	while (aws.i < var->env.sizeofexp)
 	{
 		if (!var->env.newexp[aws.i][1])
-			printf("declare -x %s\n", var->env.newexp[aws.i][0]);
+		{
+			ft_putstr_fd("declare -x ", node->outfile);
+			ft_putstr_fd(var->env.newexp[aws.i][0], node->outfile);
+			ft_putstr_fd("\n", node->outfile);
+		}
 		else
-			printf("declare -x %s=\"%s\"\n",
-				var->env.newexp[aws.i][0], var->env.newexp[aws.i][1]);
+		{
+			ft_putstr_fd("declare -x ", node->outfile);
+			ft_putstr_fd(var->env.newexp[aws.i][0], node->outfile);
+			ft_putstr_fd("=", node->outfile);
+			ft_putstr_fd("\"", node->outfile);
+			ft_putstr_fd(var->env.newexp[aws.i][1], node->outfile);
+			ft_putstr_fd("\"\n", node->outfile);
+		}
 		aws.i++;
 	}
 }

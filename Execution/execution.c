@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 01:45:47 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/22 21:33:18 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,6 @@ int	ft_fork(void)
 	if (pid == -1)
 		trouble("fork", NULL, "error", 1);
 	return (pid);
-}
-
-char	*exe_path_set(t_vars *var, char *exe)
-{
-	t_allways	aws;
-
-	if (check_env_var(var, "PATH"))
-		trouble_exit(exe, NULL, "PATH not set", 1);
-	fill_path(var);
-	aws.i = 0;
-	while (var->exepath[aws.i])
-	{
-		if (!access(ft_strjoin(var->exepath[aws.i], exe), F_OK))
-			return (ft_strjoin(var->exepath[aws.i], exe));
-		aws.i++;
-	}
-	return (NULL);
 }
 
 void	fill_path(t_vars *var)
@@ -58,12 +41,33 @@ void	fill_path(t_vars *var)
 	var->exepath[aws.i + 2] = NULL;
 }
 
-void	initialisation(t_vars *var, char **env)
+char	*exe_path_set(t_vars *var, char *exe)
+{
+	t_allways	aws;
+
+	if (check_env_var(var, "PATH"))
+		trouble_exit(exe, NULL, "PATH not set", 1);
+	fill_path(var);
+	aws.i = 0;
+	while (var->exepath[aws.i])
+	{
+		if (!access(ft_strjoin(var->exepath[aws.i], exe), F_OK))
+			return (ft_strjoin(var->exepath[aws.i], exe));
+		aws.i++;
+	}
+	return (NULL);
+}
+
+void	initialisation(t_vars *var, char **av, char **env)
 {
 	var->tmp = malloc(sizeof(char));
+	var->tmp0 = malloc(sizeof(char));
 	var->tmp1 = malloc(sizeof(char));
+	var->tmp2 = malloc(sizeof(char));
 	var->tmpp = malloc(sizeof(char *));
 	var->tmpp[0] = NULL;
+
+	var->main_name = ft_strdup(av[0]);
 	var->exepath = malloc(sizeof(char *));
 	var->exepath[0] = NULL;
 	var->hdocs = malloc(sizeof(char));
@@ -80,5 +84,6 @@ void	initialisation(t_vars *var, char **env)
 	init_export(var);
 	ft_unset(var, "OLDPWD");
 	ft_export(var, "OLDPWD", 1);
-	ft_export(var, ft_strjoin("SHLVL=", ft_itoa(ft_atoi(get_env_var(var, "SHLVL")) + 1)), 0);
+	ft_export(var, ft_strjoin("SHLVL=",
+			ft_itoa(ft_atoi(get_env_var(var, "SHLVL")) + 1)), 0);
 }

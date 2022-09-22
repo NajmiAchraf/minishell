@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:17:30 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 01:40:42 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/22 21:52:25 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	export(t_vars *var, t_final *node)
 
 	aws.j = 0;
 	if (!node->cmd[1])
-		show_exp(var);
+		show_exp(var, node);
 	else
 	{
 		aws.i = 1;
@@ -67,6 +67,6 @@ int	environment(t_vars *var, t_final *node)
 		}
 		aws.i++;
 	}
-	show_env(var);
+	show_env(var, node);
 	return (0);
 }

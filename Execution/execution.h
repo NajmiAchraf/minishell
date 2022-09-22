@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 01:44:11 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/22 21:51:35 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,12 @@ typedef struct s_vars
 
 	t_envp	env;
 	char	*tmp;
+	char	*tmp0;
 	char	*tmp1;
+	char	*tmp2;
 	char	**tmpp;
 
+	char	*main_name;
 	char	**exepath;
 	int		*pid;
 	char	*line;
@@ -67,11 +70,11 @@ typedef struct s_vars
 /* ************************************************************************** */
 
 int		trouble(char *cmd, char *arg, char *msg, int error_status);
-void	trouble_exit(char *cmd, char *arg, char *msg, int error_status);
+void	trouble_exit(char *cmd, char *arg, char *msg, int exit_status);
 int		ft_fork(void);
 
 void	fill_path(t_vars *var);
-void	initialisation(t_vars *var, char **env);
+void	initialisation(t_vars *var, char **av, char **env);
 
 /* ************************************************************************** */
 /*								BUILTIN FUNCTIONS							  */
@@ -110,8 +113,8 @@ void	init_export(t_vars *var);
 int		ft_export(t_vars *var, char *to_add, int pass);
 void	export_add(t_vars *var, char *to_add);
 void	ft_unset(t_vars *var, char *to_del);
-void	show_env(t_vars *var);
-void	show_exp(t_vars *var);
+void	show_env(t_vars *var, t_final *node);
+void	show_exp(t_vars *var, t_final *node);
 char	*get_env_var(t_vars *var, char *to_get);
 int		check_env_var(t_vars *var, char *to_check);
 
@@ -119,6 +122,8 @@ int		check_env_var(t_vars *var, char *to_check);
 /*		EXECUTION		*/
 /* ******************** */
 
+char	*var_into_heredoc(t_vars *var, char *to_check, t_allways aws);
+char	*heredoc_expand(t_vars *var, char *to_search);
 char	*heredoc(t_vars *var, char *str);
 char	*exe_path_set(t_vars *var, char *exe);
 void	executor(t_vars *var, t_final **node);

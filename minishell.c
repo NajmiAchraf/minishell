@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:15:08 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/11 16:45:01 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/22 16:53:04 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	main(int ac, char **av, char **env)
 	if (ac > 1)
 		return (0);
 	var = malloc(sizeof(t_vars));
-	initialisation(var, env);
+	initialisation(var, av, env);
 	fst_link = setting_env(env);
 	fst_link->env_var = var;
 	ft_signals();

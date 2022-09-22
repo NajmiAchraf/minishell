@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:03:57 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 01:48:14 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/22 14:08:10 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,15 @@ int	trouble(char *cmd, char *arg, char *msg, int error_status)
 	return (1);
 }
 
-void	trouble_exit(char *cmd, char *arg, char *msg, int error_status)
+void	trouble_exit(char *cmd, char *arg, char *msg, int exit_status)
 {
-	trouble(cmd, arg, msg, error_status);
-	exit(error_status);
+	trouble(cmd, arg, msg, exit_status);
+	exit(exit_status);
 }
 
 static int	check_exit(char *cmds)
 {
-	int i, j;
-	t_allways aws;
+	t_allways	aws;
 
 	aws.i = 0;
 	if (cmds[aws.i] == '-' || cmds[aws.i] == '+')
@@ -57,17 +56,12 @@ static int	check_exit(char *cmds)
 	return (0);
 }
 
-int	exiting(t_vars *var, t_final *node)
+static int	exit_cases(t_vars *var, t_final *node)
 {
 	t_allways	aws;
 
 	aws.i = ft_lstlen(node->cmd);
-	if (aws.i == 1)
-	{
-		ft_putstr_fd("exit\n", 2);
-		exit(EXIT_SUCCESS);
-	}
-	else if (aws.i > 2 && !check_exit(node->cmd[1]))
+	if (aws.i > 2 && !check_exit(node->cmd[1]))
 	{
 		ft_putstr_fd("exit\n", 2);
 		trouble("exit", NULL, "too many arguments", 1);
@@ -83,6 +77,21 @@ int	exiting(t_vars *var, t_final *node)
 		ft_putstr_fd("exit\n", 2);
 		exit(ft_atoi(node->cmd[1])%256);
 	}
+	return (0);
+}
+
+int	exiting(t_vars *var, t_final *node)
+{
+	t_allways	aws;
+
+	aws.i = ft_lstlen(node->cmd);
+	if (aws.i == 1)
+	{
+		ft_putstr_fd("exit\n", 2);
+		exit(EXIT_SUCCESS);
+	}
+	else if (exit_cases(var, node))
+		return (1);
 	else
 		exit(EXIT_FAILURE);
 	return (0);
