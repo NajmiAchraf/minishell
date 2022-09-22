@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/12 13:52:37 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/21 23:36:27 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,10 +277,9 @@ void	executor(t_vars *var, t_final **node)
 			else
 			{
     			signal(SIGINT, SIG_IGN);
-				var->pid[w.j] = fork1();
+				var->pid[w.j] = ft_fork();
 				if (var->pid[w.j] == 0)
 				{
-    				signal(SIGINT, SIG_IGN);
 					signal(SIGINT, sig_handler0);
 					signal(SIGQUIT, sig_handler0);
 

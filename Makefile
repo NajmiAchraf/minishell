@@ -6,13 +6,13 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/11 16:50:06 by anajmi           ###   ########.fr        #
+#    Updated: 2022/09/22 01:41:38 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -fsanitize=address -g # -Wall -Werror -Wextra
+CFLAGS = # -Wall -Werror -Wextra # -fsanitize=address -g
 
 PARSE =	\
 	./Parsing/syntax_error.c			\
@@ -25,15 +25,22 @@ PARSE =	\
 	./Parsing/parser.c					\
 	./Parsing/signals.c					\
 	./Parsing/tools.c					\
-	# ./Parsing/pars_utils.c 			\
-	# ./Parsing/pars_utils2.c 			\
-	# ./Parsing/parsing/parse.c 
+ 
 
-EXEC =	\
-	./minishell.c						\
-	./Execution/execution.c				\
-	./Execution/environment.c			\
-	./Execution/pipes_redirections.c	\
+EXEC = \
+	./minishell.c							\
+	./Execution/builtin.c					\
+	./Execution/directory.c					\
+	./Execution/echo.c						\
+	./Execution/execution.c					\
+	./Execution/exiting.c					\
+	./Execution/pipes_redirections.c		\
+	./Execution/environment/environment0.c	\
+	./Execution/environment/environment1.c	\
+	./Execution/environment/init.c			\
+	./Execution/environment/show.c			\
+	./Execution/environment/tools.c			\
+	./Execution/environment/unset.c			\
 
 SRCS = $(PARSE) $(EXEC)
 CONTROL = @stty -echoctl

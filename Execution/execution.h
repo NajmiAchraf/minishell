@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/11 16:42:12 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/22 01:44:11 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,47 +29,6 @@
 # define C_BLUE		"\033[1;34m"
 # define C_CYAN		"\033[1;36m"
 
-// # define EXEC	1
-// # define REDIR	2
-// # define PIPE	3
-
-# define MAXARG	10
-
-
-/* typedef struct s_cmd t_cmd;
-
-typedef struct s_execcmd
-{
-	int type;
-	char name[MAXARG];
-	char *args[MAXARG];
-}	t_execcmd;
-
-typedef struct s_redircmd
-{
-	int type;
-	t_cmd *cmd;
-	char *file;
-	char *efile;
-	int mode;
-	int fd;
-}	t_redircmd;
-
-typedef struct s_pipecmd
-{
-	int type;
-	t_cmd *left;
-	t_cmd *right;
-}	t_pipecmd;
-
-struct s_cmd
-{
-	int type;
-	t_execcmd	*exe;
-	t_pipecmd	*pip;
-	t_redircmd	*red;
-}; */
-
 typedef struct s_envp
 {
 	size_t	sizeofexp;
@@ -79,7 +38,7 @@ typedef struct s_envp
 	char	***newexp;
 }	t_envp;
 
-typedef struct	s_allways
+typedef struct s_allways
 {
 	size_t	i;
 	size_t	j;
@@ -89,11 +48,10 @@ typedef struct	s_allways
 	int		status;
 }	t_allways;
 
-typedef struct	s_vars
+typedef struct s_vars
 {
 	char	*hdocs;
 
-	/* environment */
 	t_envp	env;
 	char	*tmp;
 	char	*tmp1;
@@ -108,14 +66,12 @@ typedef struct	s_vars
 /*								MAIN FUNCTIONS								  */
 /* ************************************************************************** */
 
-void	trouble_exit(char *cmd, char *arg, char *msg, int error_status);
 int		trouble(char *cmd, char *arg, char *msg, int error_status);
-int		fork1(void);
-void	free1(char **tofree);
+void	trouble_exit(char *cmd, char *arg, char *msg, int error_status);
+int		ft_fork(void);
 
 void	fill_path(t_vars *var);
 void	initialisation(t_vars *var, char **env);
-void	hostname(t_vars *var);
 
 /* ************************************************************************** */
 /*								BUILTIN FUNCTIONS							  */
@@ -129,6 +85,7 @@ int		pwd(t_vars *var, t_final *node);
 int		export(t_vars *var, t_final *node);
 int		unset(t_vars *var, t_final *node);
 int		environment(t_vars *var, t_final *node);
+int		exiting(t_vars *var, t_final *node);
 
 int		builtincheck(char *name);
 int		builtin(t_vars *var, t_final *node);
@@ -137,13 +94,12 @@ int		builtin(t_vars *var, t_final *node);
 /*		DIRECTORY		*/
 /* ******************** */
 
-char	*dir();
+char	*dir(void);
 
 /* ******************** */
 /*		ENVIRONMENT		*/
 /* ******************** */
 
-void	free1(char **tofree);
 int		replace_variable(t_vars *var, char *to_check, char *value);
 int		little_checker(char *to_check);
 int		validate_variable(t_vars *var, char *to_check);
