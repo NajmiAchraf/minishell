@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 21:51:35 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 15:02:52 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_allways
 	size_t	j;
 	size_t	k;
 	size_t	len;
-	int		pid;
+	pid_t	pid;
 	int		status;
 }	t_allways;
 
@@ -124,10 +124,17 @@ int		check_env_var(t_vars *var, char *to_check);
 
 char	*var_into_heredoc(t_vars *var, char *to_check, t_allways aws);
 char	*heredoc_expand(t_vars *var, char *to_search);
-char	*heredoc(t_vars *var, char *str);
-char	*exe_path_set(t_vars *var, char *exe);
-void	executor(t_vars *var, t_final **node);
+char	*heredoc_core(t_vars *var, char *delimiter);
+void	heredoc(t_vars *var, char *delimiter, int *fd);
 int		list_size1(t_final *list);
 int		iterate(t_final **node);
+void	iterate_files(t_vars *var, t_final **node);
+int		node_close(t_final *node);
+void	full_close(t_final **node);
+void    duping(t_final *node);
+void	wait_exit(t_vars *var, t_allways w);
+void	wait_status(t_vars *var, t_allways w);
+char	*exe_path_set(t_vars *var, char *exe);// too see
+void	executor(t_vars *var, t_final **node);
 
 #endif

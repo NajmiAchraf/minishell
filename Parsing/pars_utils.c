@@ -12,49 +12,16 @@
 
 #include "../minishell.h"
 
-t_token	*create_node(void)
+int	list_size(t_cmd *list)
 {
-	t_token	*new_node;
-	
-	new_node =  (t_token *)malloc(sizeof (t_token));
-	new_node->my_node = NULL;
-	new_node->next = NULL;
-	new_node->after_pipe = 0;
-	new_node->before_pipe = 0;
-	new_node->append = NULL;
-	new_node->here_d = NULL;
-	new_node->infile = NULL;
-	new_node->outfile = NULL;
-	new_node->cmd = NULL;
-	new_node->str = NULL;
-	return (new_node);
-}
+	t_cmd	*tmp;
+	int		i;
 
-void	add_last_list(t_token **head, t_token *new)
-{
-	t_token	*last;
-
-	last = (*head);
-	if (!(*head))
-		(*head) = new;
-	else
-	{
-		while (last->next != NULL)
-			last = last->next;
-		last->next = new;
-	}
-}
-
-int	list_size(t_token *list)
-{
-	t_token	*tmp;
-	int	i;
-	
 	if (!list)
 		return (0);
 	i = 1;
 	tmp = list;
-	while(tmp->next)
+	while (tmp->next)
 	{
 		i++;
 		tmp = tmp->next;
@@ -62,25 +29,62 @@ int	list_size(t_token *list)
 	return (i);
 }
 
-void	clear_list(t_token **list)
+int	redirect(char *str)
 {
-	t_token	*tmp;
-
-	if (!(*list))
-		return ;
-	while (*list)
-	{
-		tmp = (*list)->next;
-		//free((*list)->str);
-		free(*list);
-		*list = tmp;
-	}
-	list = NULL;
+	if (ft_strcmp(str, "<") == 0)
+		return (1);
+	if (ft_strcmp(str, ">") == 0)
+		return (2);
+	if (ft_strcmp(str, ">>") == 0)
+		return (3);
+	if (ft_strcmp(str, "<<") == 0)
+		return (4);
+	return (0);
 }
 
-int	my_errors(int e)
+t_final	*create_node(void)
 {
-	if (e == 1)
-		printf("Oops Error! Syntax error!\n");
-	return (0) ;
+	t_final	*new_node;
+
+	new_node = (t_final *)malloc(sizeof (t_final));
+	if (!new_node)
+		return (NULL);
+	new_node->next = NULL;
+	new_node->infile = -1;
+	new_node->outfile = -1;
+	return (new_node);
+}
+
+t_file	*file_node(char *str, int type)
+{
+	t_file	*new_node;
+
+	new_node = (t_file *)malloc(sizeof (t_file));
+	if (!new_node)
+		return (NULL);
+	new_node->next = NULL;
+	new_node->str = my_strdup(str);
+	new_node->id = type;
+	return (new_node);
+}
+
+void	to_array(t_final *node)
+{
+	int	i;
+	int	len;
+
+	while (node)
+	{
+		len = list_size(node->name);
+		node->cmd = malloc((len + 1) * sizeof(char *));
+		i = 0;
+		while (node->name)
+		{
+			node->cmd[i] = my_strdup(node->name->str);
+			node->name = node->name->next;
+			i++;
+		}
+		node->cmd[i] = NULL;
+		node = node->next;
+	}
 }

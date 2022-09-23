@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 21:33:18 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 13:38:24 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	initialisation(t_vars *var, char **av, char **env)
 	var->tmp2 = malloc(sizeof(char));
 	var->tmpp = malloc(sizeof(char *));
 	var->tmpp[0] = NULL;
-
 	var->main_name = ft_strdup(av[0]);
 	var->exepath = malloc(sizeof(char *));
 	var->exepath[0] = NULL;

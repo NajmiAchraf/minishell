@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 21:45:04 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 15:35:21 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,10 @@ char	*heredoc_expand(t_vars *var, char *to_search)
 	return (to_search);
 }
 
-char	*heredoc(t_vars *var, char *delimiter)
+char	*heredoc_core(t_vars *var, char *delimiter)
 {
 	int	i;
 
-	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, SIG_IGN);
 	free(var->hdocs);
 	var->hdocs = ft_strdup("");
 	i = 0;
@@ -75,8 +73,35 @@ char	*heredoc(t_vars *var, char *delimiter)
 		free(var->line);
 		i++;
 	}
-	ft_signals();
 	return (ft_strdup(var->hdocs));
+}
+
+void	wait_exit(t_vars *var, t_allways w)
+{
+	if (w.status == 2)
+		g_status = 1;
+	else if (w.status == 0)
+		g_status = 0;
+}
+
+void	heredoc(t_vars *var, char *delimiter, int *fd)
+{
+	t_allways	w;
+	pid_t		pid;
+
+	signal(SIGINT, SIG_IGN);
+	pid = ft_fork();
+	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		close(fd[0]);
+		ft_putstr_fd(heredoc_core(var, delimiter), fd[1]);
+		close(fd[1]);
+		exit(EXIT_SUCCESS);
+	}
+	waitpid(pid, &w.status, 0);
+	wait_exit(var, w);
+	ft_signals();
 }
 
 int	list_size1(t_final *list)
@@ -183,34 +208,15 @@ void	iterate_files(t_vars *var, t_final **node)
 				}
 				if (n->infile != -1 && n->infile != 0)
 					close(n->infile);
-				n->infile = fd[1];
-				ft_putstr_fd(heredoc(var, file->str), n->infile);
-				close(n->infile);
+				heredoc(var, file->str, fd);
+				close(fd[1]);
 				n->infile = fd[0];
+				if (g_status == 1)
+					return ;
 			}
 			file = file->next;
 		}
 		n = n->next;
-	}
-}
-
-void	sig_handler0(int sig){
-	if (sig == SIGQUIT)
-	{
-		g_status = 131;
-		printf("QUIT : 3\n");
-		exit(EXIT_SUCCESS);
-	}
-	else if (sig == SIGINT)
-		printf("FORK\n");
-}
-
-void	sig_handler1(int sig)
-{
-	if (sig == SIGQUIT || sig == SIGINT)
-	{
-		printf("QUIT : FORK\n");
-		exit(EXIT_SUCCESS);
 	}
 }
 
@@ -251,6 +257,20 @@ void    duping(t_final *node)
     }
 }
 
+void	wait_status(t_vars *var, t_allways w)
+{
+	waitpid(var->pid[w.j], &w.status, 0);
+	if (WIFEXITED(w.status))
+		g_status = WEXITSTATUS(w.status);
+	if (w.status == 2)
+		g_status = 128 + w.status;
+	else if (w.status == 3)
+	{
+		printf("Quit: %d\n", w.status);
+		g_status = 128 + w.status;
+	}
+}
+
 void	executor(t_vars *var, t_final **node)
 {
 	t_allways	w;
@@ -273,16 +293,13 @@ void	executor(t_vars *var, t_final **node)
 					trouble("builtin", n->cmd[0], "failed", 1);
 				full_close(node);
 			}
-			else
+			else if (w.len <= 200)
 			{
     			signal(SIGINT, SIG_IGN);
-    			signal(SIGQUIT, SIG_IGN);
 				var->pid[w.j] = ft_fork();
 				if (var->pid[w.j] == 0)
 				{
-					signal(SIGINT, sig_handler0);
-					signal(SIGQUIT, sig_handler0);
-
+					signal(SIGINT, SIG_DFL);
 					duping(n);
 					full_close(node);
 					if (!builtincheck(n->cmd[0]))
@@ -302,6 +319,11 @@ void	executor(t_vars *var, t_final **node)
 				node_close(n);
 				w.k = 0;
 			}
+			else
+			{
+				trouble("fork", NULL, "Resource temporarily unavailable", 1);
+				return ;
+			}
 		}
 		// else
 		// 	printf("minishell: %s No such file or directory\n", n->cmd[0]);
@@ -309,24 +331,13 @@ void	executor(t_vars *var, t_final **node)
 		w.i++;
 		w.j++;
 	}
-				
 	if (w.k == 0)
 	{
 		w.j = 0;
 		n = *node;
 		while (n)
 		{
-			waitpid(var->pid[w.j], &w.status, 0);
-			if (WIFEXITED(w.status))
-				g_status = WEXITSTATUS(w.status);
-			if (w.status == 2)
-				g_status = 128 + w.status;
-			else if (w.status == 3)
-			{
-				// trouble("Quit: %d\n", w.status);
-				printf("Quit: %d\n", w.status);
-				g_status = 128 + w.status;
-			}
+			wait_status(var, w);
 			n = n->next;
 			w.j++;
 		}

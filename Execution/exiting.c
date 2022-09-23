@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:03:57 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 14:08:10 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 13:39:20 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	exit_cases(t_vars *var, t_final *node)
 	else if (aws.i >= 2 && !check_exit(node->cmd[1]))
 	{
 		ft_putstr_fd("exit\n", 2);
-		exit(ft_atoi(node->cmd[1])%256);
+		exit(ft_atoi(node->cmd[1]) % 256);
 	}
 	return (0);
 }

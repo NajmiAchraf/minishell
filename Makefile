@@ -6,7 +6,7 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/22 15:15:43 by anajmi           ###   ########.fr        #
+#    Updated: 2022/09/23 11:48:02 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ PARSE =	\
 	./Parsing/token_utils2.c			\
 	./Parsing/expanding.c				\
 	./Parsing/parser.c					\
+	./Parsing/pars_utils.c				\
 	./Parsing/signals.c					\
 	./Parsing/tools.c					\
  
