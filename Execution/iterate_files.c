@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 20:37:42 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 21:26:44 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,27 @@ static int	heredoc_pipe(t_vars *var, t_final **node, t_file *file)
 	return (0);
 }
 
-void	iterate_files(t_vars *var, t_final **n)
+void	iterate_files(t_vars *var, t_final **node)
 {
 	t_file		*file;
+	t_final		*n;
 
-	while (*n)
+	n = *node;
+	while (n)
 	{
-		file = (*n)->file;
+		file = (n)->file;
 		while (file)
 		{
-			if (file->id == 1 && read_file(n, file))
+			if (file->id == 1 && read_file(&n, file))
 				return ;
-			if (file->id == 2 && trunc_file(n, file))
+			if (file->id == 2 && trunc_file(&n, file))
 				return ;
-			if (file->id == 3 && append_file(n, file))
+			if (file->id == 3 && append_file(&n, file))
 				return ;
-			if (file->id == 4 && heredoc_pipe(var, n, file))
+			if (file->id == 4 && heredoc_pipe(var, &n, file))
 				return ;
 			file = file->next;
 		}
-		n = &(*n)->next;
+		n = (n)->next;
 	}
 }
