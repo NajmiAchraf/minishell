@@ -6,7 +6,7 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/23 11:48:02 by anajmi           ###   ########.fr        #
+#    Updated: 2022/09/23 17:57:45 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,12 @@ EXEC = \
 	./Execution/directory.c					\
 	./Execution/echo.c						\
 	./Execution/execution.c					\
+	./Execution/executor_tools.c				\
+	./Execution/executor.c					\
 	./Execution/exiting.c					\
-	./Execution/pipes_redirections.c		\
+	./Execution/heredoc.c					\
+	./Execution/iterate_files.c				\
+	./Execution/iterate_pipes.c				\
 	./Execution/environment/environment0.c	\
 	./Execution/environment/environment1.c	\
 	./Execution/environment/init.c			\
