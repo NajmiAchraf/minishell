@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 17:46:31 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 17:46:48 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 20:50:55 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*heredoc_core(t_vars *var, char *delimiter)
 	return (ft_strdup(var->hdocs));
 }
 
-void	wait_exit(t_vars *var, t_allways w)
+void	wait_exit(t_allways w)
 {
 	if (w.status == 2)
 		g_status = 1;
@@ -100,6 +100,6 @@ void	heredoc(t_vars *var, char *delimiter, int *fd)
 		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &w.status, 0);
-	wait_exit(var, w);
+	wait_exit(w);
 	ft_signals();
 }

@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 16:39:54 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/22 01:40:38 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 20:51:23 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	little_checker(char *to_check)
 
 int	validate_variable(t_vars *var, char *to_check)
 {
-	t_allways	aws;
-
 	ft_free(var->tmpp);
 	var->tmpp = ft_split(to_check, '=');
 	if (var->tmpp[0] != NULL)

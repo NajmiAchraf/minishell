@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 18:02:25 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 20:50:42 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ void	initialisation(t_vars *var, char **av, char **env);
 
 int		builtin(t_vars *var, t_final *node);
 
-int		echo(t_vars *var, t_final *node);
+int		echo(t_final *node);
 int		cd(t_vars *var, t_final *node);
-int		pwd(t_vars *var, t_final *node);
+int		pwd(t_final *node);
 int		export(t_vars *var, t_final *node);
 int		unset(t_vars *var, t_final *node);
 int		environment(t_vars *var, t_final *node);
-int		exiting(t_vars *var, t_final *node);
+int		exiting(t_final *node);
 
 int		builtincheck(char *name);
 int		builtin(t_vars *var, t_final *node);
@@ -125,7 +125,7 @@ int		check_env_var(t_vars *var, char *to_check);
 char	*var_into_heredoc(t_vars *var, char *to_check, t_allways aws);
 char	*heredoc_expand(t_vars *var, char *to_search);
 char	*heredoc_core(t_vars *var, char *delimiter);
-void	wait_exit(t_vars *var, t_allways w);
+void	wait_exit(t_allways w);
 void	heredoc(t_vars *var, char *delimiter, int *fd);
 
 /* ******************** */

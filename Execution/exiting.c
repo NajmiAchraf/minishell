@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:03:57 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 13:39:20 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 20:49:53 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	check_exit(char *cmds)
 	return (0);
 }
 
-static int	exit_cases(t_vars *var, t_final *node)
+static int	exit_cases(t_final *node)
 {
 	t_allways	aws;
 
@@ -80,7 +80,7 @@ static int	exit_cases(t_vars *var, t_final *node)
 	return (0);
 }
 
-int	exiting(t_vars *var, t_final *node)
+int	exiting(t_final *node)
 {
 	t_allways	aws;
 
@@ -90,7 +90,7 @@ int	exiting(t_vars *var, t_final *node)
 		ft_putstr_fd("exit\n", 2);
 		exit(EXIT_SUCCESS);
 	}
-	else if (exit_cases(var, node))
+	else if (exit_cases(node))
 		return (1);
 	else
 		exit(EXIT_FAILURE);

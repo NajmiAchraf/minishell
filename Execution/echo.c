@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:18:46 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 13:37:40 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/23 20:49:00 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	echo_check(char *args)
 	return (0);
 }
 
-static int	echo_core(t_vars *var, t_final *node, t_allways aws)
+static int	echo_core(t_final *node, t_allways aws)
 {
 	if (node->cmd[aws.i][0] == '-' && node->cmd[aws.i][1])
 	{
@@ -47,14 +47,14 @@ static int	echo_core(t_vars *var, t_final *node, t_allways aws)
 	return (aws.k);
 }
 
-int	echo(t_vars *var, t_final *node)
+int	echo(t_final *node)
 {
 	t_allways	aws;
 
 	aws.i = 1;
 	aws.k = 1;
 	if (node->cmd[aws.i])
-		aws.k = echo_core(var, node, aws);
+		aws.k = echo_core(node, aws);
 	if (aws.k)
 		ft_putchar_fd('\n', node->outfile);
 	return (0);
