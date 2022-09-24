@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 13:38:24 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 10:46:40 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ char	*exe_path_set(t_vars *var, char *exe)
 void	initialisation(t_vars *var, char **av, char **env)
 {
 	var->tmp = malloc(sizeof(char));
-	var->tmp0 = malloc(sizeof(char));
-	var->tmp1 = malloc(sizeof(char));
 	var->tmp2 = malloc(sizeof(char));
 	var->tmpp = malloc(sizeof(char *));
 	var->tmpp[0] = NULL;
@@ -81,8 +79,9 @@ void	initialisation(t_vars *var, char **av, char **env)
 	}
 	init_environment(var);
 	init_export(var);
+	var->tmp0 = ft_itoa(ft_atoi(get_env_var(var, "SHLVL")) + 1);
+	var->tmp1 = ft_strjoin("SHLVL=", var->tmp0);
+	ft_export(var, var->tmp1, 0);
 	ft_unset(var, "OLDPWD");
 	ft_export(var, "OLDPWD", 1);
-	ft_export(var, ft_strjoin("SHLVL=",
-			ft_itoa(ft_atoi(get_env_var(var, "SHLVL")) + 1)), 0);
 }

@@ -6,42 +6,42 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/23 20:51:50 by anajmi           ###   ########.fr        #
+#    Updated: 2022/09/24 11:41:56 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -fsanitize=address -g # -Wall -Werror -Wextra
+CFLAGS = # -fsanitize=address -g # -Wall -Werror -Wextra
 
 PARSE =	\
-	./Parsing/syntax_error.c			\
-	./Parsing/ft_environment.c			\
-	./Parsing/environment_utils.c		\
-	./Parsing/tokenizer.c				\
-	./Parsing/token_utils.c				\
-	./Parsing/token_utils2.c			\
-	./Parsing/expanding.c				\
-	./Parsing/parser.c					\
-	./Parsing/pars_utils.c				\
-	./Parsing/signals.c					\
-	./Parsing/tools.c					\
+	./Parsing/syntax_error.c				\
+	./Parsing/ft_environment.c				\
+	./Parsing/environment_utils.c			\
+	./Parsing/tokenizer.c					\
+	./Parsing/token_utils.c					\
+	./Parsing/token_utils2.c				\
+	./Parsing/expanding.c					\
+	./Parsing/parser.c						\
+	./Parsing/pars_utils.c					\
+	./Parsing/signals.c						\
+	./Parsing/tools.c						\
  
 
 EXEC = \
 	./minishell.c							\
+	./Execution/breaking.c					\
 	./Execution/builtin.c					\
 	./Execution/directory.c					\
 	./Execution/echo.c						\
+	./Execution/environment.c				\
 	./Execution/execution.c					\
 	./Execution/executor_tools.c			\
 	./Execution/executor.c					\
-	./Execution/exiting.c					\
 	./Execution/heredoc.c					\
 	./Execution/iterate_files.c				\
 	./Execution/iterate_pipes.c				\
-	./Execution/environment/environment0.c	\
-	./Execution/environment/environment1.c	\
+	./Execution/environment/export_env.c	\
 	./Execution/environment/init.c			\
 	./Execution/environment/show.c			\
 	./Execution/environment/tools.c			\

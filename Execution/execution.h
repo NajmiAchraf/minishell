@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 20:50:42 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 11:50:09 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@
 # include <sys/wait.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-
-# define C_RES		"\033[0m"
-# define C_RED		"\033[1;31m"
-# define C_GREEN	"\033[1;32m"
-# define C_YELOW	"\033[1;33m"
-# define C_BLUE		"\033[1;34m"
-# define C_CYAN		"\033[1;36m"
 
 typedef struct s_envp
 {
@@ -66,61 +59,107 @@ typedef struct s_vars
 }	t_vars;
 
 /* ************************************************************************** */
-/*								MAIN FUNCTIONS								  */
+/*								EXPORT_ENV.C								  */
 /* ************************************************************************** */
-
-int		trouble(char *cmd, char *arg, char *msg, int error_status);
-void	trouble_exit(char *cmd, char *arg, char *msg, int exit_status);
-int		ft_fork(void);
-
-void	fill_path(t_vars *var);
-void	initialisation(t_vars *var, char **av, char **env);
-
-/* ************************************************************************** */
-/*								BUILTIN FUNCTIONS							  */
-/* ************************************************************************** */
-
-int		builtin(t_vars *var, t_final *node);
-
-int		echo(t_final *node);
-int		cd(t_vars *var, t_final *node);
-int		pwd(t_final *node);
-int		export(t_vars *var, t_final *node);
-int		unset(t_vars *var, t_final *node);
-int		environment(t_vars *var, t_final *node);
-int		exiting(t_final *node);
-
-int		builtincheck(char *name);
-int		builtin(t_vars *var, t_final *node);
-
-/* ******************** */
-/*		DIRECTORY		*/
-/* ******************** */
-
-char	*dir(void);
-
-/* ******************** */
-/*		ENVIRONMENT		*/
-/* ******************** */
 
 int		replace_variable(t_vars *var, char *to_check, char *value);
 int		little_checker(char *to_check);
 int		validate_variable(t_vars *var, char *to_check);
-
-void	sort_export(t_vars *var);
-void	init_environment(t_vars *var);
-void	init_export(t_vars *var);
 int		ft_export(t_vars *var, char *to_add, int pass);
 void	export_add(t_vars *var, char *to_add);
-void	ft_unset(t_vars *var, char *to_del);
+
+/* ************************************************************************** */
+/*								INIT.C										  */
+/* ************************************************************************** */
+
+void	init_environment(t_vars *var);
+void	init_export(t_vars *var);
+
+/* ************************************************************************** */
+/*								SHOW.C										  */
+/* ************************************************************************** */
+
 void	show_env(t_vars *var, t_final *node);
 void	show_exp(t_vars *var, t_final *node);
+
+/* ************************************************************************** */
+/*								TOOLS.C										  */
+/* ************************************************************************** */
+
+void	sort_export(t_vars *var);
 char	*get_env_var(t_vars *var, char *to_get);
 int		check_env_var(t_vars *var, char *to_check);
 
-/* ******************** */
-/*		HEREDOC			*/
-/* ******************** */
+/* ************************************************************************** */
+/*								UNSET.C										  */
+/* ************************************************************************** */
+
+void	ft_unset(t_vars *var, char *to_del);
+
+/* ************************************************************************** */
+/*								BUILTIN.C									  */
+/* ************************************************************************** */
+
+int		builtincheck(char *name);
+int		builtin(t_vars *var, t_final *node);
+
+/* ************************************************************************** */
+/*								BREAKING.C									  */
+/* ************************************************************************** */
+
+int		exiting(t_final *node);
+int		trouble(char *cmd, char *arg, char *msg, int error_status);
+void	trouble_exit(char *cmd, char *arg, char *msg, int exit_status);
+
+/* ************************************************************************** */
+/*								DIRECTORY.C									  */
+/* ************************************************************************** */
+
+char	*dir(void);
+int		cd(t_vars *var, t_final *node);
+int		pwd(t_final *node);
+
+/* ************************************************************************** */
+/*								ECHO.C										  */
+/* ************************************************************************** */
+
+int		echo(t_final *node);
+
+/* ************************************************************************** */
+/*								ENVIRONMENT.C								  */
+/* ************************************************************************** */
+
+int		export(t_vars *var, t_final *node);
+int		unset(t_vars *var, t_final *node);
+int		environment(t_vars *var, t_final *node);
+
+/* ************************************************************************** */
+/*								EXECUTION.C									  */
+/* ************************************************************************** */
+
+int		ft_fork(void);
+void	fill_path(t_vars *var);
+char	*exe_path_set(t_vars *var, char *exe);
+void	initialisation(t_vars *var, char **av, char **env);
+
+/* ************************************************************************** */
+/*								EXECUTOR_TOOLS.C							  */
+/* ************************************************************************** */
+
+int		node_close(t_final *node);
+void	full_close(t_final **node);
+void	duping(t_final *node);
+void	wait_status(t_vars *var, t_allways w);
+
+/* ************************************************************************** */
+/*								EXECUTOR.C									  */
+/* ************************************************************************** */
+
+void	executor(t_vars *var, t_final **node);
+
+/* ************************************************************************** */
+/*								HEREDOC.C									  */
+/* ************************************************************************** */
 
 char	*var_into_heredoc(t_vars *var, char *to_check, t_allways aws);
 char	*heredoc_expand(t_vars *var, char *to_search);
@@ -128,17 +167,16 @@ char	*heredoc_core(t_vars *var, char *delimiter);
 void	wait_exit(t_allways w);
 void	heredoc(t_vars *var, char *delimiter, int *fd);
 
-/* ******************** */
-/*		EXECUTION		*/
-/* ******************** */
+/* ************************************************************************** */
+/*								ITERATE_FILES.C								  */
+/* ************************************************************************** */
+
+void	iterate_files(t_vars *var, t_final **node);
+
+/* ************************************************************************** */
+/*								ITERATE_PIPES.C								  */
+/* ************************************************************************** */
 
 int		iterate_pipes(t_final **node);
-void	iterate_files(t_vars *var, t_final **node);
-int		node_close(t_final *node);
-void	full_close(t_final **node);
-void	duping(t_final *node);
-void	wait_status(t_vars *var, t_allways w);
-char	*exe_path_set(t_vars *var, char *exe);// too see
-void	executor(t_vars *var, t_final **node);
 
 #endif

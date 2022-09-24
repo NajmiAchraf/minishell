@@ -1,42 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exiting.c                                          :+:      :+:    :+:   */
+/*   breaking.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:03:57 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 20:49:53 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 11:41:39 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	trouble(char *cmd, char *arg, char *msg, int error_status)
-{
-	ft_putstr_fd("minishell: ", 2);
-	if (cmd != NULL)
-	{
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": ", 2);
-	}
-	if (arg != NULL)
-	{
-		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": ", 2);
-	}
-	if (msg != NULL)
-		ft_putstr_fd(msg, 2);
-	ft_putstr_fd(".\n", 2);
-	g_status = error_status;
-	return (1);
-}
-
-void	trouble_exit(char *cmd, char *arg, char *msg, int exit_status)
-{
-	trouble(cmd, arg, msg, exit_status);
-	exit(exit_status);
-}
 
 static int	check_exit(char *cmds)
 {
@@ -95,4 +69,30 @@ int	exiting(t_final *node)
 	else
 		exit(EXIT_FAILURE);
 	return (0);
+}
+
+int	trouble(char *cmd, char *arg, char *msg, int error_status)
+{
+	ft_putstr_fd("minishell: ", 2);
+	if (cmd != NULL)
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	if (arg != NULL)
+	{
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	if (msg != NULL)
+		ft_putstr_fd(msg, 2);
+	ft_putstr_fd(".\n", 2);
+	g_status = error_status;
+	return (1);
+}
+
+void	trouble_exit(char *cmd, char *arg, char *msg, int exit_status)
+{
+	trouble(cmd, arg, msg, exit_status);
+	exit(exit_status);
 }

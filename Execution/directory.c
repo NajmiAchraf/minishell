@@ -6,19 +6,11 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:02:13 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 20:47:54 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 11:37:04 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*dir(void)
-{
-	char	cwd[FILENAME_MAX];
-
-	getcwd(cwd, sizeof(cwd));
-	return (ft_strdup(cwd));
-}
 
 static int	change_directory(t_vars *var, char *chemin)
 {
@@ -31,6 +23,14 @@ static int	change_directory(t_vars *var, char *chemin)
 	if (!check_env_var(var, "PWD"))
 		ft_export(var, ft_strjoin("PWD=", dir()), 0);
 	return (0);
+}
+
+char	*dir(void)
+{
+	char	cwd[FILENAME_MAX];
+
+	getcwd(cwd, sizeof(cwd));
+	return (ft_strdup(cwd));
 }
 
 int	cd(t_vars *var, t_final *node)
