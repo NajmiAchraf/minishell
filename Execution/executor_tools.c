@@ -6,19 +6,20 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 18:01:10 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 17:15:20 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	node_close(t_final *node)
+void	node_close(t_final *node)
 {
 	if (node->infile != 0)
-		return (close(node->infile));
+		close(node->infile);
 	if (node->outfile != 1)
-		return (close(node->outfile));
-	return (1);
+		close(node->outfile);
+	// printf("%d\n", node->outfile);
+	// printf("%d\n", node->infile);
 }
 
 void	full_close(t_final **node)
@@ -33,19 +34,19 @@ void	full_close(t_final **node)
 	}
 }
 
-void	duping(t_final *node)
+void	duping(t_final **node)
 {
-	if (node->infile != 0)
+	if ((*node)->infile != 0)
 	{
-		if (dup2(node->infile, 0) == -1)
+		if (dup2((*node)->infile, 0) == -1)
 			trouble_exit("dup2", NULL, "failed", 1);
-		close(node->infile);
+		close((*node)->infile);
 	}
-	if (node->outfile != 1)
+	if ((*node)->outfile != 1)
 	{
-		if (dup2(node->outfile, 1) == -1)
+		if (dup2((*node)->outfile, 1) == -1)
 			trouble_exit("dup2", NULL, "failed", 1);
-		close(node->outfile);
+		close((*node)->outfile);
 	}
 }
 

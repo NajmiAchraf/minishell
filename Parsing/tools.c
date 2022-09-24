@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:52:39 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/22 22:59:30 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/23 21:33:44 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ void	free_parser(t_final *cmd)
 void free_tokens(t_token *data)
 {
 	t_token *tmp;
-	t_token *node;
 	t_token *new;
 
 	new = data;

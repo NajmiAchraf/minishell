@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:50:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/23 15:55:09 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 00:54:38 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,17 @@ t_final	*link_nodes(t_final *head, t_final **link, t_final *tmp)
 
 void	redir_cmd(t_final *tmp, t_file **save_file, t_file *node_file)
 {
+	// int type;
+	
+	// if (((1 <= redirect(data->str) && redirect(data->str) <= 4)
+	// 		&& (data->next == NULL || !ft_isalnum(data->next->str[0]))))
+	// {
+	// 	printf("redirect error\n");
+	// 	return ;
+	// }
+	// type = redirect(data->str);
+	// data = data->next;
+	// node_file = file_node(data->str, type);
 	if (tmp->file == NULL)
 	{
 		tmp->file = node_file;
@@ -145,8 +156,9 @@ void	redir_cmd(t_final *tmp, t_file **save_file, t_file *node_file)
 		node_file->next = NULL;
 }
 
-void	cmd_name(t_final *tmp,t_cmd **save_cmd, t_cmd *node_cmd)
-{	
+void	cmd_name(t_final *tmp,t_cmd **save_cmd, t_cmd *node_cmd, t_token *data)
+{
+	node_cmd = cmd_node(data->str);	
 	if (tmp->name == NULL)
 	{
 		tmp->name = node_cmd;
@@ -161,111 +173,7 @@ void	cmd_name(t_final *tmp,t_cmd **save_cmd, t_cmd *node_cmd)
 		node_cmd->next = NULL;
 }
 
-// void	my_cmd(t_token *data)
-// {
-// 	t_file	*node_file;
-// 	t_file	*save_file;
-// 	t_final	*tmp;
-// 	t_cmd	*node_cmd;
-// 	t_cmd	*save_cmd;
-	
-// 	if (redirect(data->str))
-// 	{
-// 		if (data->str[0] == redirect(data->str) || data->next == NULL)
-// 		{
-// 			printf("redirect error\n");
-// 			return ;
-// 		}
-// 		data = data->next;
-// 		node_file = file_node(data->str, redirect(data->str));
-// 		redir_cmd(tmp, &save_file, node_file);
-// 	}
-// 	else
-// 	{
-// 		node_cmd = cmd_node(data->str);
-// 		cmd_name(tmp, &save_cmd, node_cmd);
-// 	}
-// }
-
-// void	my_cmd(t_token *data)
-// {
-// 	t_file	*node_file;
-// 	t_file	*save_file;
-// 	t_final	*tmp;
-// 	t_cmd	*node_cmd;
-// 	t_cmd	*save_cmd;
-
-// 	while (data && data->str && ft_strcmp(data->str, "|") != 0)
-// 	{
-// 		if (redirect(data->str))
-// 		{
-// 			if (data->str[0] == redirect(data->str) || data->next == NULL)
-// 			{
-// 				printf("redirect error\n");
-// 				return ;
-// 			}
-// 			data = data->next;
-// 			node_file = file_node(data->str, redirect(data->str));
-// 			redir_cmd(tmp, &save_file, node_file);
-// 		}
-// 		else
-// 		{
-// 			node_cmd = cmd_node(data->str);
-// 			cmd_name(tmp, &save_cmd, node_cmd);
-// 		}
-// 		data = data->next;
-// 	}
-// }
-
-// t_final	*ft_parser(t_token *data)
-// {
-// 	// t_final	*head;
-// 	// t_final	*tmp;
-// 	// t_token	*save;
-// 	// t_file	*node_file;
-// 	// t_cmd	*node_cmd;
-// 	// t_final	*link;
-// 	// t_file	*save_file;
-// 	// t_cmd	*save_cmd;
-// 	t_save	*sv;
-
-// 	sv->head = NULL;
-// 	sv->link = sv->head;
-// 	sv->save = data;
-// 	while (data)
-// 	{
-// 		sv->tmp = create_node();
-// 		sv->head = link_nodes(sv->head, &sv->link, sv->tmp);
-// 		while (data && data->str && ft_strcmp(data->str, "|") != 0)
-// 		{
-// 			if (redirect(data->str))
-// 			{
-// 				if (data->str[0] == redirect(data->str) || data->next == NULL)
-// 				{
-// 					printf("redirect error\n");
-// 					return (0);
-// 				}
-// 				data = data->next;
-// 				sv->node_file = file_node(data->str, redirect(data->str));
-// 				redir_cmd(sv->tmp, &sv->save_file, sv->node_file);
-// 			}
-// 			else
-// 			{
-// 				sv->node_cmd = cmd_node(data->str);
-// 				cmd_name(sv->tmp, &sv->save_cmd, sv->node_cmd);
-// 			}
-// 			//my_cmd(data);
-// 			data = data->next;
-// 		}
-// 		//my_cmd(data);
-// 		if (data != NULL)
-// 			data = data->next;
-// 	}
-// 	to_array(sv->head);
-// 	return (sv->head);
-// }
-
-t_final	*ft_parser0(t_token *data)
+t_final	*ft_parser(t_token *data)
 {
 	t_final	*head;
 	t_final	*tmp;
@@ -275,6 +183,7 @@ t_final	*ft_parser0(t_token *data)
 	t_final	*link;
 	t_file	*save_file;
 	t_cmd	*save_cmd;
+	int		type;
 
 	head = NULL;
 	link = head;
@@ -293,17 +202,13 @@ t_final	*ft_parser0(t_token *data)
 					trouble(NULL, NULL, "syntax error", 258);
 					return (0);
 				}
+				type = redirect(data->str);
 				data = data->next;
-				node_file = file_node(data->str, redirect(data->str));
+				node_file = file_node(data->str, type);
 				redir_cmd(tmp, &save_file, node_file);
-				printf("node_file->str -> %s,  node_file->id -> %d\n", node_file->str, node_file->id);
 			}
 			else
-			{
-				node_cmd = cmd_node(data->str);
-				cmd_name(tmp, &save_cmd, node_cmd);
-			}
-			//my_cmd(data);
+				cmd_name(tmp, &save_cmd, node_cmd, data);
 			data = data->next;
 		}
 		if (data != NULL)
@@ -314,7 +219,7 @@ t_final	*ft_parser0(t_token *data)
 }
 
 
-t_final	*ft_parser(t_token *data)
+t_final	*ft_parser_original(t_token *data)
 {
 	t_final *head;
 	t_final *tmp;

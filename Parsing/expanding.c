@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 19:51:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/22 22:37:18 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/23 21:33:14 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ char	*ft_expand(char *str, t_env *env, char **av)
 	int		i;
 	int		start;
 	char	*ptr;
-	char	*new;
 
 	i = 0;
 	start = 0;

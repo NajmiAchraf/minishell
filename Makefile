@@ -6,26 +6,26 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/24 11:41:56 by anajmi           ###   ########.fr        #
+#    Updated: 2022/09/24 17:37:42 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = # -fsanitize=address -g # -Wall -Werror -Wextra
+CFLAGS = -fsanitize=address -g #-Wall -Werror -Wextra 
 
 PARSE =	\
-	./Parsing/syntax_error.c				\
-	./Parsing/ft_environment.c				\
-	./Parsing/environment_utils.c			\
-	./Parsing/tokenizer.c					\
-	./Parsing/token_utils.c					\
-	./Parsing/token_utils2.c				\
-	./Parsing/expanding.c					\
-	./Parsing/parser.c						\
-	./Parsing/pars_utils.c					\
-	./Parsing/signals.c						\
-	./Parsing/tools.c						\
+	./Parsing/syntax_error.c			\
+	./Parsing/ft_environment.c			\
+	./Parsing/environment_utils.c		\
+	./Parsing/tokenizer.c				\
+	./Parsing/token_utils.c				\
+	./Parsing/token_utils2.c			\
+	./Parsing/expanding.c				\
+	./Parsing/parser.c					\
+	./Parsing/pars_utils.c				\
+	./Parsing/signals.c					\
+	./Parsing/tools.c					\
  
 
 EXEC = \

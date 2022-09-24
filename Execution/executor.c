@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 17:56:02 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 17:12:32 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	executor(t_vars *var, t_final **node)
 				if (var->pid[w.j] == 0)
 				{
 					signal(SIGINT, SIG_DFL);
-					duping(n);
+					signal(SIGQUIT, SIG_DFL);
+					duping(&n);
 					full_close(node);
 					if (!builtincheck(n->cmd[0]))
 					{

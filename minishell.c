@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:15:08 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/24 10:32:58 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 17:41:49 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ int	main(int ac, char **av, char **env)
 		}
 		if (var->line[0] != '\0') //for skipping \n
 		{
+			/*
+			cat <<'$p'
+			echo "'$USER'"
+
+			sleep 1 || ls
+			sleep 1 | | ls
+			
+			*/
 			if (syntax_error(var->line) != 0)
 			{
 				add_history(var->line);

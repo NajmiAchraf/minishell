@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/24 11:50:09 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 13:50:31 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,9 @@ void	initialisation(t_vars *var, char **av, char **env);
 /*								EXECUTOR_TOOLS.C							  */
 /* ************************************************************************** */
 
-int		node_close(t_final *node);
+void	node_close(t_final *node);
 void	full_close(t_final **node);
-void	duping(t_final *node);
+void	duping(t_final **node);
 void	wait_status(t_vars *var, t_allways w);
 
 /* ************************************************************************** */
