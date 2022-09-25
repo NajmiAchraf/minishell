@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:25:58 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/23 21:32:51 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/25 13:14:02 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ char	*single_quote(char *line, int *i)
 	while (line[*i] && line[*i] != '\'')
 		(*i)++;
 	if (!line[*i])
+	{
 		trouble("syntax error", NULL, "inclosed single quotes", 258);
+		return (NULL);
+	}
 	value = ft_substr(line, index + 1, *i - index - 1);
 	(*i)++;
 	return (value);
@@ -39,7 +42,10 @@ char	*double_quote(t_save *save, char *line, int *i)
 	while (line[*i] && line[*i] != '\"')
 		(*i)++;
 	if (!line[*i])
+	{
 		trouble("syntax error", NULL, "inclosed double quotes", 258);
+		return (NULL);
+	}
 	value = ft_substr(line, index + 1, *i - index - 1);
 	if (check_dollar(value) != 0)
 	{
@@ -98,29 +104,39 @@ void	redirection(t_token **head, char *str, int *i)
 	(*i)++;
 }
 
-void	setting_word(t_save *save, t_token **temp, char *line, int *i)
+int	setting_word(t_save *save, t_token **temp, char *line, int *i)
 {
-	save->value = malloc (sizeof (char));
-	save->value[0] = '\0';
+	char	*value;
+	char	*str;
+
+	value = malloc (sizeof (char));
+	value[0] = '\0';
 	while (line[*i] && skip_char(line[*i]))
 	{
 		if (line[*i] == '\'')
 		{
-			save->str = single_quote(line, i);
-			save->value = my_strjoin (save->value, save->str);
+			str = single_quote(line, i);
+			if (!str)
+				return (1);
+			value = my_strjoin (value, str);
 		}
 		else if (line[*i] == '\"')
 		{
-			save->str = double_quote(save, line, i);
-			save->value = my_strjoin(save->value, save->str);
+			str = double_quote(save, line, i);
+			if (!str)
+				return (1);
+			value = my_strjoin(value, str);
 		}
 		else if (line[*i] == '$')
-			save->value = my_strjoin(save->value, dollar(save, temp, line, i));
+			value = my_strjoin(value, dollar(save, temp, line, i));
 		else
 		{
-			save->str = convert_char_str(line[(*i)++]);
-			save->value = my_strjoin (save->value, save->str);
+			str = convert_char_str(line[(*i)++]);
+			if (!str)
+				return (1);
+			value = my_strjoin (value, str);
 		}
 	}
-	add_token_last(temp, new_node(save->value, WORD));
+	add_token_last(temp, new_node(value, WORD));
+	return (0);
 }

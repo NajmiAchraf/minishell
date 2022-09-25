@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/24 10:46:40 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/25 15:55:41 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	initialisation(t_vars *var, char **av, char **env)
 	var->exepath[0] = NULL;
 	var->hdocs = malloc(sizeof(char));
 	var->hdocs[0] = '\0';
+	var->infile = -1;
 	var->env.env = env;
 	var->pid = malloc(sizeof(int) * FILENAME_MAX);
 	if (!env)

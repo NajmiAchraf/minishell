@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 21:26:44 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/25 16:41:11 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,43 +42,38 @@ static int	append_file(t_final **node, t_file *file)
 	return (0);
 }
 
-static int	heredoc_pipe(t_vars *var, t_final **node, t_file *file)
+static int	heredoc_file(t_vars *var, t_final **node, t_file *file)
 {
-	int	fd[2];
-
-	if (pipe(fd) == -1)
-		return (trouble("pipe", NULL, "can't open heredoc", 1));
 	if ((*node)->infile != -1 && (*node)->infile != 0)
 		close((*node)->infile);
-	heredoc(var, file->str, fd);
-	close(fd[1]);
-	(*node)->infile = fd[0];
-	if (g_status == 1)
-		return (1);
+	(*node)->infile = var->infile;
 	return (0);
 }
 
-void	iterate_files(t_vars *var, t_final **node)
+int	iterate_files(t_vars *var, t_final **node)
 {
+	t_allways	a;
 	t_file		*file;
 	t_final		*n;
 
 	n = *node;
+	a.h = 0;
 	while (n)
 	{
 		file = (n)->file;
 		while (file)
 		{
 			if (file->id == 1 && read_file(&n, file))
-				return ;
+				return (1);
 			if (file->id == 2 && trunc_file(&n, file))
-				return ;
+				return (1);
 			if (file->id == 3 && append_file(&n, file))
-				return ;
-			if (file->id == 4 && heredoc_pipe(var, &n, file))
-				return ;
+				return (1);
+			if (file->id == 4 && ++a.h == var->h)
+				heredoc_file(var, &n, file);
 			file = file->next;
 		}
 		n = (n)->next;
 	}
+	return (0);
 }

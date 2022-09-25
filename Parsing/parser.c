@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:50:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/24 00:54:38 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/24 21:57:54 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ t_final	*ft_parser(t_token *data)
 	{
 		tmp = create_node();
 		head = link_nodes(head, &link, tmp);
-		while (data && data->str && ft_strcmp(data->str, "|") != 0)
+		while (data && data->str && ft_strcmp(data->str, PIPE) != 0)
 		{
 			if (redirect(data->str))
 			{

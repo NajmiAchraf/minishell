@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/24 17:15:20 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 17:54:57 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	node_close(t_final *node)
 		close(node->infile);
 	if (node->outfile != 1)
 		close(node->outfile);
-	// printf("%d\n", node->outfile);
-	// printf("%d\n", node->infile);
 }
 
 void	full_close(t_final **node)

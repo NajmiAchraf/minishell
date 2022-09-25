@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 17:46:31 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/23 20:50:55 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/25 15:39:24 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,17 @@ char	*heredoc_core(t_vars *var, char *delimiter)
 	i = 0;
 	while (1)
 	{
-		var->line = readline("> ");
-		if (var->line == NULL || !ft_strcmp(var->line, delimiter))
+		var->gnl = readline("> ");
+		if (var->gnl == NULL || !ft_strcmp(var->gnl, delimiter))
 			break ;
 		free(var->tmp0);
 		var->tmp0 = var->hdocs;
 		if (i == 0)
-			var->hdocs = ft_strjoin(heredoc_expand(var, var->line), "\n");
+			var->hdocs = ft_strjoin(heredoc_expand(var, var->gnl), "\n");
 		else
 			var->hdocs = ft_strjoin(var->hdocs,
-					ft_strjoin(heredoc_expand(var, var->line), "\n"));
-		free(var->line);
+					ft_strjoin(heredoc_expand(var, var->gnl), "\n"));
+		free(var->gnl);
 		i++;
 	}
 	return (ft_strdup(var->hdocs));

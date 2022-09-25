@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:15:08 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/24 17:41:49 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/24 21:50:56 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,28 +47,32 @@ int	main(int ac, char **av, char **env)
 			sleep 1 | | ls
 			
 			*/
-			if (syntax_error(var->line) != 0)
+			//printf("syntax_error(var->line) = %d\n", syntax_error(var->line));
+			add_history(var->line);
+			if (syntax_error(var->line) == 1)
 			{
-				add_history(var->line);
 				data = tokenizer(var->line, av, fst_link);
-				// while (data != NULL)
-				// {
-				// 	printf("word1 = %s, id = %d\n", data->str, data->id);
-				// 	data = data->next;
+				if (data->error == 0)
+				{
+					// while (data != NULL)
+					// {
+					// 	printf("word1 = %s, id = %d\n", data->str, data->id);
+					// 	data = data->next;
+					// }
+					final_data = ft_parser(data);
+					//iterate(&final_data);
+					// heredoc(var, final_data);
+					executor(var, &final_data);
+					// parser (&data);
+					// // // printf("output %s\n", data->str);
+					//@ft_output(final_data);
+					//*printf("data ===== %s\n", data->str);
+					free_tokens(data); //holaaa
+					// ft_freeparser(final_data);
+					free(var->line);
+					// system("leaks minishell");
 				// }
-				final_data = ft_parser(data);
-				//iterate(&final_data);
-				// heredoc(var, final_data);
-				executor(var, &final_data);
-				// parser (&data);
-				// // // printf("output %s\n", data->str);
-				//@ft_output(final_data);
-				//*printf("data ===== %s\n", data->str);
-				free_tokens(data); //holaaa
-				// ft_freeparser(final_data);
-				free(var->line);
-				// system("leaks minishell");
-				// }
+				}
 			}
 			else
 				trouble(NULL, NULL, "syntax error", 258);

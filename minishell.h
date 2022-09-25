@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/23 21:32:01 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/25 15:39:53 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_vars	t_vars;
 
 # define OUTPUT '>'
 # define INPUT '<'
-# define PIPE '|'
+# define PIPE "¶"
 # define APPEND 'A' // >>
 # define EXPAND '$'
 # define SQ '\''
@@ -53,6 +53,7 @@ typedef struct s_env
 //tokenizer
 typedef struct s_token
 {
+	int				error;
 	int				start;
 	char			*ptr;
 	char			*new;
@@ -68,8 +69,8 @@ typedef struct s_save
 {
 	t_env *env;
 	char **av;
-	char	*value;
-	char	*str;
+	// char	*value;
+	// char	*str;
 }	t_save;
 
 /*** strcut for parser ***/
@@ -113,7 +114,7 @@ char	*single_quote(char *line, int *i);
 char	*ft_expand(char *str, t_env *env, char **av);
 char	*double_quote(t_save *save, char *line, int *i);
 int		skip_char(char c);
-void	setting_word(t_save *save, t_token **temp, char *line, int *i);
+int	setting_word(t_save *save, t_token **temp, char *line, int *i);
 void	redirection(t_token **head, char *str, int *i);
 int		other_char(char c);
 char	*dollar(t_save *save, t_token **temp, char *line, int *i);

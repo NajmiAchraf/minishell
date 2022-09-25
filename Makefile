@@ -6,7 +6,7 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/24 17:37:42 by anajmi           ###   ########.fr        #
+#    Updated: 2022/09/25 16:45:38 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ EXEC = \
 	./Execution/executor.c					\
 	./Execution/heredoc.c					\
 	./Execution/iterate_files.c				\
+	./Execution/iterate_heredoc.c			\
 	./Execution/iterate_pipes.c				\
 	./Execution/environment/export_env.c	\
 	./Execution/environment/init.c			\
@@ -100,7 +101,7 @@ all : $(NAME)
 $(NAME) : $(OBJ)
 	$(ALLIBFT)
 	$(ALLIBPL)
-	$(CONTROL) 
+	$(CONTROL)
 	gcc $(OBJ) $(CFLAGS) $(ARLIB) $(ARPLS) $(LFLAGS) -o $(NAME)
 	@echo "$(C_GREEN)[MINISHELL MANDATORY CREATED!]$(C_RES)"
 

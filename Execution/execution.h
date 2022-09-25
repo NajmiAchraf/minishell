@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/24 13:50:31 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/25 16:42:56 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_envp
 
 typedef struct s_allways
 {
+	int		h;
 	size_t	i;
 	size_t	j;
 	size_t	k;
@@ -52,10 +53,13 @@ typedef struct s_vars
 	char	*tmp2;
 	char	**tmpp;
 
+	int		h;
+	int		infile;
 	char	*main_name;
 	char	**exepath;
 	int		*pid;
 	char	*line;
+	char	*gnl;
 }	t_vars;
 
 /* ************************************************************************** */
@@ -171,7 +175,13 @@ void	heredoc(t_vars *var, char *delimiter, int *fd);
 /*								ITERATE_FILES.C								  */
 /* ************************************************************************** */
 
-void	iterate_files(t_vars *var, t_final **node);
+int		iterate_files(t_vars *var, t_final **node);
+
+/* ************************************************************************** */
+/*								ITERATE_HEREDOC.C							  */
+/* ************************************************************************** */
+
+int	iterate_heredoc(t_vars *var, t_final **node);
 
 /* ************************************************************************** */
 /*								ITERATE_PIPES.C								  */
