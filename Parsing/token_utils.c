@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:25:58 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/25 13:14:02 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/25 21:42:18 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	setting_word(t_save *save, t_token **temp, char *line, int *i)
 			value = my_strjoin(value, str);
 		}
 		else if (line[*i] == '$')
-			value = my_strjoin(value, dollar(save, temp, line, i));
+			value = ft_strjoin(value, dollar(save, temp, line, i));
 		else
 		{
 			str = convert_char_str(line[(*i)++]);

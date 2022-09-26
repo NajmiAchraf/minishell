@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:50:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/24 21:57:54 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/25 22:34:18 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ t_final	*ft_parser(t_token *data)
 			if (redirect(data->str))
 			{
 				if (((1 <= redirect(data->str) && redirect(data->str) <= 4)
-						&& (data->next == NULL || !ft_isalnum(data->next->str[0]))))
+						&& (data->next == NULL || !my_isalnum(data->next->str[0]))))
 				{
 					trouble(NULL, NULL, "syntax error", 258);
 					return (0);
@@ -273,7 +273,6 @@ t_final	*ft_parser_original(t_token *data)
 					save_file->next = node_file;
 					save_file = node_file;
 				}
-				// printf("node_file->str -> %s,  node_file->id -> %d\n", node_file->str, node_file->id);
 			}
 			else
 			{

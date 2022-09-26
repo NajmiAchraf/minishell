@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
+#    By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/05 20:14:52 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/21 22:50:10 by anajmi           ###   ########.fr        #
+#    Updated: 2022/09/25 22:28:38 by ohrete           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC =	\
 	./ft_lstslen.c	\
 	./ft_swap_dp.c	\
 	./ft_swap_tp.c	\
+	./my_isalnum.c	\
 	./my_strdup.c	\
 	./my_strjoin.c
 

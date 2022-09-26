@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 19:51:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/23 21:33:14 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/25 22:10:37 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,67 @@ char	*inside_dollar(char *str, t_env *env, char **av, int *i)
 	return (var.ptr);
 }
 
+// char	*ft_expand(char *str, t_env *env, char **av)
+// {
+// 	char	*value;
+// 	int		i;
+// 	int		start;
+// 	char	*ptr;
+
+// 	value = malloc (sizeof (char) * 1);
+// 	if (!value)
+// 	{
+// 		ft_putstr_fd("error allocation\n", 2);
+// 		return (NULL);
+// 	}
+// 	value[0] = '\0';
+// 	i = 0;
+// 	start = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '$')
+// 		{
+// 			ptr = inside_dollar(str, env, av, &i);
+// 			value = ft_strjoin(value, ptr);
+// 			//printf ("value : %s\nptr : %s\n", value, ptr);
+// 		}
+// 		else
+// 		{
+// 			start = i;
+// 			while (str[i] != '\0' && str[i] != '$')
+// 				i++;
+// 			ptr = ft_substr(str, start, i - start);
+// 			value = ft_strjoin(value, ptr);
+// 		}
+// 	}
+// 	return (value);
+// }
+
 char	*ft_expand(char *str, t_env *env, char **av)
 {
+	char	*value;
 	int		i;
 	int		start;
 	char	*ptr;
 
+	value = ft_strdup("");
 	i = 0;
 	start = 0;
 	while (str[i])
 	{
 		if (str[i] == '$')
+		{
 			ptr = inside_dollar(str, env, av, &i);
+			value = ft_strjoin(value, ptr);
+		}
 		else
 		{
 			start = i;
 			while (str[i] != '\0' && str[i] != '$')
 				i++;
 			ptr = ft_substr(str, start, i - start);
+			value = my_strjoin(value, ptr);
 		}
 	}
-	return (ptr);
+	return (value);
 }

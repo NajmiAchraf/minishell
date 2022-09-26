@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:00:09 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/25 13:14:56 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/25 22:20:34 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,11 @@ void	check_last_word(t_token **temp)
 
 	tmp = *temp;
 	if (!ft_strcmp(ft_lstlast1(tmp)->str, PIPE)
-		// || !ft_strcmp(ft_lstlast1(tmp)->str, "\'")
-		// || !ft_strcmp(ft_lstlast1(tmp)->str, "\"")
 		|| !ft_strcmp(ft_lstlast1(tmp)->str, "A")
 		|| !ft_strcmp(ft_lstlast1(tmp)->str, "H")
 		|| !ft_strcmp(ft_lstlast1(tmp)->str, "W")
 		|| !ft_strcmp(ft_lstlast1(tmp)->str, "<")
-		|| !ft_strcmp(ft_lstlast1(tmp)->str, ">")
-		|| !ft_strcmp(ft_lstlast1(tmp)->str, "$"))
+		|| !ft_strcmp(ft_lstlast1(tmp)->str, ">"))
 		(*temp)->error = trouble(NULL, NULL, "syntax error", 258);
 }
 
@@ -95,7 +92,8 @@ t_token	*tokenizer(char *line, char **av, t_env *env)
 		if (temp->error == 1)
 			break;
 	}
-	check_last_word(&temp);
+	if (temp->error != 1)
+		check_last_word(&temp);
 	free(save);
 	return (temp);
 }
