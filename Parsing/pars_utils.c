@@ -80,9 +80,12 @@ void	to_array(t_final *node)
 		i = 0;
 		while (node->name)
 		{
-			node->cmd[i] = my_strdup(node->name->str);
+			if (node->name->str[0] != '\0')
+			{
+				node->cmd[i] = my_strdup(node->name->str);
+				i++;
+			}
 			node->name = node->name->next;
-			i++;
 		}
 		node->cmd[i] = NULL;
 		node = node->next;

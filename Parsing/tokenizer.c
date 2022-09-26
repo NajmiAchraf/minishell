@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:00:09 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/25 22:20:34 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/26 19:50:10 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ t_token	*ft_lstlast1(t_token *lst)
 
 void	tokens(char *line, t_token **temp, t_save *save, int *i)
 {
-	t_token *tmp;
-	
+	t_token	*tmp;
+
 	tmp = *temp;
 	if (space(line[*i]))
 		(*i)++;
@@ -90,7 +90,7 @@ t_token	*tokenizer(char *line, char **av, t_env *env)
 	{
 		tokens(line, &temp, save, &i);
 		if (temp->error == 1)
-			break;
+			break ;
 	}
 	if (temp->error != 1)
 		check_last_word(&temp);
