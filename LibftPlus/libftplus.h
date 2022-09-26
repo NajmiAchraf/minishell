@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libftplus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 11:58:11 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/25 22:28:12 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/26 14:18:28 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_lstlen(char **list);
 size_t	ft_lstslen(char ***list);
 void	ft_swap_dp(char **n1, char **n2);
 void	ft_swap_tp(char ***n1, char ***n2);
-int 	my_isalnum(int c);
+int		my_isalnum(int c);
 char	*my_strdup(char *s1);
 char	*my_strjoin(char*s1, char *s2);
 

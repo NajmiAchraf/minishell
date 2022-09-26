@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:15:08 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/24 21:50:56 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/26 13:59:10 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,7 @@ int	main(int ac, char **av, char **env)
 		if (var->line[0] != '\0') //for skipping \n
 		{
 			/*
-			cat <<'$p'
-			echo "'$USER'"
-
-			sleep 1 || ls
-			sleep 1 | | ls
-			
+			ls $l
 			*/
 			//printf("syntax_error(var->line) = %d\n", syntax_error(var->line));
 			add_history(var->line);
