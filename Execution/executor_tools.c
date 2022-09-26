@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/24 17:54:57 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/25 22:44:25 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,20 @@ void	wait_status(t_vars *var, t_allways w)
 	{
 		printf("Quit: %d\n", w.status);
 		g_status = 128 + w.status;
+	}
+}
+
+void	waiting(t_vars *var, t_final **node)
+{
+	t_allways	w;
+	t_final		*n;
+
+	w.j = 0;
+	n = *node;
+	while (n)
+	{
+		wait_status(var, w);
+		n = n->next;
+		w.j++;
 	}
 }

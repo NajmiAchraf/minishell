@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:21 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/25 16:42:56 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/25 22:48:21 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,12 +154,24 @@ void	node_close(t_final *node);
 void	full_close(t_final **node);
 void	duping(t_final **node);
 void	wait_status(t_vars *var, t_allways w);
+void	waiting(t_vars *var, t_final **node);
 
 /* ************************************************************************** */
-/*								EXECUTOR.C									  */
+/*								EXECUTOR1.C									  */
 /* ************************************************************************** */
 
-void	executor(t_vars *var, t_final **node);
+void	execute_builtin(t_vars *var, t_final **node);
+void	execute_builtin_fork(t_vars *var, t_final **node);
+void	execute_execve_fork(t_vars *var, t_final **node, t_final **n);
+
+/* ************************************************************************** */
+/*								EXECUTOR2.C									  */
+/* ************************************************************************** */
+
+int		terminate(t_final **node, int rtn);
+int		execute_fork(t_vars *var, t_final **node, t_final **n, t_allways w);
+int		executor_core(t_vars *var, t_final **node, t_allways w);
+int		executor(t_vars *var, t_final **node);
 
 /* ************************************************************************** */
 /*								HEREDOC.C									  */
@@ -181,7 +193,7 @@ int		iterate_files(t_vars *var, t_final **node);
 /*								ITERATE_HEREDOC.C							  */
 /* ************************************************************************** */
 
-int	iterate_heredoc(t_vars *var, t_final **node);
+int		iterate_heredoc(t_vars *var, t_final **node);
 
 /* ************************************************************************** */
 /*								ITERATE_PIPES.C								  */
