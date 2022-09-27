@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:00:09 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/26 19:50:10 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/27 19:12:03 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,20 @@ void	check_last_word(t_token **temp)
 		(*temp)->error = trouble(NULL, NULL, "syntax error", 258);
 }
 
+int allspaces(char *line)
+{
+	int i;
+	
+	i = 0;
+	while(line[i])
+	{
+		if (line[i] != ' ')
+			return (0);
+		i++;
+	}
+	return(1);
+}
+
 t_token	*tokenizer(char *line, char **av, t_env *env)
 {
 	int		i;
@@ -86,13 +100,15 @@ t_token	*tokenizer(char *line, char **av, t_env *env)
 	save->env = env;
 	i = 0;
 	temp = NULL;
+	if (allspaces(line))
+		return (NULL);
 	while (line[i])
 	{
 		tokens(line, &temp, save, &i);
-		if (temp->error == 1)
+		if (temp && temp->error == 1)
 			break ;
 	}
-	if (temp->error != 1)
+	if (temp && temp->error != 1)
 		check_last_word(&temp);
 	free(save);
 	return (temp);

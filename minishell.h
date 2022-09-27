@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/25 15:39:53 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/27 19:29:13 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,35 +67,33 @@ typedef struct s_token
 //save last value of envp and argv
 typedef struct s_save
 {
-	t_env *env;
-	char **av;
-	// char	*value;
-	// char	*str;
+	t_env	*env;
+	char	**av;
 }	t_save;
 
 /*** strcut for parser ***/
 typedef struct s_cmd
 {
-	char *str;
-	struct s_cmd *next;
+	char			*str;
+	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_file
 {
-	char *str;
-	int id;
-	struct s_file *next;
+	char			*str;
+	int				id;
+	struct s_file	*next;
 }	t_file;
 
 typedef struct s_final
 {
-	int		type;
-	int		infile;
-	int		outfile;
-	t_file	*file;
-	t_cmd	*name;
-	char	**cmd;
-	struct s_final *next;
+	int				type;
+	int				infile;
+	int				outfile;
+	t_file			*file;
+	t_cmd			*name;
+	char			**cmd;
+	struct s_final	*next;
 }	t_final;
 /*** end struct of parser ***/
 
@@ -114,14 +112,14 @@ char	*single_quote(char *line, int *i);
 char	*ft_expand(char *str, t_env *env, char **av);
 char	*double_quote(t_save *save, char *line, int *i);
 int		skip_char(char c);
-int	setting_word(t_save *save, t_token **temp, char *line, int *i);
+int		setting_word(t_save *save, t_token **temp, char *line, int *i);
 void	redirection(t_token **head, char *str, int *i);
 int		other_char(char c);
 char	*dollar(t_save *save, t_token **temp, char *line, int *i);
 void	pipe_sign(t_token **head, int *i);
 char	*convert_char_str(char c);
 void	tokens(char *line, t_token **temp, t_save *save, int *i);
-t_token *tokenizer(char *line, char **av, t_env *env);
+t_token	*tokenizer(char *line, char **av, t_env *env);
 t_final	*ft_parser(t_token *data);
 void	ft_output(t_final *cmd);
 void	free_parser(t_final *cmd);

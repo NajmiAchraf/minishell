@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:15:08 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/26 13:59:10 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/27 11:48:24 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int ac, char **av, char **env)
 			if (syntax_error(var->line) == 1)
 			{
 				data = tokenizer(var->line, av, fst_link);
-				if (data->error == 0)
+				if (data && data->error == 0)
 				{
 					// while (data != NULL)
 					// {
@@ -60,9 +60,9 @@ int	main(int ac, char **av, char **env)
 					executor(var, &final_data);
 					// parser (&data);
 					// // // printf("output %s\n", data->str);
-					//@ft_output(final_data);
+					// ft_output(final_data);
 					//*printf("data ===== %s\n", data->str);
-					free_tokens(data); //holaaa
+					//**free_tokens(data); //holaaa
 					// ft_freeparser(final_data);
 					free(var->line);
 					// system("leaks minishell");
