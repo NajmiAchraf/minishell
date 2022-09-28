@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/28 14:47:34 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/28 15:21:57 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	execute_builtin_fork(t_vars *var, t_final **node)
 void	execute_execve_fork(t_vars *var, t_final **node, t_final **n)
 {
 	struct stat	dir_stat;
-	int			file;
+	int			folder;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -39,9 +39,13 @@ void	execute_execve_fork(t_vars *var, t_final **node, t_final **n)
 	full_close(node);
 	if (!builtincheck((*n)->cmd[0]))
 		execute_builtin_fork(var, n);
-	execve(exe_path_set(var, (*n)->cmd[0]), (*n)->cmd, var->env.newenv);
-	file = open(exe_path_set(var, (*n)->cmd[0]), O_RDONLY);
-	if (fstat(file, &dir_stat) > -1 && S_ISDIR(dir_stat.st_mode))
+	folder = open(exe_path_set(var, (*n)->cmd[0]), O_RDONLY);
+	if (fstat(folder, &dir_stat) > -1 && S_ISDIR(dir_stat.st_mode))
+	{
+		close(folder);
 		trouble_exit((*n)->cmd[0], NULL, "is a directory", 126);
+	}
+	close(folder);
+	execve(exe_path_set(var, (*n)->cmd[0]), (*n)->cmd, var->env.newenv);
 	trouble_exit(NULL, (*n)->cmd[0], "command not found", 127);
 }
