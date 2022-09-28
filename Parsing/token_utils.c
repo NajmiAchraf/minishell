@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:25:58 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/27 23:26:19 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/28 15:38:48 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,32 +57,6 @@ char	*double_quote(t_save *save, char *line, int *i)
 	return (value);
 }
 
-char	*dollar(t_save *save, t_token **temp, char *line, int *i)
-{
-	int		index;
-	char	*str;
-	char	*expand;
-	t_token	*copy;
-
-	copy = *temp;
-	index = *i;
-	(*i)++;
-	while (line[*i] && other_char(line[*i]))
-		(*i)++;
-	str = ft_substr(line, index, *i - index);
-	while (copy != NULL)
-	{
-		if (copy && ft_strcmp(copy->str, "<<") == 0)
-			return (str);
-		else if (copy->next == NULL)
-			break ;
-		copy = copy->next;
-	}
-	expand = ft_expand(str, save->env, save->av);
-	free(str);
-	return (expand);
-}
-
 void	redirection(t_token **head, char *str, int *i)
 {
 	if (str[*i] == '>' && str[*i + 1] == '>')
@@ -123,7 +97,7 @@ char	*quoting(t_save *save, char *line, int *i, char *value)
 	return (value);
 }
 
-/*int	setting_word(t_save *save, t_token **temp, char *line, int *i)
+int	setting_word(t_save *save, t_token **temp, char *line, int *i)
 {
 	char	*value;
 	char	*str;
@@ -147,10 +121,9 @@ char	*quoting(t_save *save, char *line, int *i, char *value)
 	}
 	add_token_last(temp, new_node(value, WORD));
 	return (0);
-}*/
+}
 
-
-int	setting_word(t_save *save, t_token **temp, char *line, int *i)
+/*int	setting_word(t_save *save, t_token **temp, char *line, int *i)
 {
 	char	*value;
 	char	*str;
@@ -185,4 +158,4 @@ int	setting_word(t_save *save, t_token **temp, char *line, int *i)
 	}
 	add_token_last(temp, new_node(value, WORD));
 	return (0);
-}
+}*/

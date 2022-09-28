@@ -6,13 +6,13 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/27 21:37:04 by anajmi           ###   ########.fr        #
+#    Updated: 2022/09/28 19:18:01 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -fsanitize=address -g #-Wall -Werror -Wextra 
+CFLAGS = -Wall -Werror -Wextra 
 
 PARSE =	\
 	./Parsing/syntax_error.c			\
@@ -24,6 +24,7 @@ PARSE =	\
 	./Parsing/expanding.c				\
 	./Parsing/parser.c					\
 	./Parsing/pars_utils.c				\
+	./Parsing/pars_utils2.c				\
 	./Parsing/signals.c					\
 	./Parsing/tools.c					\
  
@@ -96,8 +97,6 @@ C_RES = \033[0m
 	gcc $(CFLAGS) -c $^ -o $@
 
 all : $(NAME)
-	@echo "$(C_L_BLUE)[EXECUTE MINISHELL ...]$(C_RES)"
-	./minishell
 
 $(NAME) : $(OBJ)
 	$(ALLIBFT)

@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/26 11:52:04 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/28 19:25:42 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	append_file(t_final **node, t_file *file)
 	return (0);
 }
 
-static int	heredoc_file(t_vars *var, t_final **node, t_file *file)
+static int	heredoc_file(t_vars *var, t_final **node)
 {
 	if ((*node)->infile != -1 && (*node)->infile != 0)
 		close((*node)->infile);
@@ -70,7 +70,7 @@ int	iterate_files(t_vars *var, t_final **node)
 			if (file->id == 3 && append_file(&n, file))
 				return (1);
 			if (file->id == 4 && ++a.h == var->h)
-				heredoc_file(var, &n, file);
+				heredoc_file(var, &n);
 			file = file->next;
 		}
 		n = (n)->next;
