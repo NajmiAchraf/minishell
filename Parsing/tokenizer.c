@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:00:09 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/27 19:12:03 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/28 00:04:07 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ void	tokens(char *line, t_token **temp, t_save *save, int *i)
 	else if (line[*i] == '|')
 	{
 		if (!ft_strcmp(ft_lstlast1(tmp)->str, PIPE))
-			(*temp)->error = trouble(NULL, NULL, "syntax error", 258);
+			save->error = trouble(NULL, NULL, "syntax error", 258);
 		pipe_sign(temp, i);
 	}
 	else
-		(*temp)->error = setting_word(save, temp, line, i);
+		save->error = setting_word(save, temp, line, i);
 }
 
-void	check_last_word(t_token **temp)
+void	check_last_word(t_token **temp, t_save *save)
 {
 	t_token	*tmp;
 
@@ -72,13 +72,13 @@ void	check_last_word(t_token **temp)
 		|| !ft_strcmp(ft_lstlast1(tmp)->str, "W")
 		|| !ft_strcmp(ft_lstlast1(tmp)->str, "<")
 		|| !ft_strcmp(ft_lstlast1(tmp)->str, ">"))
-		(*temp)->error = trouble(NULL, NULL, "syntax error", 258);
+		save->error = trouble(NULL, NULL, "syntax error", 258);
 }
 
 int allspaces(char *line)
 {
 	int i;
-	
+	 
 	i = 0;
 	while(line[i])
 	{
@@ -89,15 +89,11 @@ int allspaces(char *line)
 	return(1);
 }
 
-t_token	*tokenizer(char *line, char **av, t_env *env)
+t_token	*tokenizer(char *line, t_save *save)
 {
 	int		i;
 	t_token	*temp;
-	t_save	*save;
 
-	save = (t_save *)malloc(sizeof(t_save));
-	save->av = av;
-	save->env = env;
 	i = 0;
 	temp = NULL;
 	if (allspaces(line))
@@ -105,11 +101,10 @@ t_token	*tokenizer(char *line, char **av, t_env *env)
 	while (line[i])
 	{
 		tokens(line, &temp, save, &i);
-		if (temp && temp->error == 1)
+		if (save->error == 1)
 			break ;
 	}
-	if (temp && temp->error != 1)
-		check_last_word(&temp);
-	free(save);
+	if (save->error != 1)
+		check_last_word(&temp, save);
 	return (temp);
 }

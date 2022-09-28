@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/25 15:55:41 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/28 14:38:53 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ char	*exe_path_set(t_vars *var, char *exe)
 	t_allways	aws;
 
 	if (check_env_var(var, "PATH"))
+	{
+		if (!access(exe, F_OK))
+			return (exe);
 		trouble_exit(exe, NULL, "PATH not set", 1);
+	}
 	fill_path(var);
 	aws.i = 0;
 	while (var->exepath[aws.i])

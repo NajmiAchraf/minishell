@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/27 19:29:13 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/28 00:02:14 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct s_env
 //tokenizer
 typedef struct s_token
 {
-	int				error;
 	int				start;
 	char			*ptr;
 	char			*new;
@@ -69,6 +68,7 @@ typedef struct s_save
 {
 	t_env	*env;
 	char	**av;
+	int		error;
 }	t_save;
 
 /*** strcut for parser ***/
@@ -119,7 +119,7 @@ char	*dollar(t_save *save, t_token **temp, char *line, int *i);
 void	pipe_sign(t_token **head, int *i);
 char	*convert_char_str(char c);
 void	tokens(char *line, t_token **temp, t_save *save, int *i);
-t_token	*tokenizer(char *line, char **av, t_env *env);
+t_token	*tokenizer(char *line, t_save *save);
 t_final	*ft_parser(t_token *data);
 void	ft_output(t_final *cmd);
 void	free_parser(t_final *cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:50:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/27 19:03:13 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/27 22:32:19 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,17 +131,6 @@ t_final	*link_nodes(t_final *head, t_final **link, t_final *tmp)
 
 void	redir_cmd(t_final *tmp, t_file **save_file, t_file *node_file)
 {
-	// int type;
-	
-	// if (((1 <= redirect(data->str) && redirect(data->str) <= 4)
-	// 		&& (data->next == NULL || !ft_isalnum(data->next->str[0]))))
-	// {
-	// 	printf("redirect error\n");
-	// 	return ;
-	// }
-	// type = redirect(data->str);
-	// data = data->next;
-	// node_file = file_node(data->str, type);
 	if (tmp->file == NULL)
 	{
 		tmp->file = node_file;
@@ -174,33 +163,32 @@ void	cmd_name(t_final *tmp,t_cmd **save_cmd, t_cmd *node_cmd, t_token *data)
 }
 
 
-/*
-void	norm_while(t_token *data, t_final *tmp)
+void	norm_while(t_token **data, t_final **tmp, t_cmd *node_cmd)
 {
 	int type;
 	t_cmd *save_cmd;
-	t_cmd *node_cmd;
+	//t_cmd *node_cmd;
 	t_file *node_file;
 	t_file *save_file;
 	
-	while (data && data->str && ft_strcmp(data->str, PIPE) != 0)
+	while ((*data) && (*data)->str && ft_strcmp((*data)->str, PIPE) != 0)
 	{
-		if (redirect(data->str))
+		if (redirect((*data)->str))
 		{
-			if (((1 <= redirect(data->str) && redirect(data->str) <= 4)
-				&& (data->next == NULL || !my_isalnum(data->next->str[0]))))
+			if (((1 <= redirect((*data)->str) && redirect((*data)->str) <= 4)
+				&& ((*data)->next == NULL || !my_isalnum((*data)->next->str[0]))))
 			{
 				trouble(NULL, NULL, "syntax error", 258);
 				return ;
 			}
-			type = redirect(data->str);
-			data = data->next;
-			node_file = file_node(data->str, type);
-			redir_cmd(tmp, &save_file, node_file);
+			type = redirect((*data)->str);
+			(*data) = (*data)->next;
+			node_file = file_node((*data)->str, type);
+			redir_cmd((*tmp), &save_file, node_file);
 		}
 		else
-			cmd_name(tmp, &save_cmd, node_cmd, data);
-		data = data->next;
+			cmd_name((*tmp), &save_cmd, node_cmd, (*data));
+		(*data) = (*data)->next;
 	}
 }
 
@@ -209,32 +197,29 @@ t_final	*ft_parser(t_token *data)
 	t_final	*head;
 	t_final	*tmp;
 	t_token	*save;
-	t_file	*node_file;
-	t_cmd	*node_cmd;
 	t_final	*link;
-	t_file	*save_file;
-	t_cmd	*save_cmd;
-	int		type;
+	t_cmd	*node_cmd;
 
 	head = NULL;
 	link = head;
 	save = data;
+	node_cmd = NULL;
 	while (data)
 	{
 		tmp = create_node();
 		head = link_nodes(head, &link, tmp);
-		norm_while(data, tmp);
+		norm_while(&data, &tmp, node_cmd);
 		if (data != NULL)
 			data = data->next;
 	}
 	to_array(head);
 	return (head);
 }
-*/
 
 
 
 
+/*
 t_final	*ft_parser(t_token *data)
 {
 	t_final	*head;
@@ -280,3 +265,4 @@ t_final	*ft_parser(t_token *data)
 	return (head);
 }
 
+*/

@@ -8,3 +8,4 @@ LibftPlus/libftplus.a
 EXTRA_SEARCH
 sh.c
 valgrind-out.txt
+test.c
