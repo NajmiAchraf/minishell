@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 17:46:31 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/27 19:54:57 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/30 21:39:33 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ char	*var_into_heredoc(t_vars *var, char *to_check, t_allways aws)
 	var->tmp2 = ft_substr(to_check, aws.k, ft_strlen(to_check));
 	if (!get_env_var(var, var->tmp))
 		return (ft_strjoin(var->tmp1, var->tmp2));
-	return (heredoc_expand(var,
-			ft_strjoin(ft_strjoin(var->tmp1,
-					get_env_var(var, var->tmp)), var->tmp2)));
+	free(var->tmp4);
+	var->tmp4 = ft_strjoin(var->tmp1, get_env_var(var, var->tmp));
+	free(var->tmp5);
+	var->tmp5 = ft_strjoin(var->tmp4, var->tmp2);
+	return (heredoc_expand(var, var->tmp5));
 }
 
 char	*heredoc_expand(t_vars *var, char *to_search)
@@ -68,8 +70,11 @@ char	*heredoc_core(t_vars *var, char *delimiter)
 		if (i == 0)
 			var->hdocs = ft_strjoin(heredoc_expand(var, var->gnl), "\n");
 		else
-			var->hdocs = ft_strjoin(var->hdocs,
-					ft_strjoin(heredoc_expand(var, var->gnl), "\n"));
+		{
+			free(var->tmp3);
+			var->tmp3 = ft_strjoin(heredoc_expand(var, var->gnl), "\n");
+			var->hdocs = ft_strjoin(var->hdocs, var->tmp3);
+		}
 		free(var->gnl);
 		i++;
 	}

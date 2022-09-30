@@ -6,15 +6,15 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/28 14:38:53 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/30 21:37:07 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_fork(void)
+pid_t	ft_fork(void)
 {
-	int	pid;
+	pid_t	pid;
 
 	pid = fork();
 	if (pid == -1)
@@ -62,12 +62,20 @@ char	*exe_path_set(t_vars *var, char *exe)
 	return (NULL);
 }
 
-void	initialisation(t_vars *var, char **av, char **env)
+static void	initialisation_tmp(t_vars *var)
 {
-	var->tmp = malloc(sizeof(char));
-	var->tmp2 = malloc(sizeof(char));
+	var->tmp = NULL;
+	var->tmp2 = NULL;
+	var->tmp3 = NULL;
+	var->tmp4 = NULL;
+	var->tmp5 = NULL;
 	var->tmpp = malloc(sizeof(char *));
 	var->tmpp[0] = NULL;
+}
+
+void	initialisation(t_vars *var, char **av, char **env)
+{
+	initialisation_tmp(var);
 	var->main_name = ft_strdup(av[0]);
 	var->exepath = malloc(sizeof(char *));
 	var->exepath[0] = NULL;

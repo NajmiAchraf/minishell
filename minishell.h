@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/28 19:17:14 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/30 21:37:30 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,9 @@ typedef struct s_vars
 	char	*tmp0;
 	char	*tmp1;
 	char	*tmp2;
+	char	*tmp3;
+	char	*tmp4;
+	char	*tmp5;
 	char	**tmpp;
 
 	int		h;
@@ -256,7 +259,7 @@ int		environment(t_vars *var, t_final *node);
 /*								EXECUTION.C									  */
 /* ************************************************************************** */
 
-int		ft_fork(void);
+pid_t	ft_fork(void);
 void	fill_path(t_vars *var);
 char	*exe_path_set(t_vars *var, char *exe);
 void	initialisation(t_vars *var, char **av, char **env);
