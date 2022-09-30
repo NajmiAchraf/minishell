@@ -6,7 +6,7 @@
 /*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:52:39 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/28 18:59:56 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/28 21:09:58 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	allspaces(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ')
+		if (!space(line[i]))
 			return (0);
 		i++;
 	}

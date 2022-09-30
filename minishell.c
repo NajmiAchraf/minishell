@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:15:08 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/28 19:24:26 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/29 11:50:28 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	minishell(t_vars *var, t_save *save)
 			free_tokens(data);
 		}
 		else
-			trouble(NULL, NULL, "syntax error", 258);	
+			trouble(NULL, NULL, "syntax error", 258);
 	}
 	free(var->line);
 }
@@ -64,33 +64,5 @@ int	main(int ac, char **av, char **env)
 	save->env = fst_link;
 	ft_signals();
 	while (1)
-	{
 		minishell(var, save);
-		// var->line = readline("minishell→ ");
-		// ft_signals();
-		// if (!var->line) 
-		// {
-		// 	ft_putendl_fd("exit", 1);
-		// 	exit(0);
-		// }
-		// if (var->line[0] != '\0')
-		// {
-		// 	add_history(var->line);
-		// 	if (syntax_error(var->line) == 1)
-		// 	{
-		// 		data = tokenizer(var->line, save);
-		// 		if (data && save->error == 0)
-		// 		{
-		// 			final_data = ft_parser(data);
-		// 			executor(var, &final_data);
-		// 			free_parser(final_data);
-		// 		}
-		// 		free_tokens(data);
-		// 	}
-		// 	else
-		// 		trouble(NULL, NULL, "syntax error", 258);	
-		// }
-		// free(var->line);
-	}
 }
-

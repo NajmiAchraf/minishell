@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/28 19:24:51 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/09/29 11:41:03 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	executor_core(t_vars *var, t_final **node, t_allways w)
 	n = *node;
 	while (n)
 	{
-		if (n->cmd[0])
+		if (n->cmd && n->cmd[0])
 		{
 			if (w.len == 1 && !builtincheck(n->cmd[0]))
 				execute_builtin(var, node);

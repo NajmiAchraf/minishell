@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:25:58 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/28 15:38:48 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/30 17:06:55 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,20 @@ char	*quoting(t_save *save, char *line, int *i, char *value)
 	{
 		str = single_quote(line, i);
 		if (!str)
+		{
+			free(value);
 			return (NULL);
+		}
 		value = my_strjoin (value, str);
 	}
 	else if (line[*i] == '\"')
 	{
 		str = double_quote(save, line, i);
 		if (!str)
+		{
+			free(value);
 			return (NULL);
+		}
 		value = my_strjoin(value, str);
 	}
 	return (value);
@@ -106,15 +112,13 @@ int	setting_word(t_save *save, t_token **temp, char *line, int *i)
 	while (line[*i] && skip_char(line[*i]))
 	{
 		if (line[*i] == '\'' || line[*i] == '\"')
-		{
 			value = quoting(save, line, i, value);
-		}
 		else if (line[*i] == '$')
-			value = ft_strjoin(value, dollar(save, temp, line, i));
+			value = my_strjoin(value, dollar(save, temp, line, i));
 		else
 		{
 			str = convert_char_str(line[(*i)++]);
-			value = my_strjoin (value, str);
+			value = my_strjoin(value, str);
 		}
 		if (!value)
 			return (1);
@@ -122,40 +126,3 @@ int	setting_word(t_save *save, t_token **temp, char *line, int *i)
 	add_token_last(temp, new_node(value, WORD));
 	return (0);
 }
-
-/*int	setting_word(t_save *save, t_token **temp, char *line, int *i)
-{
-	char	*value;
-	char	*str;
-
-	value = malloc (sizeof (char));
-	value[0] = '\0';
-	while (line[*i] && skip_char(line[*i]))
-	{
-		if (line[*i] == '\'')
-		{
-			str = single_quote(line, i);
-			if (!str)
-				return (1);
-			value = my_strjoin (value, str);
-		}
-		else if (line[*i] == '\"')
-		{
-			str = double_quote(save, line, i);
-			if (!str)
-				return (1);
-			value = my_strjoin(value, str);
-		}
-		else if (line[*i] == '$')
-			value = ft_strjoin(value, dollar(save, temp, line, i));
-		else
-		{
-			str = convert_char_str(line[(*i)++]);
-			if (!str)
-				return (1);
-			value = my_strjoin (value, str);
-		}
-	}
-	add_token_last(temp, new_node(value, WORD));
-	return (0);
-}*/

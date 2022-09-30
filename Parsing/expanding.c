@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 19:51:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/25 22:10:37 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/09/30 17:02:11 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	check_dollar(char *str)
 char	*inside_dollar(char *str, t_env *env, char **av, int *i)
 {
 	t_token	var;
+	char	*h;
 
 	var.start = 0;
 	if (str[(*i) + 1] != '\0' && str[(*i) + 1] == '?')
@@ -49,46 +50,12 @@ char	*inside_dollar(char *str, t_env *env, char **av, int *i)
 		while (str[(*i)] && (ft_isalnum(str[(*i)]) || str[(*i)] == '_'))
 			(*i)++;
 		var.ptr = ft_substr(str, var.start, (*i) - var.start);
-		var.ptr = get_env_var(env->env_var, var.ptr);
+		h = var.ptr;
+		var.ptr = ft_strdup(get_env_var(env->env_var, var.ptr));
+		free(h);
 	}
 	return (var.ptr);
 }
-
-// char	*ft_expand(char *str, t_env *env, char **av)
-// {
-// 	char	*value;
-// 	int		i;
-// 	int		start;
-// 	char	*ptr;
-
-// 	value = malloc (sizeof (char) * 1);
-// 	if (!value)
-// 	{
-// 		ft_putstr_fd("error allocation\n", 2);
-// 		return (NULL);
-// 	}
-// 	value[0] = '\0';
-// 	i = 0;
-// 	start = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$')
-// 		{
-// 			ptr = inside_dollar(str, env, av, &i);
-// 			value = ft_strjoin(value, ptr);
-// 			//printf ("value : %s\nptr : %s\n", value, ptr);
-// 		}
-// 		else
-// 		{
-// 			start = i;
-// 			while (str[i] != '\0' && str[i] != '$')
-// 				i++;
-// 			ptr = ft_substr(str, start, i - start);
-// 			value = ft_strjoin(value, ptr);
-// 		}
-// 	}
-// 	return (value);
-// }
 
 char	*ft_expand(char *str, t_env *env, char **av)
 {
@@ -105,7 +72,7 @@ char	*ft_expand(char *str, t_env *env, char **av)
 		if (str[i] == '$')
 		{
 			ptr = inside_dollar(str, env, av, &i);
-			value = ft_strjoin(value, ptr);
+			value = my_strjoin(value, ptr);
 		}
 		else
 		{
