@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 17:46:31 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/01 13:36:09 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/01 14:22:06 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ char	*heredoc_expand(t_vars *var, char *to_search)
 			{
 				free(var->tmp);
 				var->tmp = ft_substr(to_search, aws.i + 1, aws.k - aws.i - 1);
-				if (!(check_env_var(var, var->tmp) || to_search[aws.k] == '_'
-						|| ft_isalpha(to_search[aws.k])))
+				if (!(to_search[aws.k] == '_' || ft_isalnum(to_search[aws.k])))
 					break ;
 			}
 			return (var_into_heredoc(var, to_search, aws));

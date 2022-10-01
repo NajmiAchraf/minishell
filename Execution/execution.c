@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/01 11:49:42 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/01 14:32:11 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ void	fill_path(t_vars *var)
 {
 	t_allways	aws;
 
+	free(var->tmp);
+	var->tmp = get_env_var(var, "PATH");
 	ft_free(var->tmpp);
-	var->tmpp = ft_split(get_env_var(var, "PATH"), ':');
+	var->tmpp = ft_split(var->tmp, ':');
 	ft_free(var->exepath);
 	var->exepath = malloc(sizeof(char *) * (ft_lstlen(var->tmpp) + 3));
 	aws.i = 0;
@@ -55,8 +57,10 @@ char	*exe_path_set(t_vars *var, char *exe)
 	aws.i = 0;
 	while (var->exepath[aws.i])
 	{
-		if (!access(ft_strjoin(var->exepath[aws.i], exe), F_OK))
-			return (ft_strjoin(var->exepath[aws.i], exe));
+		free(var->tmp);
+		var->tmp = ft_strjoin(var->exepath[aws.i], exe);
+		if (!access(var->tmp, F_OK))
+			return (var->tmp);
 		aws.i++;
 	}
 	return (NULL);

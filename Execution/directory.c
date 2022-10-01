@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:02:13 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/30 21:01:21 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/01 14:33:58 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,11 @@ int	cd(t_vars *var, t_final *node)
 		if (check_env_var(var, "HOME"))
 			return (trouble("cd", NULL, "HOME not set", 1));
 		else
-			return (change_directory(var, get_env_var(var, "HOME")));
+		{
+			free(var->tmp);
+			var->tmp = get_env_var(var, "HOME");
+			return (change_directory(var, var->tmp));
+		}
 	}
 	else
 		return (change_directory(var, node->cmd[1]));
