@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 19:51:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/30 17:02:11 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/01 11:46:33 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*inside_dollar(char *str, t_env *env, char **av, int *i)
 			(*i)++;
 		var.ptr = ft_substr(str, var.start, (*i) - var.start);
 		h = var.ptr;
-		var.ptr = ft_strdup(get_env_var(env->env_var, var.ptr));
+		var.ptr = get_env_var(env->env_var, var.ptr);
 		free(h);
 	}
 	return (var.ptr);

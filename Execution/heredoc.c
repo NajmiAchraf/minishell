@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 17:46:31 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/30 21:39:33 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/01 13:36:09 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 char	*var_into_heredoc(t_vars *var, char *to_check, t_allways aws)
 {
-	free(var->tmp1);
-	var->tmp1 = ft_substr(to_check, 0, aws.i);
-	free(var->tmp);
-	var->tmp = ft_substr(to_check, aws.i + 1, aws.k - aws.i - 1);
 	free(var->tmp2);
-	var->tmp2 = ft_substr(to_check, aws.k, ft_strlen(to_check));
-	if (!get_env_var(var, var->tmp))
-		return (ft_strjoin(var->tmp1, var->tmp2));
+	var->tmp2 = ft_substr(to_check, 0, aws.i);
+	free(var->tmp3);
+	var->tmp3 = ft_substr(to_check, aws.i + 1, aws.k - aws.i - 1);
 	free(var->tmp4);
-	var->tmp4 = ft_strjoin(var->tmp1, get_env_var(var, var->tmp));
+	var->tmp4 = ft_substr(to_check, aws.k, ft_strlen(to_check));
 	free(var->tmp5);
-	var->tmp5 = ft_strjoin(var->tmp4, var->tmp2);
-	return (heredoc_expand(var, var->tmp5));
+	var->tmp5 = get_env_var(var, var->tmp3);
+	free(var->tmp6);
+	var->tmp6 = ft_strjoin(var->tmp2, var->tmp5);
+	free(var->tmp7);
+	var->tmp7 = ft_strjoin(var->tmp6, var->tmp4);
+	return (heredoc_expand(var, var->tmp7));
 }
 
 char	*heredoc_expand(t_vars *var, char *to_search)
@@ -71,9 +71,9 @@ char	*heredoc_core(t_vars *var, char *delimiter)
 			var->hdocs = ft_strjoin(heredoc_expand(var, var->gnl), "\n");
 		else
 		{
-			free(var->tmp3);
-			var->tmp3 = ft_strjoin(heredoc_expand(var, var->gnl), "\n");
-			var->hdocs = ft_strjoin(var->hdocs, var->tmp3);
+			free(var->tmp1);
+			var->tmp1 = ft_strjoin(heredoc_expand(var, var->gnl), "\n");
+			var->hdocs = ft_strjoin(var->hdocs, var->tmp1);
 		}
 		free(var->gnl);
 		i++;

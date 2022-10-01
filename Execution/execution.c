@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/30 21:37:07 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/01 11:49:42 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,12 @@ char	*exe_path_set(t_vars *var, char *exe)
 static void	initialisation_tmp(t_vars *var)
 {
 	var->tmp = NULL;
-	var->tmp2 = NULL;
 	var->tmp3 = NULL;
 	var->tmp4 = NULL;
 	var->tmp5 = NULL;
+	var->tmp6 = NULL;
+	var->tmp7 = NULL;
+	var->tmp8 = NULL;
 	var->tmpp = malloc(sizeof(char *));
 	var->tmpp[0] = NULL;
 }
@@ -92,9 +94,10 @@ void	initialisation(t_vars *var, char **av, char **env)
 	}
 	init_environment(var);
 	init_export(var);
-	var->tmp0 = ft_itoa(ft_atoi(get_env_var(var, "SHLVL")) + 1);
-	var->tmp1 = ft_strjoin("SHLVL=", var->tmp0);
-	ft_export(var, var->tmp1, 0);
+	var->tmp0 = get_env_var(var, "SHLVL");
+	var->tmp1 = ft_itoa(ft_atoi(var->tmp0) + 1);
+	var->tmp2 = ft_strjoin("SHLVL=", var->tmp1);
+	ft_export(var, var->tmp2, 0);
 	ft_unset(var, "OLDPWD");
 	ft_export(var, "OLDPWD", 1);
 }

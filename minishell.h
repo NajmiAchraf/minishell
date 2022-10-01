@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/30 21:37:30 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/01 11:48:25 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,9 @@ typedef struct s_vars
 	char	*tmp3;
 	char	*tmp4;
 	char	*tmp5;
+	char	*tmp6;
+	char	*tmp7;
+	char	*tmp8;
 	char	**tmpp;
 
 	int		h;
