@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/29 11:41:03 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/10/02 15:40:16 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	executor_core(t_vars *var, t_final **node, t_allways w)
 	n = *node;
 	while (n)
 	{
-		if (n->cmd && n->cmd[0])
+		if (n->cmd && n->cmd[0] && n->cmd[0][0] != '\0')
 		{
 			if (w.len == 1 && !builtincheck(n->cmd[0]))
 				execute_builtin(var, node);
@@ -48,6 +48,8 @@ int	executor_core(t_vars *var, t_final **node, t_allways w)
 				return (trouble("fork", NULL,
 						"Resource temporarily unavailable", 1));
 		}
+		else if (n->cmd && n->cmd[0] && n->cmd[0][0] == '\0')
+			trouble("", NULL, "command not found", 127);
 		n = n->next;
 		w.i++;
 		w.j++;

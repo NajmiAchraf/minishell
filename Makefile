@@ -6,13 +6,13 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/09/30 17:00:22 by anajmi           ###   ########.fr        #
+#    Updated: 2022/10/02 13:00:02 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -Wall -Werror -Wextra 
+CFLAGS = -fsanitize=address # -Wall -Werror -Wextra 
 
 PARSE =	\
 	./Parsing/syntax_error.c			\
@@ -94,7 +94,7 @@ C_RES = \033[0m
 .PHONY : all clean fclean re
 
 %.o: %.c
-	gcc $(CFLAGS) -c $^ -o $@
+	@gcc $(CFLAGS) -c $^ -o $@
 
 all : $(NAME)
 
@@ -102,13 +102,13 @@ $(NAME) : $(OBJ)
 	$(ALLIBFT)
 	$(ALLIBPL)
 	$(CONTROL)
-	gcc $(CFLAGS) $(OBJ) $(ARLIB) $(ARPLS) $(LFLAGS) -o $(NAME)
+	@gcc $(CFLAGS) $(OBJ) $(ARLIB) $(ARPLS) $(LFLAGS) -o $(NAME)
 	@echo "$(C_GREEN)[MINISHELL MANDATORY CREATED!]$(C_RES)"
 
 clean :
 	@$(CLEANLIBFT)
 	@$(CLEANLIBPL)
-	rm -f $(OBJ)
+	@rm -f $(OBJ)
 	@echo "$(C_RED)[MINISHELL OBJECTS DELETED!]$(C_RES)"
 
 fclean : clean
