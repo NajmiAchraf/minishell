@@ -86,8 +86,8 @@ void	to_array(t_final *node)
 		while (child_node)
 		{
 			parent_node->cmd[i] = my_strdup(child_node->str);
-			i++;
 			child_node = child_node->next;
+			i++;
 		}
 		parent_node = parent_node->next;
 	}

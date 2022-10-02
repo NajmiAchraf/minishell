@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 01:18:54 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/30 21:29:04 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/02 16:59:31 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	init_environment(t_vars *var)
 	t_allways	aws;
 
 	aws.i = 0;
-	var->env.newenv = malloc(sizeof(char *) * 4096);
+	var->env.newenv = malloc(sizeof(char *) * 10240);
 	while (var->env.env[aws.i])
 	{
 		var->env.newenv[aws.i] = ft_strdup(var->env.env[aws.i]);
@@ -32,7 +32,7 @@ void	init_export(t_vars *var)
 	t_allways	aws;
 
 	aws.i = 0;
-	var->env.newexp = malloc(sizeof(char **) * 4096);
+	var->env.newexp = malloc(sizeof(char **) * 10240);
 	while (var->env.env[aws.i])
 	{
 		var->env.newexp[aws.i] = malloc(sizeof(char *) * 3);

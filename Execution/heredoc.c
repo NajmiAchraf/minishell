@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 17:46:31 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/01 14:22:06 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/02 17:05:25 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ char	*var_into_heredoc(t_vars *var, char *to_check, t_allways aws)
 	var->tmp3 = ft_substr(to_check, aws.i + 1, aws.k - aws.i - 1);
 	free(var->tmp4);
 	var->tmp4 = ft_substr(to_check, aws.k, ft_strlen(to_check));
+	if (check_env_var(var, var->tmp3))
+	{
+		free(var->tmp5);
+		var->tmp5 = ft_strjoin(var->tmp2, var->tmp4);
+		return (heredoc_expand(var, var->tmp5));
+	}
 	free(var->tmp5);
 	var->tmp5 = get_env_var(var, var->tmp3);
 	free(var->tmp6);

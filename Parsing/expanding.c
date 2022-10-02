@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 19:51:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/10/01 11:46:33 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/02 17:17:39 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,27 +59,27 @@ char	*inside_dollar(char *str, t_env *env, char **av, int *i)
 
 char	*ft_expand(char *str, t_env *env, char **av)
 {
-	char	*value;
-	int		i;
-	int		start;
-	char	*ptr;
+	char		*value;
+	t_allways	w;
+	char		*ptr;
 
 	value = ft_strdup("");
-	i = 0;
-	start = 0;
-	while (str[i])
+	w.h = 0;
+	w.start = 0;
+	while (str[w.h])
 	{
-		if (str[i] == '$')
+		if (str[w.h] == '$')
 		{
-			ptr = inside_dollar(str, env, av, &i);
-			value = my_strjoin(value, ptr);
+			ptr = inside_dollar(str, env, av, &w.h);
+			if (ptr)
+				value = my_strjoin(value, ptr);
 		}
 		else
 		{
-			start = i;
-			while (str[i] != '\0' && str[i] != '$')
-				i++;
-			ptr = ft_substr(str, start, i - start);
+			w.start = w.h;
+			while (str[w.h] != '\0' && str[w.h] != '$')
+				w.h++;
+			ptr = ft_substr(str, w.start, w.h - w.start);
 			value = my_strjoin(value, ptr);
 		}
 	}

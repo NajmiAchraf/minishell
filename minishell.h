@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/10/02 15:19:13 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/02 17:17:32 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ typedef struct s_allways
 	size_t	len;
 	pid_t	pid;
 	int		status;
+	int		start;
 }	t_allways;
 
 typedef struct s_vars
