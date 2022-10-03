@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:15:08 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/02 21:24:21 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/03 20:57:07 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	minishell(t_vars *var, t_save *save)
 		else
 			trouble(NULL, NULL, "syntax error", 258);
 	}
-	free(var->line);
 }
 
 int	main(int ac, char **av, char **env)
@@ -66,5 +65,8 @@ int	main(int ac, char **av, char **env)
 	save->error = 0;
 	ft_signals();
 	while (1)
+	{
 		minishell(var, save);
+		free(var->line);
+	}
 }
