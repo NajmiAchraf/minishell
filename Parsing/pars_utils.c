@@ -71,24 +71,22 @@ t_file	*file_node(char *str, int type)
 void	to_array(t_final *node)
 {
 	int		i;
-	int		len;
-	t_final	*parent_node;
+	t_final	*prt_nd;
 	t_cmd	*child_node;
 
-	parent_node = node;
-	while (parent_node)
+	prt_nd = node;
+	while (prt_nd)
 	{
-		len = list_size(parent_node->name);
-		parent_node->cmd = malloc((len + 1) * sizeof(char *));
-		parent_node->cmd[len] = NULL;
-		child_node = parent_node->name;
+		prt_nd->cmd = malloc((list_size(prt_nd->name) + 1) * sizeof(char *));
+		child_node = prt_nd->name;
 		i = 0;
 		while (child_node)
 		{
-			parent_node->cmd[i] = my_strdup(child_node->str);
+			prt_nd->cmd[i] = my_strdup(child_node->str);
 			child_node = child_node->next;
 			i++;
 		}
-		parent_node = parent_node->next;
+		prt_nd->cmd[i] = NULL;
+		prt_nd = prt_nd->next;
 	}
 }

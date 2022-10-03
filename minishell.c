@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:15:08 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/29 11:50:28 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/10/02 21:24:21 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ static void	minishell(t_vars *var, t_save *save)
 			data = tokenizer(var->line, save);
 			if (data && save->error == 0)
 			{
-				final_data = ft_parser(data);
-				executor(var, &final_data);
+				final_data = ft_parser(data, save);
+				if (save->error == 0)
+					executor(var, &final_data);
 				free_parser(final_data);
 			}
 			free_tokens(data);
@@ -62,6 +63,7 @@ int	main(int ac, char **av, char **env)
 	save = (t_save *)malloc(sizeof(t_save));
 	save->av = av;
 	save->env = fst_link;
+	save->error = 0;
 	ft_signals();
 	while (1)
 		minishell(var, save);

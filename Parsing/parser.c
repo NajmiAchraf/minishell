@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:50:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/09/28 17:50:06 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/10/03 15:24:35 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	cmd_name(t_final *tmp, t_cmd **save_cmd, t_cmd *node_cmd, t_token *data)
 		node_cmd->next = NULL;
 }
 
-void	norm_while(t_token **data, t_final **tmp, t_cmd *node_cmd)
+void	norm_while(t_token **data, t_final **tmp, t_cmd *node_cmd, t_save *sv)
 {
 	int		type;
 	t_cmd	*save_cmd;
@@ -72,7 +72,7 @@ void	norm_while(t_token **data, t_final **tmp, t_cmd *node_cmd)
 					&& ((*data)->next == NULL
 						|| !my_isalnum((*data)->next->str[0]))))
 			{
-				trouble(NULL, NULL, "syntax error", 258);
+				sv->error = trouble(NULL, NULL, "syntax error", 258);
 				return ;
 			}
 			type = redirect((*data)->str);
@@ -86,7 +86,7 @@ void	norm_while(t_token **data, t_final **tmp, t_cmd *node_cmd)
 	}
 }
 
-t_final	*ft_parser(t_token *data)
+t_final	*ft_parser(t_token *data, t_save *sv)
 {
 	t_final	*head;
 	t_final	*tmp;
@@ -102,7 +102,7 @@ t_final	*ft_parser(t_token *data)
 	{
 		tmp = create_node();
 		head = link_nodes(head, &link, tmp);
-		norm_while(&data, &tmp, node_cmd);
+		norm_while(&data, &tmp, node_cmd, sv);
 		if (data != NULL)
 			data = data->next;
 	}

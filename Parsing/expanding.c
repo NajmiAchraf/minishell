@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 19:51:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/10/02 17:17:39 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/03 14:45:16 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ char	*ft_expand(char *str, t_env *env, char **av)
 		if (str[w.h] == '$')
 		{
 			ptr = inside_dollar(str, env, av, &w.h);
-			if (ptr)
-				value = my_strjoin(value, ptr);
+			value = my_strjoin(value, ptr);
 		}
 		else
 		{

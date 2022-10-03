@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/10/02 17:17:32 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/03 15:24:02 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	pipe_sign(t_token **head, int *i);
 char	*convert_char_str(char c);
 void	tokens(char *line, t_token **temp, t_save *save, int *i);
 t_token	*tokenizer(char *line, t_save *save);
-t_final	*ft_parser(t_token *data);
+t_final	*ft_parser(t_token *data, t_save *sv);
 void	ft_output(t_final *cmd);
 int		check_dollar(char *str);
 void	free_tokens(t_token *data);
