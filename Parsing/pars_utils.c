@@ -50,6 +50,7 @@ t_final	*create_node(void)
 	if (!new_node)
 		return (NULL);
 	new_node->next = NULL;
+	new_node->herein = -1;
 	new_node->infile = -1;
 	new_node->outfile = -1;
 	return (new_node);
@@ -71,22 +72,24 @@ t_file	*file_node(char *str, int type)
 void	to_array(t_final *node)
 {
 	int		i;
-	t_final	*prt_nd;
+	int		len;
+	t_final	*parent_node;
 	t_cmd	*child_node;
 
-	prt_nd = node;
-	while (prt_nd)
+	parent_node = node;
+	while (parent_node)
 	{
-		prt_nd->cmd = malloc((list_size(prt_nd->name) + 1) * sizeof(char *));
-		child_node = prt_nd->name;
+		len = list_size(parent_node->name);
+		parent_node->cmd = malloc((len + 1) * sizeof(char *));
+		child_node = parent_node->name;
 		i = 0;
 		while (child_node)
 		{
-			prt_nd->cmd[i] = my_strdup(child_node->str);
+			parent_node->cmd[i] = my_strdup(child_node->str);
 			child_node = child_node->next;
 			i++;
 		}
-		prt_nd->cmd[i] = NULL;
-		prt_nd = prt_nd->next;
+		parent_node->cmd[i] = NULL;
+		parent_node = parent_node->next;
 	}
 }

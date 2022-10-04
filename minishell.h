@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/10/03 15:24:02 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/04 11:09:52 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ typedef struct s_file
 
 typedef struct s_final
 {
+	int				herein;
+	int				h;
 	int				type;
 	int				infile;
 	int				outfile;
@@ -134,8 +136,6 @@ typedef struct s_vars
 	char	*tmp8;
 	char	**tmpp;
 
-	int		h;
-	int		infile;
 	char	*main_name;
 	char	**exepath;
 	int		*pid;
@@ -309,7 +309,7 @@ void	heredoc(t_vars *var, char *delimiter, int *fd);
 /*								ITERATE_FILES.C								  */
 /* ************************************************************************** */
 
-int		iterate_files(t_vars *var, t_final **node);
+int		iterate_files(t_final **node);
 
 /* ************************************************************************** */
 /*								ITERATE_HEREDOC.C							  */

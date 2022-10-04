@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/09/28 19:25:42 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/04 11:27:29 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,25 @@ static int	append_file(t_final **node, t_file *file)
 	return (0);
 }
 
-static int	heredoc_file(t_vars *var, t_final **node)
+static int	heredoc_file(t_final **node)
 {
 	if ((*node)->infile != -1 && (*node)->infile != 0)
 		close((*node)->infile);
-	(*node)->infile = var->infile;
+	(*node)->infile = (*node)->herein;
 	return (0);
 }
 
-int	iterate_files(t_vars *var, t_final **node)
+int	iterate_files(t_final **node)
 {
 	t_allways	a;
 	t_file		*file;
 	t_final		*n;
 
 	n = *node;
-	a.h = 0;
 	while (n)
 	{
 		file = (n)->file;
+		a.h = 0;
 		while (file)
 		{
 			if (file->id == 1 && read_file(&n, file))
@@ -69,8 +69,8 @@ int	iterate_files(t_vars *var, t_final **node)
 				return (1);
 			if (file->id == 3 && append_file(&n, file))
 				return (1);
-			if (file->id == 4 && ++a.h == var->h)
-				heredoc_file(var, &n);
+			if (file->id == 4 && ++a.h == n->h)
+				heredoc_file(&n);
 			file = file->next;
 		}
 		n = (n)->next;

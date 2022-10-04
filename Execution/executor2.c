@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/02 15:40:16 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/04 09:58:26 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,10 @@ int	executor(t_vars *var, t_final **node)
 	w.i = 0;
 	w.j = 0;
 	w.k = 1;
-	var->infile = -1;
 	if (iterate_heredoc(var, node))
 		return (terminate(node, 1));
 	w.len = iterate_pipes(node);
-	if (iterate_files(var, node))
+	if (iterate_files(node))
 		return (terminate(node, 1));
 	executor_core(var, node, w);
 	return (terminate(node, 0));

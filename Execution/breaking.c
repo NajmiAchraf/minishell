@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   breaking.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:03:57 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/01 15:33:50 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/04 09:21:41 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	exiting(t_final *node)
 	if (aws.i == 1)
 	{
 		ft_putstr_fd("exit\n", 2);
-		exit(EXIT_SUCCESS);
+		exit(g_status);
 	}
 	else if (exit_cases(node))
 		return (1);

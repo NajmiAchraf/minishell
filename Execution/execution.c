@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/01 14:32:11 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/04 09:55:44 by ohrete           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	initialisation(t_vars *var, char **av, char **env)
 	var->exepath[0] = NULL;
 	var->hdocs = malloc(sizeof(char));
 	var->hdocs[0] = '\0';
-	var->infile = -1;
 	var->env.env = env;
 	var->pid = malloc(sizeof(int) * FILENAME_MAX);
 	if (!env)
