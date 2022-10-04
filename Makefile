@@ -6,14 +6,13 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/10/04 10:56:30 by anajmi           ###   ########.fr        #
+#    Updated: 2022/10/04 14:15:40 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-# CFLAGS = -Wall -Werror -Wextra
-CFLAGS = -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra
 
 PARSE =	\
 	./Parsing/syntax_error.c			\
