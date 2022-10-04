@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 13:52:36 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/03 18:35:34 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/04 14:42:50 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ static int	list_size1(t_final *list)
 	return (i);
 }
 
-static int	*create_pipe(t_final **node, t_allways w)
+static void	create_pipe(t_final **node, t_allways w)
 {
-	int	*p;
+	int	p[2];
 
-	p = (int *) malloc(2 * sizeof(int));
-	pipe(p);
+	if (w.i < w.len)
+		pipe(p);
 	if (w.i == 1)
 		(*node)->infile = 0;
 	if ((*node)->outfile == -1)
@@ -46,28 +46,21 @@ static int	*create_pipe(t_final **node, t_allways w)
 	}
 	if (w.i == w.len)
 		(*node)->outfile = 1;
-	return (p);
 }
 
 int	iterate_pipes(t_final **node)
 {
 	t_allways	w;
 	t_final		*n;
-	int			*p;
 
 	w.i = 1;
 	n = *node;
 	w.len = list_size1(n);
-	p = NULL;
 	while (n)
 	{
-		free(p);
-		p = create_pipe(&n, w);
+		create_pipe(&n, w);
 		n = n->next;
 		w.i++;
 	}
-	close(p[0]);
-	close(p[1]);
-	free(p);
 	return (w.len);
 }
