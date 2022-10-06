@@ -6,16 +6,15 @@
 #    By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 14:07:31 by anajmi            #+#    #+#              #
-#    Updated: 2022/10/04 14:15:40 by anajmi           ###   ########.fr        #
+#    Updated: 2022/10/06 16:00:11 by anajmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS =# -Wall -Werror -Wextra
 
 PARSE =	\
-	./Parsing/syntax_error.c			\
 	./Parsing/ft_environment.c			\
 	./Parsing/environment_utils.c		\
 	./Parsing/tokenizer.c				\
@@ -26,6 +25,7 @@ PARSE =	\
 	./Parsing/pars_utils.c				\
 	./Parsing/pars_utils2.c				\
 	./Parsing/signals.c					\
+	./Parsing/syntax_error.c			\
 	./Parsing/tools.c					\
  
 
@@ -50,10 +50,10 @@ EXEC = \
 	./Execution/environment/tools.c			\
 	./Execution/environment/unset.c			\
 
-SRCS = $(PARSE) $(EXEC)
+SRCS = $(EXEC) $(PARSE)
 CONTROL = @stty -echoctl
 RE_PATH = ~/brew/brew/Cellar/readline/8.1.2
-LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
+LFLAGS = -lreadline # -L $(RE_PATH)/lib -I $(RE_PATH)/include
 OBJ = $(SRCS:.c=.o)
 
 #*******************************#
@@ -79,6 +79,17 @@ FCLEANLIBPL = rm -f $(ARPLS)
 RELIBPL = make re -C $(LIBPL)
 
 #*******************************#
+#			GNL					#
+#*******************************#
+
+GNL = ./get_next_line
+ARGNL = $(GNL)/get_next_line.a
+ALLGNL = make -C $(GNL)
+CLEANGNL = make clean -C $(GNL)
+FCLEANGNL = rm -f $(ARGNL)
+REGNL = make re -C $(GNL)
+
+#*******************************#
 #			COLORS				#
 #*******************************#
 
@@ -94,20 +105,22 @@ C_RES = \033[0m
 .PHONY : all clean fclean re
 
 %.o: %.c
-	@gcc $(CFLAGS) -c $^ -o $@
+	@clang  $(CFLAGS) -c $^ -o $@
 
 all : $(NAME)
 
 $(NAME) : $(OBJ)
 	$(ALLIBFT)
 	$(ALLIBPL)
+	$(ALLGNL)
 	$(CONTROL)
-	@gcc $(CFLAGS) $(OBJ) $(ARLIB) $(ARPLS) $(LFLAGS) -o $(NAME)
+	@clang -v $(CFLAGS) $(OBJ) $(ARLIB) $(ARPLS) $(ARGNL) $(LFLAGS) -o $(NAME)
 	@echo "$(C_GREEN)[MINISHELL MANDATORY CREATED!]$(C_RES)"
 
 clean :
 	@$(CLEANLIBFT)
 	@$(CLEANLIBPL)
+	@$(CLEANGNL)
 	@rm -f $(OBJ)
 	@echo "$(C_RED)[MINISHELL OBJECTS DELETED!]$(C_RES)"
 
@@ -116,6 +129,8 @@ fclean : clean
 	@echo "$(C_RED)[LIBFT ARCHIVE DELETED!]$(C_RES)"
 	@$(FCLEANLIBPL)
 	@echo "$(C_RED)[LIBFT PLUS ARCHIVE DELETED!]$(C_RES)"
+	@$(FCLEANGNL)
+	@echo "$(C_RED)[GET NEXT LINE ARCHIVE DELETED!]$(C_RES)"
 	@rm -f $(NAME)
 	@echo "$(C_RED)[MINISHELL EXECUTABLES DELETED!]$(C_RES)"
 

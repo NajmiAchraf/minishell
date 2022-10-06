@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:11:06 by ohrete            #+#    #+#             */
-/*   Updated: 2022/10/04 11:09:52 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/06 16:06:58 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <readline/history.h>
 # include "Libft/libft.h"
 # include "LibftPlus/libftplus.h"
+# include "get_next_line/get_next_line.h"
 
 # define OUTPUT '>'
 # define INPUT '<'
@@ -36,9 +37,17 @@
 # define HERE_DOC 'H'
 # define WORD 'W'
 
+# define C_RES		"\033[0m"
+# define C_RED		"\033[1;31m"
+# define C_GREEN	"\033[1;32m"
+# define C_YELOW	"\033[1;33m"
+# define C_BLUE		"\033[1;34m"
+# define C_CYAN		"\033[1;36m"
+
 typedef struct s_final	t_final;
 typedef struct s_vars	t_vars;
-int						g_status;
+extern int				g_status;
+
 //env
 typedef struct s_env
 {
@@ -235,7 +244,7 @@ int		builtin(t_vars *var, t_final *node);
 
 int		exiting(t_final *node);
 int		trouble(char *cmd, char *arg, char *msg, int error_status);
-void	trouble_exit(char *cmd, char *arg, char *msg, int exit_status);
+void	trouble_exit(char *cmd, char *arg, char *msg, int g_status);
 
 /* ************************************************************************** */
 /*								DIRECTORY.C									  */
@@ -322,5 +331,11 @@ int		iterate_heredoc(t_vars *var, t_final **node);
 /* ************************************************************************** */
 
 int		iterate_pipes(t_final **node);
+
+/* ************************************************************************** */
+/*								MINISHELL.C									  */
+/* ************************************************************************** */
+
+void	hostname(t_vars *var);
 
 #endif

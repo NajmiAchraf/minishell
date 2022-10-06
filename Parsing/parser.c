@@ -6,7 +6,7 @@
 /*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 23:50:30 by ohrete            #+#    #+#             */
-/*   Updated: 2022/10/03 15:24:35 by anajmi           ###   ########.fr       */
+/*   Updated: 2022/10/06 14:35:09 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,11 @@ t_final	*ft_parser(t_token *data, t_save *sv)
 {
 	t_final	*head;
 	t_final	*tmp;
-	t_token	*save;
 	t_final	*link;
 	t_cmd	*node_cmd;
 
 	head = NULL;
 	link = head;
-	save = data;
 	node_cmd = NULL;
 	while (data)
 	{

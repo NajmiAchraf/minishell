@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   breaking.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 23:03:57 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/04 09:21:41 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/10/06 14:57:14 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ int	trouble(char *cmd, char *arg, char *msg, int error_status)
 	return (1);
 }
 
-void	trouble_exit(char *cmd, char *arg, char *msg, int exit_status)
+void	trouble_exit(char *cmd, char *arg, char *msg, int g_status)
 {
-	trouble(cmd, arg, msg, exit_status);
-	exit(exit_status);
+	trouble(cmd, arg, msg, g_status);
+	exit(g_status);
 }

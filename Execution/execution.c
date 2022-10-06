@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 21:12:12 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/04 09:55:44 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/10/06 14:53:40 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,5 @@ void	initialisation(t_vars *var, char **av, char **env)
 	ft_export(var, var->tmp2, 0);
 	ft_unset(var, "OLDPWD");
 	ft_export(var, "OLDPWD", 1);
+	hostname(var);
 }

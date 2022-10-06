@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohrete <ohrete@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anajmi <anajmi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:15:08 by anajmi            #+#    #+#             */
-/*   Updated: 2022/10/04 09:31:09 by ohrete           ###   ########.fr       */
+/*   Updated: 2022/10/06 16:05:10 by anajmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_status = 0;
 
 static void	panic(void)
 {
@@ -18,12 +20,43 @@ static void	panic(void)
 	exit(0);
 }
 
+void	hostname(t_vars *var)
+{
+	int	fd;
+
+	fd = open("/proc/sys/kernel/hostname", O_RDONLY);
+	ft_export(var, ft_strjoin("HOSTNAME=",
+			ft_split(get_next_line(fd), '\n')[0]), 0);
+}
+
+static void	prompt(t_vars *var)
+{
+	char	cwd[1024];
+
+	getcwd(cwd, sizeof(cwd));
+	ft_free(var->tmpp);
+	var->tmpp = ft_split(cwd, '/');
+	if (ft_lstlen(var->tmpp) > 0)
+	{
+		printf("%s$ %s%s@%s %s%s %s|%s", C_GREEN, C_YELOW,
+			get_env_var(var, "USER"), get_env_var(var, "HOSTNAME"),
+			C_CYAN, var->tmpp[ft_lstlen(var->tmpp) - 1], C_RED, C_RES);
+	}
+	else
+	{
+		printf("%s$ %s%s@%s %s%s %s|%s", C_GREEN, C_YELOW,
+			get_env_var(var, "USER"), get_env_var(var, "HOSTNAME"),
+			C_CYAN, cwd, C_RED, C_RES);
+	}
+	var->line = readline("→ ");
+}
+
 static void	minishell(t_vars *var, t_save *save)
 {
 	t_token	*data;
 	t_final	*final_data;
 
-	var->line = readline("minishell→ ");
+	prompt(var);
 	ft_signals();
 	if (!var->line)
 		panic();
